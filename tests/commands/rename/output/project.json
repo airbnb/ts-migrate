@@ -1,0 +1,10 @@
+{
+  "allowedImports": [
+    "file-1.ts",
+    "./some-dir/file-3.tsx",
+    "some-dir/**/*",
+    "some-dir/**/*.ts",
+    "some-dir/*.tsx"
+  ],
+  "layout": "./hyperloop/layout.tsx"
+}

@@ -1,0 +1,81 @@
+{
+  "name": "ts-migrate",
+  "version": "1.0.0",
+  "description": "Migrate JS projects to compiling TS projects.",
+  "directories": {
+    "test": "tests"
+  },
+  "bin": {
+    "ts-migrate": "./scripts/ts-migrate-cli.sh",
+    "ts-migrate-external": "./scripts/ts-migrate-external.sh"
+  },
+  "scripts": {
+    "test": "$(npm bin)/jest --config jest-config.json",
+    "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
+    "ts-migrate": "./scripts/ts-migrate-cli.sh"
+  },
+  "contributors": [
+    {
+      "name": "Brie Bunge",
+      "url": "https://github.com/brieb"
+    },
+    {
+      "name": "Sergii Rudenko",
+      "url": "https://github.com/Rudeg"
+    },
+    {
+      "name": "Elliot Sachs",
+      "url": "https://github.com/elliotsa"
+    },
+    {
+      "name": "John Haytko",
+      "url": "https://github.com/jjjjhhhhhh"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airbnb/ts-migrate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/airbnb/ts-migrate/issues"
+  },
+  "homepage": "https://github.com/airbnb/ts-migrate#readme",
+  "license": "MIT",
+  "dependencies": {
+    "create-jest-runner": "^0.5.3",
+    "eslint": "^6.1.0",
+    "glob": "^7.1.6",
+    "jscodeshift": "^0.7.0",
+    "json5": "^2.1.1",
+    "json5-writer": "^0.1.8",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.7.3",
+    "updatable-log": "^0.2.0",
+    "yargs": "^15.0.2"
+  },
+  "devDependencies": {
+    "@types/eslint": "^6.1.3",
+    "@types/jest": "^24.0.23",
+    "@types/jscodeshift": "^0.6.3",
+    "@types/json5": "0.0.30",
+    "@types/node": "^9.6.55",
+    "@types/react": "^16.9.16",
+    "@types/rimraf": "^2.0.3",
+    "@types/yargs": "^13.0.3",
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
+    "babel-jest": "^24.9.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.2.0"
+  }
+}
