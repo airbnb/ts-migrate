@@ -18,7 +18,7 @@ Or [yarn](https://yarnpkg.com):
 
 # Usage
 
-`npm run ts-migrate frontend/YOUR_FOLDER_HERE`
+`npm run ts-migrate <folder>`
 
 Or, you can run individual CLI commands:
 
@@ -69,7 +69,7 @@ The ts-migrate codemods are only so smart. So, follow up is required to refine t
 Please feel the [issue](https://github.com/airbnb/ts-migrate/issues/new).
 
 
-> Can I run ts-migrate on a single specific file within a frontend project or application?
+> Can I run ts-migrate on a single specific file within a frontend project?
 
 Unfortunately, you cannot run ts-migrate only on a specific file. The easiest way would be to migrating the whole project. If you want, feel free to contribute to this functionality!
 
