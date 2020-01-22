@@ -64,7 +64,7 @@ fi
 
 if [[ `git status --porcelain` ]]
 then
-  git add . && git commit -m "[ts-migrate][$folder_name] Init tsconfig.json file"
+  git add . && git commit -m "[ts-migrate][$folder_name] Init tsconfig.json file" -m 'Co-authored-by: ts-migrate <>'
 fi
 
 echo "
@@ -74,7 +74,7 @@ $cli rename $frontend_folder
 
 if [[ `git status --porcelain` ]]
 then
-  git add . && git commit -m "[ts-migrate][$folder_name] Rename files from JS/JSX to TS/TSX"
+  git add . && git commit -m "[ts-migrate][$folder_name] Rename files from JS/JSX to TS/TSX" -m 'Co-authored-by: ts-migrate <>'
 fi
 
 echo "
@@ -88,7 +88,7 @@ fi
 
 if [[ `git status --porcelain` ]]
 then
-  git add . && git commit -m "[ts-migrate][$folder_name] Run TS Migrate"
+  git add . && git commit -m "[ts-migrate][$folder_name] Run TS Migrate" -m 'Co-authored-by: ts-migrate <>'
 fi
 
 
