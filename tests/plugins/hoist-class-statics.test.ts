@@ -135,7 +135,7 @@ static propTypes = {
   it('works with spread withStylePropsTypes', async () => {
     const text = `import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withStylesPropTypes } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, withStylesPropTypes } from ':dls-themes/withStyles';
 
 const propTypes = {
   ...withStylesPropTypes,
@@ -171,7 +171,7 @@ DuplicateListing.defaultProps = defaultProps;
 
     expect(result).toBe(`import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withStylesPropTypes } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, withStylesPropTypes } from ':dls-themes/withStyles';
 
 const propTypes = {
   ...withStylesPropTypes,

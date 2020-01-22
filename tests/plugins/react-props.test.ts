@@ -720,8 +720,8 @@ export default Foo;
   it('replaces spread prop types', async () => {
     const text = `import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withStylesPropTypes } from 'airbnb-dls-web/build/themes/withStyles';
-import withBreakpoint, { withBreakpointPropTypes } from 'airbnb-dls-web/build/exp/withBreakpoint';
+import { withStyles, withStylesPropTypes } from ':dls-themes/withStyles';
+import withBreakpoint, { withBreakpointPropTypes } from ':dls-core/components/breakpoints/withBreakpoint';
 import { withRouter } from 'react-router';
 import withRouterPropTypes from ':routing/shapes/RR4PropTypes';
 import { buttonProps } from './somewhere/Button';
@@ -754,8 +754,8 @@ export default withStyles(() => ({}))(withBreakpoint(withRouter(Foo)));
     );
 
     expect(result).toBe(`import React from 'react';
-import { withStyles, WithStylesProps } from "airbnb-dls-web/build/themes/withStyles";
-import withBreakpoint, { WithBreakpointProps } from "airbnb-dls-web/build/exp/withBreakpoint";
+import { withStyles, WithStylesProps } from ":dls-themes/withStyles";
+import withBreakpoint, { WithBreakpointProps } from ":dls-core/components/breakpoints/withBreakpoint";
 import { withRouter } from 'react-router';
 import { buttonProps } from './somewhere/Button';
 import { RouteConfigComponentProps } from "react-router-config";
@@ -779,8 +779,8 @@ export default withStyles(() => ({}))(withBreakpoint(withRouter(Foo)));
   it('replaces spread prop types without an option', async () => {
     const text = `import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withStylesPropTypes } from 'airbnb-dls-web/build/themes/withStyles';
-import withBreakpoint, { withBreakpointPropTypes } from 'airbnb-dls-web/build/exp/withBreakpoint';
+import { withStyles, withStylesPropTypes } from ':dls-themes/withStyles';
+import withBreakpoint, { withBreakpointPropTypes } from ':dls-core/components/breakpoints/withBreakpoint';
 import { withRouter } from 'react-router';
 import withRouterPropTypes from ':routing/shapes/RR4PropTypes';
 import { buttonProps } from './somewhere/Button';
@@ -810,8 +810,8 @@ export default withStyles(() => ({}))(withBreakpoint(withRouter(Foo)));
     );
 
     expect(result).toBe(`import React from 'react';
-import { withStyles, withStylesPropTypes, WithStylesProps } from "airbnb-dls-web/build/themes/withStyles";
-import withBreakpoint, { withBreakpointPropTypes, WithBreakpointProps } from "airbnb-dls-web/build/exp/withBreakpoint";
+import { withStyles, withStylesPropTypes, WithStylesProps } from ":dls-themes/withStyles";
+import withBreakpoint, { withBreakpointPropTypes, WithBreakpointProps } from ":dls-core/components/breakpoints/withBreakpoint";
 import { withRouter } from 'react-router';
 import withRouterPropTypes from ':routing/shapes/RR4PropTypes';
 import { buttonProps } from './somewhere/Button';

@@ -175,7 +175,7 @@ export default ExampleComponent;`);
 
   it('WithStylesProps in props type at first place', async () => {
     const text = `import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type Props = WithStylesProps & { message?: string };
 
@@ -198,7 +198,7 @@ export default withStyles(() => ({
 
     expect(result).toBe(`import { WithDefaultProps } from ":ts-utils/types/WithDefaultProps";
 import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type OwnProps = {
     message?: string;
@@ -222,7 +222,7 @@ export default withStyles(() => ({
 
   it('basic class component with default props', async () => {
     const text = `import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 const defaultProps = { message: '' };
 
@@ -249,7 +249,7 @@ export default withStyles(() => ({
 
     expect(result).toBe(`import { WithDefaultProps } from ":ts-utils/types/WithDefaultProps";
 import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 const defaultProps = { message: '' };
 
@@ -492,7 +492,7 @@ export default Foo;`);
 
   it('default props already exists for sfcs', async () => {
     const text = `import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type Props = {} & WithStylesProps;
 
@@ -519,7 +519,7 @@ export default withStyles(() => ({
     );
 
     expect(result).toBe(`import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type Props = {} & WithStylesProps;
 
@@ -545,7 +545,7 @@ export default withStyles(() => ({
   it('complex file with multiple component and mupltiple default props', async () => {
     const text = `import { WithDefaultProps } from ":ts-utils/types/WithDefaultProps";
 import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type TrElementProps = {
   children: React.ReactNode;
@@ -615,7 +615,7 @@ export const Tr = withStyles(({ color }) => ({
 
     expect(result).toBe(`import { WithDefaultProps } from ":ts-utils/types/WithDefaultProps";
 import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type OwnTrElementProps = {
     children: React.ReactNode;
@@ -951,7 +951,7 @@ ActionRowWithReactRouter.defaultProps = defaultProps;
 
   it('example with proptype contains only a type references', async () => {
     const text = `import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type Props = {
   activeRouteName?: string;
@@ -1013,7 +1013,7 @@ export default withStyles(({ color, responsive }) => ({
     );
     expect(result).toBe(`import { WithDefaultProps } from ":ts-utils/types/WithDefaultProps";
 import React from 'react';
-import { withStyles, WithStylesProps } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, WithStylesProps } from ':dls-themes/withStyles';
 
 type Props = {
   activeRouteName?: string;

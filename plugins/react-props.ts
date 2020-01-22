@@ -72,24 +72,24 @@ const spreadReplacements: SpreadReplacement[] = [
     spreadId: 'withStylesPropTypes',
     spreadImport: {
       namedImport: 'withStylesPropTypes',
-      moduleSpecifier: 'airbnb-dls-web/build/themes/withStyles',
+      moduleSpecifier: ':dls-themes/withStyles',
     },
     typeRef: ts.createTypeReferenceNode('WithStylesProps', undefined),
     typeImport: {
       namedImport: 'WithStylesProps',
-      moduleSpecifier: 'airbnb-dls-web/build/themes/withStyles',
+      moduleSpecifier: ':dls-themes/withStyles',
     },
   },
   {
     spreadId: 'withBreakpointPropTypes',
     spreadImport: {
       namedImport: 'withBreakpointPropTypes',
-      moduleSpecifier: 'airbnb-dls-web/build/exp/withBreakpoint',
+      moduleSpecifier: ':dls-core/components/breakpoints/withBreakpoint',
     },
     typeRef: ts.createTypeReferenceNode('WithBreakpointProps', undefined),
     typeImport: {
       namedImport: 'WithBreakpointProps',
-      moduleSpecifier: 'airbnb-dls-web/build/exp/withBreakpoint',
+      moduleSpecifier: ':dls-core/components/breakpoints/withBreakpoint',
     },
   },
   {
