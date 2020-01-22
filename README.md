@@ -3,6 +3,9 @@
 *ts-migrate is a tool for migrating frontend application to TypeScript.*
 Run `npm run ts-migrate <folder>` to convert your frontend application to TypeScript.
 
+ts-migrate is designed around Airbnb projects. Use at your own risk.
+
+
 # Install
 
 Install ts-migrate using [npm](https://www.npmjs.com):
