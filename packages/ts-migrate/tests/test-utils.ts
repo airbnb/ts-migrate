@@ -1,6 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import rimraf from 'rimraf';
 import log from 'updatable-log';
 import ts from 'typescript';
