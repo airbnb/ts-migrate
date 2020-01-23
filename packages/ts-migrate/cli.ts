@@ -15,13 +15,12 @@ import {
   reactShapePlugin,
   stripTSIgnorePlugin,
   tsIgnorePlugin,
+  Plugin,
 } from 'ts-migrate-plugins';
 import init from './commands/init';
 import migrate, { MigrateConfig } from './commands/migrate';
 import forkTSServer from './commands/migrate/forkTSServer';
 import rename from './commands/rename';
-
-import { Plugin } from './types';
 
 // eslint-disable-next-line no-unused-expressions
 yargs

@@ -2,18 +2,6 @@ import ts from 'typescript';
 import tsp from 'typescript/lib/protocol';
 
 export type Nullable<T> = T | null | undefined;
-export type PluginResult = string | void;
-
-export interface Plugin<TPluginOptions = {}> {
-  name: string;
-  run(params: PluginParams<TPluginOptions>): Promise<PluginResult> | PluginResult;
-}
-
-export type PluginWithOptions<TPluginOptions = {}> = {
-  plugin: Plugin<TPluginOptions>;
-  options: TPluginOptions;
-};
-
 export interface PluginParams<TPluginOptions> {
   options: TPluginOptions;
   fileName: string;
