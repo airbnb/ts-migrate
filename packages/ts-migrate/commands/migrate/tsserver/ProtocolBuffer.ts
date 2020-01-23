@@ -72,7 +72,7 @@ export default class ProtocolBuffer {
     const data = this.buffer.toString('utf8', start, current);
     result = parseInt(data, 10);
     this.buffer = this.buffer.slice(current + 4);
-    this.index = this.index - (current + 4);
+    this.index -= current + 4;
 
     return result;
   }
@@ -92,7 +92,7 @@ export default class ProtocolBuffer {
     }
 
     this.buffer.copy(this.buffer, 0, sourceStart);
-    this.index = this.index - sourceStart;
+    this.index -= sourceStart;
 
     return result;
   }
