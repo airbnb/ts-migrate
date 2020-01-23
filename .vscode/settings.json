@@ -1,5 +1,4 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
     // Disable formatOnSave for TS/JS since ESLint takes care of this
     "[javascript]": {
         "editor.formatOnSave": false

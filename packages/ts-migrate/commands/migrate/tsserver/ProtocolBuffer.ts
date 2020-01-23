@@ -69,7 +69,6 @@ export default class ProtocolBuffer {
       return result;
     }
 
-    // eslint-disable-next-line no-restricted-properties
     const data = this.buffer.toString('utf8', start, current);
     result = parseInt(data, 10);
     this.buffer = this.buffer.slice(current + 4);
@@ -83,7 +82,6 @@ export default class ProtocolBuffer {
       return null;
     }
 
-    // eslint-disable-next-line no-restricted-properties
     const result = this.buffer.toString('utf8', 0, length);
     let sourceStart = length;
     while (
