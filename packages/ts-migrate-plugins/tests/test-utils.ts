@@ -3,7 +3,6 @@ import ts from 'typescript';
 import tsp from 'typescript/lib/protocol';
 import { PluginParams, Diagnostic } from '../types';
 
-
 /* eslint-disable no-console */
 export const mockUpdatableLog: () => typeof log = () => ({
   error: (...msg: unknown[]) => {
@@ -21,18 +20,18 @@ export const mockUpdatableLog: () => typeof log = () => ({
   update: (...msg: unknown[]) => {
     console.log('log.update:', ...msg);
   },
-  clear: () => { },
+  clear: () => {},
   quiet: false,
 });
 /* eslint-enable no-console */
 
 export const noopUpdatableLog: () => typeof log = () => ({
-  error: () => { },
-  important: () => { },
-  info: () => { },
-  warn: () => { },
-  update: () => { },
-  clear: () => { },
+  error: () => {},
+  important: () => {},
+  info: () => {},
+  warn: () => {},
+  update: () => {},
+  clear: () => {},
   quiet: false,
 });
 
