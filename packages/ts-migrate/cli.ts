@@ -17,9 +17,9 @@ import {
   tsIgnorePlugin,
   Plugin,
 } from 'ts-migrate-plugins';
+import { forkTSServer } from 'ts-migrate-server';
 import init from './commands/init';
 import migrate, { MigrateConfig } from './commands/migrate';
-import forkTSServer from './commands/migrate/forkTSServer';
 import rename from './commands/rename';
 
 // eslint-disable-next-line no-unused-expressions

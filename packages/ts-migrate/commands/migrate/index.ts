@@ -1,11 +1,10 @@
 import ts from 'typescript';
 import path from 'path';
 import log from 'updatable-log';
+import { TSServer, CommandTypes } from 'ts-migrate-server';
 import MigrateConfig from './MigrateConfig';
-import TSServer from './tsserver/TSServer';
 import PerfTimer from '../../utils/PerfTimer';
 import { PluginParams } from '../../types';
-import { CommandTypes } from './tsserver/commands';
 
 interface MigrateParams {
   rootDir: string;

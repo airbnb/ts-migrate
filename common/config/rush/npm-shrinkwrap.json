@@ -1018,7 +1018,7 @@
     },
     "@rush-temp/ts-migrate": {
       "version": "file:projects/ts-migrate.tgz",
-      "integrity": "sha512-y+J/K8kUNPCd9+tTPCC0MP1lqhtM69BUqYExjRiPiq+5lI39gBDy0F2lz3PPKXy473KC23c2J/RzJcN6baBPvA==",
+      "integrity": "sha512-hdMpz4qpOji7PYTA8xDn2smxkba7K73d6Ewtph3tYkCq44poebRoIfzaR16SOwQvM4piMD6wNtN/yYtBUDpzwg==",
       "requires": {
         "@types/eslint": "^6.1.3",
         "@types/jest": "^24.9.1",
@@ -1085,15 +1085,13 @@
     },
     "@rush-temp/ts-migrate-server": {
       "version": "file:projects/ts-migrate-server.tgz",
-      "integrity": "sha512-k1qLvj7DtOfhY1EaAP0/O49T5TE82pu49le4D6Koxg+KNJQpTi6fesLdxRQ9VodUX1cYAYRBJcO4c+94p5pS4w==",
+      "integrity": "sha512-iKnI0HzZnomxY80JduwqOzhmlHC6dEx/p2NxuCsE7dLm86z5ue0cJ7V7+eanplPChZyO2rdOUozRJqAW1nBsrw==",
       "requires": {
         "@types/eslint": "^6.1.3",
-        "@types/jest": "^24.9.1",
         "@types/node": "^9.6.55",
         "@types/react": "^16.9.16",
         "@typescript-eslint/eslint-plugin": "^2.15.0",
         "@typescript-eslint/parser": "^2.15.0",
-        "babel-jest": "^25.1.0",
         "eslint": "^6.1.0",
         "eslint-config-airbnb": "^18.0.1",
         "eslint-config-prettier": "^6.9.0",
@@ -1102,10 +1100,8 @@
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.17.0",
         "eslint-plugin-react-hooks": "^1.7.0",
-        "jest": "^25.1.0",
         "prettier": "^1.19.1",
         "react": "^16.12.0",
-        "ts-jest": "^25.0.0",
         "ts-node": "^8.3.0",
         "typescript": "^3.7.3",
         "updatable-log": "^0.2.0"

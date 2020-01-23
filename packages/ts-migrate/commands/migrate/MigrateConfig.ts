@@ -1,4 +1,4 @@
-import { Plugin } from '../../types';
+import { Plugin } from 'ts-migrate-plugins';
 
 type InferOptions<P> = P extends Plugin<infer O> ? O : never;
 
