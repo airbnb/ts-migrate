@@ -42,6 +42,7 @@
   "homepage": "https://github.com/airbnb/ts-migrate#readme",
   "license": "MIT",
   "dependencies": {
+    "ts-migrate-plugins": "^1.0.0",
     "create-jest-runner": "^0.5.3",
     "eslint": "^6.1.0",
     "glob": "^7.1.6",

@@ -2,6 +2,7 @@
     "name": "ts-migrate-plugins",
     "version": "1.0.0",
     "description": "Migrate JS projects to compiling TS projects.",
+    "main": "src/index.ts",
     "directories": {
         "test": "tests"
     },
