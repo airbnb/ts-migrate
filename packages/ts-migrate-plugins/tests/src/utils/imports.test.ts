@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { updateImports } from '../../../plugins/utils/imports';
+import { updateImports } from '../../../src/utils/imports';
 import updateSourceText from '../../../utils/updateSourceText';
 
 describe('updateImports', () => {

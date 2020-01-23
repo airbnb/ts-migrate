@@ -1,5 +1,5 @@
 import { mockPluginParams } from '../test-utils';
-import hoistClassStaticsPlugin from '../../plugins/hoist-class-statics';
+import hoistClassStaticsPlugin from '../../src/hoist-class-statics';
 
 describe('hoist-class-statics plugin', () => {
   it('hoists static class properties', async () => {

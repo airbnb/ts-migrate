@@ -1,5 +1,5 @@
 import { mockPluginParams } from '../test-utils';
-import reactPropsPlugin from '../../plugins/react-props';
+import reactPropsPlugin from '../../src/react-props';
 
 describe('react-props plugin', () => {
   it('handles class with propTypes declared as a separate variable', async () => {

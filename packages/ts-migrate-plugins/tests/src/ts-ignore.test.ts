@@ -1,4 +1,4 @@
-import tsIgnorePlugin from '../../plugins/ts-ignore';
+import tsIgnorePlugin from '../../src/ts-ignore';
 import { mockPluginParams, mockDiagnostic } from '../test-utils';
 
 describe('ts-ignore plugin', () => {

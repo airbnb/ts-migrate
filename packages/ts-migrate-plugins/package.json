@@ -7,7 +7,7 @@
     },
     "scripts": {
         "test": "$(npm bin)/jest --config jest-config.json",
-        "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
+        "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet"
     },
     "contributors": [
         {

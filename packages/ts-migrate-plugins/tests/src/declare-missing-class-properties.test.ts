@@ -1,5 +1,5 @@
 import { mockDiagnostic, mockPluginParams } from '../test-utils';
-import declareMissingClassPropertiesPlugin from '../../plugins/declare-missing-class-properties';
+import declareMissingClassPropertiesPlugin from '../../src/declare-missing-class-properties';
 
 describe('declare-missing-class-properties plugin', () => {
   it('declares missing class properties', async () => {
