@@ -1,0 +1,17 @@
+{
+    "transform": {
+        "^.+\\.ts$": "ts-jest",
+        "^.+\\.js$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+        "ts",
+        "js",
+        "json"
+    ],
+    "bail": false,
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|js)$",
+    "testPathIgnorePatterns": [
+        "<rootDir>/node_modules/"
+    ]
+}

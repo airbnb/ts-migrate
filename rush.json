@@ -309,6 +309,10 @@
     {
       "packageName": "ts-migrate-plugins",
       "projectFolder": "packages/ts-migrate-plugins"
+    },
+    {
+      "packageName": "ts-migrate-server",
+      "projectFolder": "packages/ts-migrate-server"
     }
   ]
 }
