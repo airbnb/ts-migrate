@@ -38,7 +38,7 @@ Commands:
   reignore <folder>
 
 Options:
-  -h,  --help      Show help
+  -h,  --help      Show help                                            
   -i,  --init      Initialize TypeScript (tsconfig.json) in <folder>
   -m,  --migrate   Fix all TypeScript errors, using codemods
   -rn, --rename    Rename files in <folder> from JS/JSX to TS/TSX
@@ -66,18 +66,18 @@ The ts-migrate codemods are only so smart. So, follow up is required to refine t
 
 > Um... ts-migrate broke my code! D:
 
-Please file an [issue here](https://github.com/airbnb/ts-migrate/issues/new).
+Please feel the [issue](https://github.com/airbnb/ts-migrate/issues/new).
 
 
 > Can I run ts-migrate on a single specific file within a frontend project?
 
-Unfortunately, you cannot run ts-migrate on a specific file. The easiest way would be to migrate the whole project. If you want, feel free to contribute to this functionality!
+Unfortunately, you cannot run ts-migrate only on a specific file. The easiest way would be to migrating the whole project. If you want, feel free to contribute to this functionality!
 
-
+	
 > What is `$TSFixMe`?
 
-It's just an alias to `any`: `type $TSFixMe = any;`. We use it at Airbnb for simplifying the migration experience.
-We also have the same alias for functions: `type $TSFixMeFunction = (...args: any[]) => any;`.
+It's just an alias to `any`: `type $TSFixMe = any;`. We use it at Airbnb for the simplifying migration experience.
+We also have the same alias for the functions: `type $TSFixMeFunction = (...args: any[]) => any;`.
 
 
 # Contributing
