@@ -1018,11 +1018,10 @@
     },
     "@rush-temp/ts-migrate": {
       "version": "file:projects/ts-migrate.tgz",
-      "integrity": "sha512-hdMpz4qpOji7PYTA8xDn2smxkba7K73d6Ewtph3tYkCq44poebRoIfzaR16SOwQvM4piMD6wNtN/yYtBUDpzwg==",
+      "integrity": "sha512-h/SCNV+IKz4Z/Jxo6bqzJscnoDYUkw/7A/i3qbcN3ncVPtbQOPh/HRkdXAMvzORtZ+F59h2reCT0sVykzBeEQg==",
       "requires": {
         "@types/eslint": "^6.1.3",
         "@types/jest": "^24.9.1",
-        "@types/jscodeshift": "^0.6.3",
         "@types/json5": "0.0.30",
         "@types/node": "^9.6.55",
         "@types/react": "^16.9.16",
@@ -1042,7 +1041,6 @@
         "eslint-plugin-react-hooks": "^1.7.0",
         "glob": "^7.1.6",
         "jest": "^25.1.0",
-        "jscodeshift": "^0.7.0",
         "json5": "^2.1.1",
         "json5-writer": "^0.1.8",
         "prettier": "^1.19.1",
@@ -1053,6 +1051,27 @@
         "typescript": "^3.7.3",
         "updatable-log": "^0.2.0",
         "yargs": "^15.0.2"
+      }
+    },
+    "@rush-temp/ts-migrate-example": {
+      "version": "file:projects/ts-migrate-example.tgz",
+      "integrity": "sha512-MDwUio7zydjA89qGwp6U325oRL0zTKw/I8dd/N6LDe2XKqSWbUFqbqFGG4/opGg3PWItgGOYPFXHEfEbUd4shw==",
+      "requires": {
+        "@types/eslint": "^6.1.3",
+        "@types/node": "^9.6.55",
+        "@typescript-eslint/eslint-plugin": "^2.15.0",
+        "@typescript-eslint/parser": "^2.15.0",
+        "eslint": "^6.1.0",
+        "eslint-config-airbnb": "^18.0.1",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-react": "^7.17.0",
+        "eslint-plugin-react-hooks": "^1.7.0",
+        "prettier": "^1.19.1",
+        "ts-node": "^8.3.0",
+        "typescript": "^3.7.3"
       }
     },
     "@rush-temp/ts-migrate-plugins": {
@@ -1085,13 +1104,16 @@
     },
     "@rush-temp/ts-migrate-server": {
       "version": "file:projects/ts-migrate-server.tgz",
-      "integrity": "sha512-iKnI0HzZnomxY80JduwqOzhmlHC6dEx/p2NxuCsE7dLm86z5ue0cJ7V7+eanplPChZyO2rdOUozRJqAW1nBsrw==",
+      "integrity": "sha512-uE+UHmgWnX46mV/rJrCplna+6SaoZ9z2fO8l7xFVYLu/4Xv7YnaoJhTCeDcNXX/cjRiE5exk/HSrrsC4LPpMog==",
       "requires": {
         "@types/eslint": "^6.1.3",
+        "@types/jest": "^24.9.1",
         "@types/node": "^9.6.55",
         "@types/react": "^16.9.16",
+        "@types/rimraf": "^2.0.3",
         "@typescript-eslint/eslint-plugin": "^2.15.0",
         "@typescript-eslint/parser": "^2.15.0",
+        "babel-jest": "^25.1.0",
         "eslint": "^6.1.0",
         "eslint-config-airbnb": "^18.0.1",
         "eslint-config-prettier": "^6.9.0",
@@ -1100,8 +1122,12 @@
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.17.0",
         "eslint-plugin-react-hooks": "^1.7.0",
+        "glob": "^7.1.6",
+        "jest": "^25.1.0",
         "prettier": "^1.19.1",
         "react": "^16.12.0",
+        "rimraf": "^3.0.0",
+        "ts-jest": "^25.0.0",
         "ts-node": "^8.3.0",
         "typescript": "^3.7.3",
         "updatable-log": "^0.2.0"

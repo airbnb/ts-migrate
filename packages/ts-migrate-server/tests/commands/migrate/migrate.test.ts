@@ -1,8 +1,8 @@
 import path from 'path';
 import { tsIgnorePlugin, eslintFixPlugin, explicitAnyPlugin } from 'ts-migrate-plugins';
-import { TSServer, forkTSServerWithNoopLogger } from 'ts-migrate-server';
+import { TSServer, forkTSServerWithNoopLogger } from '../../../src';
 import { createDir, copyDir, deleteDir, getDirData } from '../../test-utils';
-import migrate, { MigrateConfig } from '../../../commands/migrate';
+import migrate, { MigrateConfig } from '../../../src/migrate';
 
 jest.mock('updatable-log', () => {
   // eslint-disable-next-line global-require

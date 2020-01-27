@@ -1,39 +1,6 @@
-import log from 'updatable-log';
 import ts from 'typescript';
 import tsp from 'typescript/lib/protocol';
 import { PluginParams, Diagnostic } from '../types';
-
-/* eslint-disable no-console */
-export const mockUpdatableLog: () => typeof log = () => ({
-  error: (...msg: unknown[]) => {
-    console.log('log.error:', ...msg);
-  },
-  important: (...msg: unknown[]) => {
-    console.log('log.important:', ...msg);
-  },
-  info: (...msg: unknown[]) => {
-    console.log('log.info:', ...msg);
-  },
-  warn: (...msg: unknown[]) => {
-    console.log('log.warn:', ...msg);
-  },
-  update: (...msg: unknown[]) => {
-    console.log('log.update:', ...msg);
-  },
-  clear: () => {},
-  quiet: false,
-});
-/* eslint-enable no-console */
-
-export const noopUpdatableLog: () => typeof log = () => ({
-  error: () => {},
-  important: () => {},
-  info: () => {},
-  warn: () => {},
-  update: () => {},
-  clear: () => {},
-  quiet: false,
-});
 
 export function mockPluginParams<TOptions = {}>(params: {
   fileName?: string;

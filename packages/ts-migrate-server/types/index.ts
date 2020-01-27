@@ -11,11 +11,23 @@ export interface PluginParams<TPluginOptions> {
   getDiagnostics: () => Promise<PluginDiagnostics>;
 }
 
-// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
-export type Diagnostic = tsp.Diagnostic | tsp.DiagnosticWithLinePosition;
-
 export interface PluginDiagnostics {
   semanticDiagnostics: Diagnostic[];
   syntacticDiagnostics: Diagnostic[];
   suggestionDiagnostics: Diagnostic[];
 }
+
+export type PluginResult = string | void;
+
+export interface Plugin<TPluginOptions = {}> {
+  name: string;
+  run(params: PluginParams<TPluginOptions>): Promise<PluginResult> | PluginResult;
+}
+
+export type PluginWithOptions<TPluginOptions = {}> = {
+  plugin: Plugin<TPluginOptions>;
+  options: TPluginOptions;
+};
+
+// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
+export type Diagnostic = tsp.Diagnostic | tsp.DiagnosticWithLinePosition;

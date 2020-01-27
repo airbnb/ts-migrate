@@ -304,15 +304,28 @@
     //
     {
       "packageName": "ts-migrate",
-      "projectFolder": "packages/ts-migrate"
+      "projectFolder": "packages/ts-migrate",
+      "shouldPublish": true
     },
     {
       "packageName": "ts-migrate-plugins",
-      "projectFolder": "packages/ts-migrate-plugins"
+      "projectFolder": "packages/ts-migrate-plugins",
+      "shouldPublish": true
     },
     {
       "packageName": "ts-migrate-server",
-      "projectFolder": "packages/ts-migrate-server"
+      "projectFolder": "packages/ts-migrate-server",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "ts-migrate-example",
+      "projectFolder": "packages/ts-migrate-example",
+      "shouldPublish": false
     }
+    // {
+    //   "packageName": "ts-migrate-docs",
+    //   "projectFolder": "packages/ts-migrate-docs",
+    //   "shouldPublish": false
+    // }
   ]
 }
