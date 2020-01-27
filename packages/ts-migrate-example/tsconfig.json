@@ -10,7 +10,7 @@
       "dom",
       "esnext"
     ],
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": true,
     "noUnusedLocals": true,
@@ -21,6 +21,7 @@
     "strict": true,
     "target": "esnext",
     "importHelpers": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "noImplicitAny": false
   }
 }

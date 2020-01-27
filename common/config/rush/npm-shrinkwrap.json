@@ -1055,7 +1055,7 @@
     },
     "@rush-temp/ts-migrate-example": {
       "version": "file:projects/ts-migrate-example.tgz",
-      "integrity": "sha512-MDwUio7zydjA89qGwp6U325oRL0zTKw/I8dd/N6LDe2XKqSWbUFqbqFGG4/opGg3PWItgGOYPFXHEfEbUd4shw==",
+      "integrity": "sha512-87H4HupKUuytrsc0dJxSNJv6bsfHRrchaiHevJ4PBVAXhZaffNJLDwnkZ7RfQl5g3/gh22WcZxN+a5puXXPOMg==",
       "requires": {
         "@types/eslint": "^6.1.3",
         "@types/node": "^9.6.55",

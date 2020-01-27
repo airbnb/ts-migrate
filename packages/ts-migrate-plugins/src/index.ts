@@ -9,10 +9,12 @@ import reactPropsPlugin from './react-props';
 import reactShapePlugin from './react-shape';
 import stripTSIgnorePlugin from './strip-ts-ignore';
 import tsIgnorePlugin from './ts-ignore';
-
+import updateSourceText, { SourceTextUpdate as SourceTextUpdateType } from '../utils/updateSourceText';
 import { Plugin as PluginType } from '../types';
 
 export type Plugin<T = {}> = PluginType<T>;
+export type SourceTextUpdate = SourceTextUpdateType;
+
 export {
   declareMissingClassPropertiesPlugin,
   eslintFixPlugin,
@@ -26,3 +28,5 @@ export {
   stripTSIgnorePlugin,
   tsIgnorePlugin,
 };
+
+export { updateSourceText };
