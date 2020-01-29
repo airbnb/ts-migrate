@@ -66,6 +66,7 @@ process.exit(exitCode);
 > What is the ts-migrate plugin?
 
 The plugin is an abstraction around codemodes which provides centralized interfaces for the *ts-migrate*. Plugins should implement the following interface:
+
 ```
 interface Plugin {
   name: string
@@ -90,15 +91,18 @@ export interface PluginDiagnostics {
 }
 ```
 
+
 > How I can write my own plugin?
 
 You can take a look into the [simple plugin implementation](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/simplePlugin.ts), the example folder. 
 For more examples, please see the plugins implementation for the *ts-migrate*.
 
+
 > I have an issue with a specific plugin, what should I do?
 
 Please file an [issue here](https://github.com/airbnb/ts-migrate/issues/new).
 
-> Contributing
+
+# Contributing
 
 See the Contributors Guide.
