@@ -12,15 +12,18 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
-    "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "esnext",
+    "target": "es2017",
     "importHelpers": true,
-    "preserveSymlinks": true
-  }
+    "preserveSymlinks": true,
+    "outDir": "build"
+  },
+  "exclude": [
+    "./tests"
+  ]
 }

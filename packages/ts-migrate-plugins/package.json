@@ -2,13 +2,14 @@
   "name": "ts-migrate-plugins",
   "version": "1.0.0",
   "description": "Migrate JS projects to compiling TS projects.",
-  "main": "src/index.ts",
+  "main": "./build/src/index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "test": "$(npm bin)/jest --config jest-config.json",
-    "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet"
+    "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
+    "build": "$(npm bin)/tsc --project tsconfig.json"
   },
   "contributors": [
     {
