@@ -7,7 +7,7 @@ import {
   collectIdentifierNodes,
   KnownDefinitionMap,
 } from './utils/identifiers';
-import { Plugin } from '../types';
+import { Plugin } from '../../types';
 
 type Options = {
   anyAlias?: string;

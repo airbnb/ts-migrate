@@ -1,4 +1,4 @@
-import reactShapePlugin from '../../src/react-shape';
+import reactShapePlugin from '../../src/plugins/react-shape';
 import { mockPluginParams } from '../test-utils';
 
 describe('react-shape plugin', () => {

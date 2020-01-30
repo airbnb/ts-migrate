@@ -1,6 +1,6 @@
 import jscodeshift, { ASTPath, ClassBody } from 'jscodeshift';
-import { Plugin } from '../types';
-import { isDiagnosticWithLinePosition } from '../type-guards';
+import { Plugin } from '../../types';
+import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 
 type Options = { anyAlias?: string };
 

@@ -1,4 +1,4 @@
-import reactDefaultPropsPlugin from '../../src/react-default-props';
+import reactDefaultPropsPlugin from '../../src/plugins/react-default-props';
 import { mockPluginParams } from '../test-utils';
 
 describe('react-default-props plugin', () => {

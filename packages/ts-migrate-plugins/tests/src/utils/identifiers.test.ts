@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { findKnownImports, findKnownVariables } from '../../../src/utils/identifiers';
+import { findKnownImports, findKnownVariables } from '../../../src/plugins/utils/identifiers';
 
 const fileName = 'file.tsx';
 

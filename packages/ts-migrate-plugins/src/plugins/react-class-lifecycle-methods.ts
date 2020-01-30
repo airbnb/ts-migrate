@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { getReactComponentHeritageType, isReactClassComponent } from './utils/react';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
-import { Plugin } from '../types';
+import { Plugin } from '../../types';
 
 type Options = { force?: boolean };
 

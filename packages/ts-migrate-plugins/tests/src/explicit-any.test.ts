@@ -1,5 +1,5 @@
 import { mockPluginParams, mockDiagnostic } from '../test-utils';
-import explicitAnyPlugin from '../../src/explicit-any';
+import explicitAnyPlugin from '../../src/plugins/explicit-any';
 
 describe('explicit-any plugin', () => {
   it('adds explicit any', async () => {

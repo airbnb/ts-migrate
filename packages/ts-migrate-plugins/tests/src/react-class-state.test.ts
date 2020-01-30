@@ -1,4 +1,4 @@
-import reactClassStatePlugin from '../../src/react-class-state';
+import reactClassStatePlugin from '../../src/plugins/react-class-state';
 import { mockPluginParams } from '../test-utils';
 
 describe('react-class-state plugin', () => {

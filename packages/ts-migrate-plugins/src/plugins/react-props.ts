@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax, no-use-before-define, @typescript-eslint/no-use-before-define */
 import ts from 'typescript';
-import { Plugin } from '../types';
+import { Plugin } from '../../types';
 import {
   isReactClassComponent,
   getReactComponentHeritageType,

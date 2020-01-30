@@ -1,5 +1,5 @@
 import { mockPluginParams } from '../test-utils';
-import stripTSIgnorePlugin from '../../src/strip-ts-ignore';
+import stripTSIgnorePlugin from '../../src/plugins/strip-ts-ignore';
 
 describe('strip-ts-ignore plugin', () => {
   it('returns text without `// @ts-ignore`s', async () => {

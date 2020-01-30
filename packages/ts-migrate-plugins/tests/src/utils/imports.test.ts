@@ -1,6 +1,6 @@
 import ts from 'typescript';
-import { updateImports } from '../../../src/utils/imports';
-import updateSourceText from '../../../utils/updateSourceText';
+import { updateImports } from '../../../src/plugins/utils/imports';
+import updateSourceText from '../../../src/utils/updateSourceText';
 
 describe('updateImports', () => {
   it('adds and removes imports', () => {

@@ -2,8 +2,8 @@
 import ts from 'typescript';
 import tsp from 'typescript/lib/protocol';
 import diagnosticMessages from 'typescript/lib/diagnosticMessages.generated.json';
-import { Plugin } from '../types';
-import { isDiagnosticWithLinePosition } from '../type-guards';
+import { Plugin } from '../../types';
+import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 
 const tsIgnorePlugin: Plugin = {
