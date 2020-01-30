@@ -9,7 +9,9 @@
   "scripts": {
     "test": "$(npm bin)/jest --config jest-config.json",
     "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
-    "build": "$(npm bin)/tsc --project tsconfig.json"
+    "build": "$(npm bin)/tsc --project tsconfig.json",
+    "prepublish": "npm run build",
+    "clean": "rm -rf build"
   },
   "contributors": [
     {

@@ -61,3 +61,6 @@ temp
 # Rush files
 common/temp/**
 .rush/temp/**
+
+# build output directory
+build

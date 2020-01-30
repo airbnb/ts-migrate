@@ -24,6 +24,12 @@
     "outDir": "build"
   },
   "exclude": [
-    "./tests"
+    "node_modules",
+    "tests",
+    "build"
+  ],
+  "types": [
+    "node",
+    "jest"
   ]
 }
