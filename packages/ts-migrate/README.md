@@ -41,9 +41,9 @@ Options:
   -ri, -- reignore  Re-run ts-ignore on a project
 
 Examples:
-  npm run script ts-migrate:cli -- --help                Show help
-  npm run script ts-migrate:cli -- init frontend/foo     Create tsconfig.json file at frontend/foo/tsconfig.json
-  npm run script ts-migrate:cli -- rename frontend/foo   Rename files in frontend/foo from JS/JSX to TS/TSX
+  npm run script ts-migrate -- --help                Show help
+  npm run script ts-migrate -- init frontend/foo     Create tsconfig.json file at frontend/foo/tsconfig.json
+  npm run script ts-migrate -- rename frontend/foo   Rename files in frontend/foo from JS/JSX to TS/TSX
 
 ```
 

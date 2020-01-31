@@ -25,7 +25,7 @@ import rename from './commands/rename';
 
 // eslint-disable-next-line no-unused-expressions
 yargs
-  .scriptName('npm run ts-migrate:cli --')
+  .scriptName('npm run ts-migrate --')
   .version(false)
   .usage('Usage: $0 <command> [options]')
   .command(
@@ -192,4 +192,8 @@ yargs
   .example('$0 rename frontend/foo', 'Rename files in frontend/foo from JS/JSX to TS/TSX')
   .demandCommand(1, 'Must provide a command.')
   .help('h')
-  .alias('h', 'help').argv;
+  .alias('h', 'help')
+  .alias('i', 'init')
+  .alias('m', 'migrate')
+  .alias('rn', 'rename')
+  .alias('ri', 'reignore').argv;
