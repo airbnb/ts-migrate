@@ -2,7 +2,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { pass, fail } = require('create-jest-runner');
 
-const cli = path.resolve(__dirname, '../../bin/ts-migrate-cli.sh');
+const cli = path.resolve(__dirname, '../../build/ts-migrate.js');
 
 module.exports = ({ testPath, config }) => {
   const folder = path.relative(config.rootDir, testPath).replace('/tsconfig.json', '');

@@ -4,7 +4,7 @@ set -e
 
 frontend_folder=$1
 folder_name=`basename $1`
-cli="`dirname "$(realpath $0)"`/ts-migrate-cli.sh"
+cli="./node_modules/.bin/ts-migrate"
 step_i=1
 step_count=4
 tsc_path="./node_modules/.bin/tsc"
@@ -96,7 +96,7 @@ echo "
 [Step $((step_i++)) of ${step_count}] Checking for TS compilation errors (there shouldn't be any).
 "
 echo "$tsc_path -p $frontend_folder/tsconfig.json"
-$tsc_path -p $frontend_folder/tsconfig.json
+$tsc_path -p $frontend_folder/tsconfig.json --noEmit
 
 echo "
 ---

@@ -10,7 +10,7 @@ import log from 'updatable-log';
 import { FileLogger, LogLevel, NoopLogger } from './tsserver/Logger';
 import TSServer from './tsserver/TSServer';
 
-const tssPath = path.resolve(__dirname, '../node_modules/typescript/lib/tsserver.js');
+const tssPath = path.resolve(__dirname, '../../../node_modules/typescript/lib/tsserver.js');
 
 /**
  * Create TSServer with default configuration.
