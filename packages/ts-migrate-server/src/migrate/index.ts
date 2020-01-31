@@ -4,7 +4,7 @@ import log from 'updatable-log';
 import { TSServer, CommandTypes } from '../index';
 import MigrateConfig from './MigrateConfig';
 import { parseTSConfig } from './ParseTSConfig';
-import PerfTimer from '../../utils/PerfTimer';
+import PerfTimer from '../utils/PerfTimer';
 import { PluginParams } from '../../types';
 
 interface MigrateParams {

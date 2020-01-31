@@ -6,13 +6,16 @@
     "test": "tests"
   },
   "bin": {
-    "ts-migrate": "./bin/ts-migrate-cli.sh",
+    "ts-migrate": "./build/cli.js",
     "ts-migrate-external": "./bin/ts-migrate-external.sh"
   },
   "scripts": {
     "test": "$(npm bin)/jest --config jest-config.json",
     "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
-    "ts-migrate": "./bin/ts-migrate-cli.sh"
+    "ts-migrate": "./bin/ts-migrate-cli.sh",
+    "build": "$(npm bin)/tsc --project tsconfig.json",
+    "prepublish": "npm run build",
+    "clean": "rm -rf build"
   },
   "contributors": [
     {
