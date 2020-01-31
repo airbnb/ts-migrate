@@ -29,7 +29,7 @@ export default function init({ rootDir, isExtendedConfig = false }: InitParams) 
   if (isExtendedConfig) {
     fs.writeFileSync(configFile, defaultConfig);
   } else {
-    execSync('./node_modules/.bin/tsc --init', { cwd: rootDir });
+    execSync('$(npm bin)/tsc --init', { cwd: rootDir });
   }
 
   log.info(`Config file created at ${configFile}`);

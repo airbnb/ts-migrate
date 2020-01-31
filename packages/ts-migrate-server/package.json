@@ -8,7 +8,10 @@
   },
   "scripts": {
     "test": "$(npm bin)/jest --config jest-config.json",
-    "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet"
+    "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
+    "build": "$(npm bin)/tsc --project tsconfig.json",
+    "prepublish": "npm run build",
+    "clean": "rm -rf build"
   },
   "contributors": [
     {
@@ -39,7 +42,6 @@
   "license": "MIT",
   "dependencies": {
     "eslint": "^6.1.0",
-    "ts-node": "^8.3.0",
     "typescript": "^3.7.3",
     "updatable-log": "^0.2.0"
   },

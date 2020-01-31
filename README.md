@@ -1,85 +1,29 @@
 # ts-migrate
 
-*ts-migrate is a tool for migrating frontend application to TypeScript.*
+*ts-migrate* is a tool for helping migrate code to TypeScript.
+It takes a JavaScript, or a partial TypeScript, project in and gives a compiling TypeScript project out.
 
-Run `npm run ts-migrate <folder>` to convert your frontend application to TypeScript.
+*ts-migrate* is intended to accelerate the TypeScript migration process. The resulting code will pass the build, but a followup is required to improve type safety. There will be lots of `// @ts-ignores`, and `any` that will need to be fixed over time. In general, it is a lot nicer than starting from scratch.
 
-*ts-migrate* is designed around Airbnb projects. Use at your own risk.
+*ts-migrate* is designed as a set of plugins so that it can be pretty customizable for different use-cases. Potentially, more plugins can be added for addressing things like improvements of type quality or libraries-related things (like prop-types in React).
 
+Plugins are combined into migration configs. We currently have two main migration configs:
 
-# Install
+* for the main JavaScript → TypeScript migration
+* for the reignore script
 
-Install *ts-migrate* using [npm](https://www.npmjs.com):
+These configs can be moved out of the default script, and people can add custom configs with a different set of plugins for their needs.
 
-`npm install --save-dev ts-migrate`
+# Published Packages
 
-Or [yarn](https://yarnpkg.com):
+| Folder | Version | Changelog | Package |
+| ------ | ------- | --------- | ------- |
+| [/packages/ts-migrate](./packages/ts-migrate/) | TODO | [changelog](./packages/ts-migrate/CHANGELOG.md) | TODO |
+| [/packages/ts-migrate-plugins](./packages/ts-migrate-plugins/) | TODO | [changelog](./packages/ts-migrate-plugins/CHANGELOG.md) | TODO |
+| [/packages/ts-migrate-server](./packages/ts-migrate-server/) | TODO | [changelog](./packages/ts-migrate/CHANGELOG.md) | TODO |
 
-`yarn add --dev ts-migrate`
+# Unpublished Projects
 
-# Usage
-
-`npm run ts-migrate <folder>`
-
-Or, you can run individual CLI commands:
-
-```
-$ npm run ts-migrate:cli -- --help
-
-npm run script ts-migrate:cli -- <command> [options]
-
-Commands:
-  npm run script ts-migrate:cli -- init     Initialize tsconfig.json file in
-  <folder>                                  <folder>
-  npm run script ts-migrate:cli -- rename   Rename files in folder from JS/JSX
-  <folder>                                  to TS/TSX
-  npm run script ts-migrate:cli -- migrate  Fix all TypeScript errors, using
-  <folder>                                  codemods
-  npm run script ts-migrate:cli --          Re-run ts-ignore on a project
-  reignore <folder>
-
-Options:
-  -h,  --help      Show help
-  -i,  --init      Initialize TypeScript (tsconfig.json) in <folder>
-  -m,  --migrate   Fix all TypeScript errors, using codemods
-  -rn, --rename    Rename files in <folder> from JS/JSX to TS/TSX
-  -ri, --reignore  Re-run ts-ignore on a project
-
-Examples:
-  npm run script ts-migrate:cli -- --help   Show help
-  npm run script ts-migrate:cli -- init     Create tsconfig.json file at
-  frontend/foo                              frontend/foo/tsconfig.json
-  npm run script ts-migrate:cli -- rename   Rename files in frontend/foo from
-  frontend/foo                              JS/JSX to TS/TSX
-```
-
-# FAQ
-
-> Can it magically figure out all the types?
-
-Unfortunately, no, it is only so smart. It does figure out types from propTypes, but it will fall back to `any` (`$TSFixMe`) for things it can't figure it out.
-
-
-> I ran ts-migrate on my code and see lots of `@ts-ignores` and `any`. Is that expected?
-
-The ts-migrate codemods are only so smart. So, follow up is required to refine the types and remove the `any` (`$TSFixMe`) and `@ts-ignore`. The hope is that it's a nicer starting point than from scratch and that it helps accelerate the TypeScript migration process.
-
-
-> Um... ts-migrate broke my code! D:
-
-Please file an [issue here](https://github.com/airbnb/ts-migrate/issues/new).
-
-
-> Can I run ts-migrate on a single specific file within a frontend project?
-
-Unfortunately, you cannot run ts-migrate on a specific file. The easiest way would be to migrate the whole project. If you want, feel free to contribute to this functionality!
-
-
-> What is `$TSFixMe`?
-
-It's just an alias to `any`: `type $TSFixMe = any;`. We use it at Airbnb for simplifying the migration experience.
-We also have the same alias for functions: `type $TSFixMeFunction = (...args: any[]) => any;`.
-
-
-# Contributing
-See the Contributors Guide
+| Folder | Description |
+| ------ | -----------|
+| [/packages/ts-migrate-example](./packages/ts-migrate-example/) | basic example of usage of the ts-migrate-server with a writing a custom simple plugin |

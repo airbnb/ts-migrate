@@ -6,13 +6,15 @@
     "test": "tests"
   },
   "bin": {
-    "ts-migrate": "./bin/ts-migrate-cli.sh",
+    "ts-migrate": "./build/cli.js",
     "ts-migrate-external": "./bin/ts-migrate-external.sh"
   },
   "scripts": {
     "test": "$(npm bin)/jest --config jest-config.json",
     "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
-    "ts-migrate": "./bin/ts-migrate-cli.sh"
+    "build": "$(npm bin)/tsc --project tsconfig.json",
+    "prepublish": "npm run build",
+    "clean": "rm -rf build"
   },
   "contributors": [
     {
@@ -48,7 +50,6 @@
     "eslint": "^6.1.0",
     "json5": "^2.1.1",
     "json5-writer": "^0.1.8",
-    "ts-node": "^8.3.0",
     "typescript": "^3.7.3",
     "updatable-log": "^0.2.0",
     "yargs": "^15.0.2"
