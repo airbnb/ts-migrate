@@ -50,7 +50,6 @@
     "eslint": "^6.1.0",
     "json5": "^2.1.1",
     "json5-writer": "^0.1.8",
-    "ts-node": "^8.3.0",
     "typescript": "^3.7.3",
     "updatable-log": "^0.2.0",
     "yargs": "^15.0.2"

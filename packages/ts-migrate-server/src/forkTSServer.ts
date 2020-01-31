@@ -10,12 +10,12 @@ import log from 'updatable-log';
 import { FileLogger, LogLevel, NoopLogger } from './tsserver/Logger';
 import TSServer from './tsserver/TSServer';
 
-const tssPath = path.resolve(__dirname, '../../../node_modules/typescript/lib/tsserver.js');
+const tssPathDefault = path.resolve(__dirname, '../../../node_modules/typescript/lib/tsserver.js');
 
 /**
  * Create TSServer with default configuration.
  */
-export default function forkTSServer() {
+export default function forkTSServer(tssPath = tssPathDefault) {
   log.info('forkTSServer');
   const logDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ts-migrate-log-'));
   log.info(`Logs in ${logDir}`);
@@ -46,7 +46,7 @@ export default function forkTSServer() {
  * Create TSServer without logging.
  * Useful for testing.
  */
-export function forkTSServerWithNoopLogger() {
+export function forkTSServerWithNoopLogger(tssPath = tssPathDefault) {
   const childProcess = fork(
     tssPath,
     ['--useSingleInferredProject', '--locale', 'en', '--noGetErrOnBackgroundUpdate'],
