@@ -18,38 +18,33 @@ Or [yarn](https://yarnpkg.com):
 
 # Usage
 
-`npm run ts-migrate <folder>`
+`npm run ts-migrate:full <folder>`
 
 Or, you can run individual CLI commands:
 
 ```
-$ npm run ts-migrate:cli -- --help
+$ npm run ts-migrate -- --help
 
-npm run script ts-migrate:cli -- <command> [options]
+npm run script ts-migrate -- <command> [options]
 
 Commands:
-  npm run script ts-migrate:cli -- init     Initialize tsconfig.json file in
-  <folder>                                  <folder>
-  npm run script ts-migrate:cli -- rename   Rename files in folder from JS/JSX
-  <folder>                                  to TS/TSX
-  npm run script ts-migrate:cli -- migrate  Fix all TypeScript errors, using
-  <folder>                                  codemods
-  npm run script ts-migrate:cli --          Re-run ts-ignore on a project
-  reignore <folder>
+  npm run script ts-migrate -- init <folder>       Initialize tsconfig.json file in <folder>
+  npm run script ts-migrate -- rename <folder>     Rename files in folder from JS/JSX to TS/TSX
+  npm run script ts-migrate -- migrate <folder>    Fix all TypeScript errors, using codemods
+  npm run script ts-migrate -- reignore <folder>   Re-run ts-ignore on a project
 
 Options:
-  -h,  --help      Show help                                            
-  -i,  --init      Initialize TypeScript (tsconfig.json) in <folder>
-  -m,  --migrate   Fix all TypeScript errors, using codemods
-  -rn, --rename    Rename files in <folder> from JS/JSX to TS/TSX
-  -ri, --reignore  Re-run ts-ignore on a project
+  -h,  -- help      Show help
+  -i,  -- init      Initialize TypeScript (tsconfig.json) in <folder>
+  -m,  -- migrate   Fix all TypeScript errors, using codemods
+  -rn, -- rename    Rename files in <folder> from JS/JSX to TS/TSX
+  -ri, -- reignore  Re-run ts-ignore on a project
 
 Examples:
-  npm run script ts-migrate:cli -- --help   Show help
-  npm run script ts-migrate:cli -- init     Create tsconfig.json file at
-  frontend/foo                              frontend/foo/tsconfig.json
-  npm run script ts-migrate:cli -- rename   Rename files in frontend/foo from
-  frontend/foo                              JS/JSX to TS/TSX
+  npm run script ts-migrate:cli -- --help                Show help
+  npm run script ts-migrate:cli -- init frontend/foo     Create tsconfig.json file at frontend/foo/tsconfig.json
+  npm run script ts-migrate:cli -- rename frontend/foo   Rename files in frontend/foo from JS/JSX to TS/TSX
+
 ```
 
 # FAQ

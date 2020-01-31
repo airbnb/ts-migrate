@@ -7,7 +7,7 @@
   },
   "bin": {
     "ts-migrate": "./build/cli.js",
-    "ts-migrate-external": "./bin/ts-migrate-external.sh"
+    "ts-migrate:full": "./bin/ts-migrate-full.sh"
   },
   "scripts": {
     "test": "$(npm bin)/jest --config jest-config.json",
