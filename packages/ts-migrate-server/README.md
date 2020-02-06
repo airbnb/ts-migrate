@@ -1,6 +1,6 @@
 # ts-migrate-server
 
-`ts-migrate-server` is a package that contains the main migration runner and the fork of the TSServer.
+`ts-migrate-server` is a package that contains the main migration runner and the spawns a TSServer process.
 `ts-migrate-server` is designed around Airbnb projects. Use at your own risk.
 
 # Install
@@ -47,9 +47,9 @@ process.exit(exitCode);
 You can take a look at [basic usage example](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/index.ts#L2). 
 Another resource would be [source code](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate/cli.ts) of the *ts-migrate* cli.
 
-> Why not just use codemodes?
+> Why not just use codemods?
 
-You actually can use [codemodes](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-plugins/src/declare-missing-class-properties.ts) in your plugins! 
+You actually can use [codemods](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-plugins/src/declare-missing-class-properties.ts) in your plugins! 
 *ts-migrate-server* provides more standartalized API around TypeScript compiler usage and allows us to use the benefits of the TypeScript Server protocol.
 
 > I have an issue with a specific plugin, what should I do?
