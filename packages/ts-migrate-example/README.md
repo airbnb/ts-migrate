@@ -20,7 +20,7 @@ function mult(a:number, b:number):number {
 }
 ```
 
-You can read about codemodes [here](https://medium.com/@cpojer/effective-javascript-codemods-5a6686bb46fb) and browse [ts-migrate repository](https://github.com/airbnb/ts-migrate) for examples and tests.
+You can read about codemods [here](https://medium.com/@cpojer/effective-javascript-codemods-5a6686bb46fb) and browse [ts-migrate repository](https://github.com/airbnb/ts-migrate) for examples and tests.
 
 # I have an issue, what should I do?
 
