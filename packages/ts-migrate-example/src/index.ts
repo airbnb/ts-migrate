@@ -1,7 +1,7 @@
 import path from 'path';
 import { forkTSServer, migrate, MigrateConfig } from 'ts-migrate-server';
 
-import simplePlugin from './simplePlugin';
+import examplePluginTs from './example-plugin-ts';
 
 // it will change content of the index.ts in the input folder
 async function runMigration() {
@@ -14,7 +14,7 @@ async function runMigration() {
   });
 
   const config = new MigrateConfig()
-    .addPlugin(simplePlugin, { shouldReplaceText: true });
+    .addPlugin(examplePluginTs, { shouldReplaceText: true });
 
   const exitCode = await migrate({ rootDir: inputDir, config, server });
 
