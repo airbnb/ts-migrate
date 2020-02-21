@@ -47,6 +47,18 @@ Examples:
 
 ```
 
+# Reignore
+
+If you are in sutiation when you made some big project-wise changes, update of the common library like TypeScript, React or Redux or improve types for the large codebase. As a result of these operations, you might get quite a few TypeScript compilation errors. There are two ways to proceed:
+
+ 1) Fix all the errors (ideal, but time-consuming).
+ 2) Make the project compilable and fix errors gradually.
+
+For the second option we created a re-ignore script, which will fully automate this step. It will add `any` or `// @ts-ignore` comments for all problematic places and will make your project compilable.
+
+Usage: `npm run script ts-migrate -- reignore`.
+
+
 # FAQ
 
 > Can it magically figure out all the types?
@@ -75,7 +87,7 @@ It's just an alias to `any`: `type $TSFixMe = any;`. We use it at Airbnb for sim
 We also have the same alias for functions: `type $TSFixMeFunction = (...args: any[]) => any;`.
 
 
-> How did you use to-migrate?
+> How did you use ts-migrate?
 
 It was used a lot at Airbnb codebase! With the help of the ts-migrate we were able to migrate the main part of the entire codebase to the TypeScript. We were able to provide much better starting points in the migration for the huge applications (50k+ lines of codes) and they were migrated in one day!
 
