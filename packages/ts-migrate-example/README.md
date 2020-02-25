@@ -4,11 +4,11 @@
 
 ### We have examples of the three categories of plugins: 
 
-[example-plugin-jscodeshift](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/example-plugin-jscodeshift.ts) simply reverses the names of all identifiers.
+- [example-plugin-jscodeshift](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/example-plugin-jscodeshift.ts) simply reverses the names of all identifiers.
 
-[example-plugin-text](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/example-plugin-text.ts) will add a `console.log` before each return statement.
+- [example-plugin-text](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/example-plugin-text.ts) will add a `console.log` before each return statement.
 
-[example-plugin-ts](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/example-plugin-ts.ts) is a simple TypeScript AST-based plugin, which shows how we can add simple types to the JavaScript code with the usage of [TypeScript compiler API](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API).
+- [example-plugin-ts](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/example-plugin-ts.ts) is a simple TypeScript AST-based plugin, which shows how we can add simple types to the JavaScript code with the usage of [TypeScript compiler API](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API).
 
 We're using the following input:
 
