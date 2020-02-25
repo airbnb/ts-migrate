@@ -19,7 +19,7 @@ Or [yarn](https://yarnpkg.com):
 
 # Usage
 
-```
+```typescript
 import path from 'path';
 import { tsIgnorePlugin } from 'ts-migrate-plugins';
 import { forkTSServer, migrate, MigrateConfig } from 'ts-migrate-server';
@@ -78,7 +78,7 @@ We have three main categories of plugins:
 
 The plugin is an abstraction around codemodes which provides centralized interfaces for the *ts-migrate*. Plugins should implement the following interface:
 
-```
+```typescript
 interface Plugin {
   name: string
   run(params: PluginParams<TPluginOptions = {}>): Promise<string | void> | string | void
