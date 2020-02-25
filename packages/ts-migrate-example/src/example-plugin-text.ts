@@ -9,7 +9,7 @@ const examplePluginText: Plugin<Options> = {
     const returnIndex = text.indexOf('return');
     const logBeforeReturnStatement = "console.log(`a: ${a}, b: ${b}`)\n";
     if (returnIndex > -1) {
-      const newText = text.substring(0, returnIndex) + logBeforeReturnStatement + text.substr(returnIndex + 1)
+      const newText = text.substring(0, returnIndex) + logBeforeReturnStatement + text.substr(returnIndex)
       return newText;
     } else {
       return text;
