@@ -1,7 +1,7 @@
 # ts-migrate
 
 *ts-migrate is a tool for migrating frontend application to TypeScript.*
-Run `npm run ts-migrate <folder>` to convert your frontend application to TypeScript.
+Run `npx ts-migrate <folder>` to convert your frontend application to TypeScript.
 
 *ts-migrate* is designed around Airbnb projects. Use at your own risk.
 
@@ -18,20 +18,20 @@ Or [yarn](https://yarnpkg.com):
 
 # Usage
 
-`npm run ts-migrate:full <folder>`
+`npx ts-migrate:full <folder>`
 
 Or, you can run individual CLI commands:
 
 ```
-$ npm run ts-migrate -- --help
+$ npx ts-migrate -- --help
 
-npm run script ts-migrate -- <command> [options]
+npx script ts-migrate -- <command> [options]
 
 Commands:
-  npm run script ts-migrate -- init <folder>       Initialize tsconfig.json file in <folder>
-  npm run script ts-migrate -- rename <folder>     Rename files in folder from JS/JSX to TS/TSX
-  npm run script ts-migrate -- migrate <folder>    Fix all TypeScript errors, using codemods
-  npm run script ts-migrate -- reignore <folder>   Re-run ts-ignore on a project
+  npx ts-migrate -- init <folder>       Initialize tsconfig.json file in <folder>
+  npx ts-migrate -- rename <folder>     Rename files in folder from JS/JSX to TS/TSX
+  npx ts-migrate -- migrate <folder>    Fix all TypeScript errors, using codemods
+  npx ts-migrate -- reignore <folder>   Re-run ts-ignore on a project
 
 Options:
   -h,  -- help      Show help
@@ -41,9 +41,9 @@ Options:
   -ri, -- reignore  Re-run ts-ignore on a project
 
 Examples:
-  npm run script ts-migrate -- --help                Show help
-  npm run script ts-migrate -- init frontend/foo     Create tsconfig.json file at frontend/foo/tsconfig.json
-  npm run script ts-migrate -- rename frontend/foo   Rename files in frontend/foo from JS/JSX to TS/TSX
+  npx ts-migrate -- --help                Show help
+  npx ts-migrate -- init frontend/foo     Create tsconfig.json file at frontend/foo/tsconfig.json
+  npx ts-migrate -- rename frontend/foo   Rename files in frontend/foo from JS/JSX to TS/TSX
 
 ```
 
@@ -56,7 +56,7 @@ If you are in sutiation when you made some big project-wise changes, update of t
 
 For the second option we created a re-ignore script, which will fully automate this step. It will add `any` or `// @ts-ignore` comments for all problematic places and will make your project compilable.
 
-Usage: `npm run script ts-migrate -- reignore`.
+Usage: `npx ts-migrate -- reignore`.
 
 
 # FAQ
