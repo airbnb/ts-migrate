@@ -5,7 +5,6 @@
 
 # Install
 
-
 Install *ts-migrate-server* using [npm](https://www.npmjs.com):
 
 `npm install --save-dev ts-migrate-server`
@@ -16,7 +15,8 @@ Or [yarn](https://yarnpkg.com):
  
 
 # Usage
-```
+
+```typescript
 import path from 'path';
 import { forkTSServer, migrate, MigrateConfig } from 'ts-migrate-server';
 
