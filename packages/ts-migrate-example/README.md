@@ -2,7 +2,7 @@
 
 `ts-migrate-example` is a basic example of usage of the [ts-migrate-server](https://github.com/airbnb/ts-migrate/tree/master/packages/ts-migrate-server) with writing a custom plugin.
 
-We have examples of the three categories of plugins: 
+### We have examples of the three categories of plugins: 
 
 [example-plugin-jscodeshift](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/example-plugin-jscodeshift.ts) simply reverses the names of all identifiers.
 
@@ -12,7 +12,7 @@ We have examples of the three categories of plugins:
 
 We're using the following input:
 
-```
+```javascript
 function mult(first, second) {
     return first * second;
 }
@@ -20,7 +20,7 @@ function mult(first, second) {
 
 and with a [config of 3 simple plugins](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/index.ts#L18), produce the output:
 
-```
+```typescript
 function tlum(tsrif: number, dnoces: number): number {
   console.log(`args: ${arguments}`)
   return tsrif * dnoces;
