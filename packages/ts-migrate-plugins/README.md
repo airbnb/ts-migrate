@@ -105,8 +105,8 @@ export interface PluginDiagnostics {
 
 > How I can write my own plugin?
 
-You can take a look into the [simple plugin implementation](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/simplePlugin.ts), the example folder. 
-For more examples, please see the plugins implementation for the *ts-migrate*.
+You can take a look into the [plugin examples](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-example/src/).
+For more information, please check the [plugins implementation](https://github.com/airbnb/ts-migrate/tree/master/packages/ts-migrate-plugins/src/plugins) for the *ts-migrate*.
 
 
 > I have an issue with a specific plugin, what should I do?
