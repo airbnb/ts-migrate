@@ -11,7 +11,8 @@
     "ts-migrate-plugins": "^1.0.0",
     "eslint": "^6.1.0",
     "ts-node": "^8.3.0",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "jscodeshift": "^0.7.0"
   },
   "devDependencies": {
     "@types/eslint": "^6.1.3",
