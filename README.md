@@ -22,7 +22,7 @@ These configs can be moved out of the default script, and people can add custom 
 | [/packages/ts-migrate-plugins](./packages/ts-migrate-plugins/) | TODO | [changelog](./packages/ts-migrate-plugins/CHANGELOG.md) | TODO |
 | [/packages/ts-migrate-server](./packages/ts-migrate-server/) | TODO | [changelog](./packages/ts-migrate/CHANGELOG.md) | TODO |
 
-# Unpublished Projects
+# Unpublished Packages
 
 | Folder | Description |
 | ------ | -----------|
