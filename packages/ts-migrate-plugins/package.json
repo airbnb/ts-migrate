@@ -43,7 +43,7 @@
   "dependencies": {
     "eslint": "^6.1.0",
     "jscodeshift": "^0.7.0",
-    "typescript": "^3.7.3",
+    "typescript": "^3.8.2",
     "ts-migrate-server": "^1.0.0"
   },
   "devDependencies": {
