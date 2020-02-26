@@ -27,3 +27,4 @@ These configs can be moved out of the default script, and people can add custom 
 | Folder | Description |
 | ------ | -----------|
 | [/packages/ts-migrate-example](./packages/ts-migrate-example/) | basic example of usage of the ts-migrate-server with a writing a custom simple plugin |
+| [/packages/eslint-config-ts-migrate](./packages/eslint-config-ts-migrate) | shared eslint config |
