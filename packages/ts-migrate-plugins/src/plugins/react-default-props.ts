@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { Plugin } from '../../types';
+import { Plugin } from 'ts-migrate-server';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 
 type Options = {

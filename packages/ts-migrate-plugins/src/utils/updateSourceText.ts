@@ -1,7 +1,7 @@
-/* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define, prefer-destructuring */
 type Insert = { kind: 'insert'; index: number; text: string };
 type Replace = { kind: 'replace'; index: number; length: number; text: string };
 type Delete = { kind: 'delete'; index: number; length: number };
+
 export type SourceTextUpdate = Insert | Replace | Delete;
 
 export default function updateSourceText(sourceText: string, updates: SourceTextUpdate[]): string {

@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import tsp from 'typescript/lib/protocol';
-import { PluginParams, Diagnostic } from '../types';
+import { PluginParams, Diagnostic } from 'ts-migrate-server';
 
 export function mockPluginParams<TOptions = {}>(params: {
   fileName?: string;

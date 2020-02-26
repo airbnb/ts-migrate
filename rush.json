@@ -321,11 +321,11 @@
       "packageName": "ts-migrate-example",
       "projectFolder": "packages/ts-migrate-example",
       "shouldPublish": false
+    },
+    {
+      "packageName": "eslint-config-ts-migrate",
+      "projectFolder": "packages/eslint-config-ts-migrate",
+      "shouldPublish": false
     }
-    // {
-    //   "packageName": "ts-migrate-docs",
-    //   "projectFolder": "packages/ts-migrate-docs",
-    //   "shouldPublish": false
-    // }
   ]
 }

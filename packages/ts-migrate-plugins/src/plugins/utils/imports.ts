@@ -63,7 +63,12 @@ export function updateImports(
       importClause.name &&
       !usedIdentifiers.has(importClause.name.text)
     ) {
-      importClause = ts.updateImportClause(importClause, undefined, importClause.namedBindings);
+      importClause = ts.updateImportClause(
+        importClause,
+        undefined,
+        importClause.namedBindings,
+        importClause.isTypeOnly,
+      );
     }
 
     toAddActual
@@ -82,6 +87,7 @@ export function updateImports(
         importClause,
         ts.createIdentifier(nameToAdd[0].defaultImport),
         importClause.namedBindings,
+        importClause.isTypeOnly,
       );
       added.add(nameToAdd[0]);
     }
@@ -92,7 +98,12 @@ export function updateImports(
       ts.isNamespaceImport(importClause.namedBindings) &&
       !usedIdentifiers.has(importClause.namedBindings.name.text)
     ) {
-      importClause = ts.updateImportClause(importClause, importClause.name, undefined);
+      importClause = ts.updateImportClause(
+        importClause,
+        importClause.name,
+        undefined,
+        importClause.isTypeOnly,
+      );
     }
 
     if (importClause.namedBindings && ts.isNamedImports(importClause.namedBindings)) {
@@ -124,6 +135,7 @@ export function updateImports(
           elements.length > 0
             ? ts.updateNamedImports(importClause.namedBindings, elements)
             : undefined,
+          importClause.isTypeOnly,
         );
       }
     }
@@ -144,6 +156,7 @@ export function updateImports(
             ts.createImportSpecifier(undefined, ts.createIdentifier(cur.namedImport)),
           ),
         ]),
+        importClause.isTypeOnly,
       );
       namedToAdd.forEach((cur) => added.add(cur));
     }

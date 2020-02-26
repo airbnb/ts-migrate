@@ -2,7 +2,7 @@
 import ts from 'typescript';
 import tsp from 'typescript/lib/protocol';
 import diagnosticMessages from 'typescript/lib/diagnosticMessages.generated.json';
-import { Plugin } from '../../types';
+import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 

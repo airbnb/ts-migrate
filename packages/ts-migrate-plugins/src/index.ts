@@ -1,3 +1,4 @@
+import { Plugin as PluginType } from 'ts-migrate-server';
 import declareMissingClassPropertiesPlugin from './plugins/declare-missing-class-properties';
 import eslintFixPlugin from './plugins/eslint-fix';
 import explicitAnyPlugin from './plugins/explicit-any';
@@ -12,7 +13,6 @@ import tsIgnorePlugin from './plugins/ts-ignore';
 import updateSourceText, {
   SourceTextUpdate as SourceTextUpdateType,
 } from './utils/updateSourceText';
-import { Plugin as PluginType } from '../types';
 
 export type Plugin<T = {}> = PluginType<T>;
 export type SourceTextUpdate = SourceTextUpdateType;

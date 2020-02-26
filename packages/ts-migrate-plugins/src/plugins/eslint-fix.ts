@@ -1,9 +1,5 @@
 import { CLIEngine } from 'eslint';
-import { Plugin } from '../../types';
-
-// Require eslintrc to set RULES_DIR to avoid the following error:
-// Error: To use eslint-plugin-rulesdir, you must load it beforehand and set the `RULES_DIR` property on the module to a string.
-require('../../../.eslintrc');
+import { Plugin } from 'ts-migrate-server';
 
 const cli = new CLIEngine({
   fix: true,

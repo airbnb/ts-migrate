@@ -1,5 +1,5 @@
 import jscodeshift, { ASTPath, ClassBody } from 'jscodeshift';
-import { Plugin } from '../../types';
+import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 
 type Options = { anyAlias?: string };
