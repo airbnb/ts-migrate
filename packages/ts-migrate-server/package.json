@@ -41,15 +41,12 @@
   "homepage": "https://github.com/airbnb/ts-migrate#readme",
   "license": "MIT",
   "dependencies": {
-    "eslint": "^6.1.0",
     "typescript": "^3.8.2",
     "updatable-log": "^0.2.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.16",
     "@types/rimraf": "^2.0.3",
     "glob": "^7.1.6",
-    "rimraf": "^3.0.0",
-    "react": "^16.12.0"
+    "rimraf": "^3.0.0"
   }
 }

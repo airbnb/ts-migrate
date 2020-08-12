@@ -1,4 +1,5 @@
 import fs from 'fs';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import glob from 'glob';
 import path from 'path';
 // eslint-disable-next-line import/no-extraneous-dependencies
