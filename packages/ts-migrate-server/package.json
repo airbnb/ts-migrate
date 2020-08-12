@@ -46,7 +46,6 @@
     "updatable-log": "^0.2.0"
   },
   "devDependencies": {
-    "@types/node": "^9.6.55",
     "@types/react": "^16.9.16",
     "@types/rimraf": "^2.0.3",
     "glob": "^7.1.6",

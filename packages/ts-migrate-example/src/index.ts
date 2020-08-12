@@ -8,7 +8,7 @@ import examplePluginJscodeshift from './example-plugin-jscodeshift';
 // it will change content of the index.ts in the input folder
 async function runMigration() {
   const inputDir = path.resolve(__dirname, 'input');
-  const tssPath = path.resolve(__dirname, '../node_modules/typescript/lib/tsserver.js');
+  const tssPath = path.resolve(__dirname, '../../../node_modules/typescript/lib/tsserver.js');
   const server = forkTSServer(tssPath);
 
   process.on('exit', () => {
