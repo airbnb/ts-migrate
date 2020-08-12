@@ -63,7 +63,6 @@
     "@types/rimraf": "^2.0.3",
     "@types/yargs": "^13.0.3",
     "babel-jest": "^25.1.0",
-    "eslint-config-ts-migrate": "^1.0.0",
     "jest": "^25.1.0",
     "glob": "^7.1.6",
     "react": "^16.12.0",

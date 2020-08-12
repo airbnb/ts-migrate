@@ -1,5 +1,5 @@
 {
-  "name": "ts-migrate-monorepo",
+  "name": "ts-migrate",
   "version": "1.0.0",
   "repository": "git@github.com:airbnb/ts-migrate.git",
   "license": "MIT",

@@ -52,7 +52,6 @@
     "@types/jscodeshift": "^0.6.3",
     "@types/node": "^9.6.55",
     "@types/react": "^16.9.16",
-    "eslint-config-ts-migrate": "^1.0.0",
     "babel-jest": "^25.1.0",
     "jest": "^25.1.0",
     "react": "^16.12.0",
