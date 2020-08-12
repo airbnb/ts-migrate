@@ -16,7 +16,7 @@ describe('migrate command', () => {
   beforeEach(() => {
     rootDir = createDir();
     server = forkTSServerWithNoopLogger(
-      path.resolve(__dirname, '../../../node_modules/typescript/lib/tsserver.js'),
+      path.resolve(__dirname, '../../../../../node_modules/typescript/lib/tsserver.js'),
     );
   });
 

@@ -47,7 +47,6 @@
     "ts-migrate-server": "^1.0.0",
     "ts-migrate-plugins": "^1.0.0",
     "create-jest-runner": "^0.5.3",
-    "eslint": "^6.1.0",
     "json5": "^2.1.1",
     "json5-writer": "^0.1.8",
     "typescript": "^3.8.2",
