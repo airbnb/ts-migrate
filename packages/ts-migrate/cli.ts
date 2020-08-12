@@ -59,11 +59,7 @@ yargs
   .command(
     'migrate <folder>',
     'Fix all TypeScript errors, using codemods',
-    (cmd) =>
-      cmd
-        .positional('folder', { type: 'string' })
-        .string('plugin')
-        .require(['folder']),
+    (cmd) => cmd.positional('folder', { type: 'string' }).string('plugin').require(['folder']),
     async (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
       let config: MigrateConfig;

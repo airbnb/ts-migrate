@@ -7,10 +7,10 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "$(npm bin)/jest --config jest-config.json",
-    "lint": "$(npm bin)/eslint . --ext=.js,.jsx,.ts,.tsx --quiet",
-    "build": "$(npm bin)/tsc --project tsconfig.json",
-    "prepublish": "npm run build",
+    "test": "jest --config jest-config.json",
+    "lint": "eslint . --ext=.js,.jsx,.ts,.tsx --ignore-path ../../.eslintignore",
+    "build": "tsc --project tsconfig.json",
+    "prepublish": "yarn build",
     "clean": "rm -rf build"
   },
   "contributors": [
@@ -55,7 +55,6 @@
     "eslint-config-ts-migrate": "^1.0.0",
     "jest": "^25.1.0",
     "glob": "^7.1.6",
-    "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
     "react": "^16.12.0",
     "ts-jest": "^25.0.0"

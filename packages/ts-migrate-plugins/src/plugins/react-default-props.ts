@@ -160,7 +160,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
               ...propsTypeAliasDeclaration.type.types.filter((el, k) =>
                 propTypesAreOnlyReferences
                   ? ts.isIntersectionTypeNode(updatedPropTypeAlias) &&
-                    !updatedPropTypeAlias.types.includes(el)
+                    !(updatedPropTypeAlias as ts.IntersectionTypeNode).types.includes(el)
                   : indexOfTypeValue !== k,
               ),
             ])
