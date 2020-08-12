@@ -2,14 +2,14 @@
   "name": "ts-migrate-server",
   "version": "1.0.0",
   "description": "Migrate JS projects to compiling TS projects.",
-  "main": "src/index.ts",
+  "main": "build/src/index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "test": "jest --config jest-config.json",
     "lint": "eslint . --ext=.js,.jsx,.ts,.tsx --ignore-path ../../.eslintignore",
-    "build": "tsc --project tsconfig.json",
+    "build": "tsc -p tsconfig.json",
     "prepublish": "yarn build",
     "clean": "rm -rf build"
   },
@@ -46,16 +46,11 @@
     "updatable-log": "^0.2.0"
   },
   "devDependencies": {
-    "@types/eslint": "^6.1.3",
-    "@types/jest": "^24.9.1",
     "@types/node": "^9.6.55",
     "@types/react": "^16.9.16",
     "@types/rimraf": "^2.0.3",
-    "babel-jest": "^25.1.0",
-    "jest": "^25.1.0",
     "glob": "^7.1.6",
     "rimraf": "^3.0.0",
-    "react": "^16.12.0",
-    "ts-jest": "^25.0.0"
+    "react": "^16.12.0"
   }
 }

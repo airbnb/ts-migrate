@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "outDir": "./build",
+  "compilerOptions": {
+    "outDir": "build"
+  },
   "exclude": [
     "tests",
     "build"
