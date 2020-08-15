@@ -1,0 +1,68 @@
+{
+  "name": "ts-migrate-plugins",
+  "version": "0.0.5",
+  "description": "Set of codemodes, which are doing transformation of js/jsx to ts/tsx",
+  "main": "build/src/index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [
+    "ts-migrate",
+    "ts-migrate-plugins",
+    "typescript",
+    "migration",
+    "codemod"
+  ],
+  "files": [
+    "build",
+    "package.json",
+    "README.md",
+    "LICENCE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/airbnb/ts-migrate.git",
+    "directory": "packages/ts-migrate-plugins"
+  },
+  "bugs": {
+    "url": "https://github.com/airbnb/ts-migrate/issues"
+  },
+  "scripts": {
+    "test": "jest --config jest-config.json",
+    "lint": "eslint . --ext=.js,.jsx,.ts,.tsx --ignore-path ../../.eslintignore",
+    "build": "tsc -p tsconfig.json",
+    "prepublish": "yarn build",
+    "clean": "rm -rf build"
+  },
+  "contributors": [
+    {
+      "name": "Brie Bunge",
+      "url": "https://github.com/brieb"
+    },
+    {
+      "name": "Sergii Rudenko",
+      "url": "https://github.com/Rudeg"
+    },
+    {
+      "name": "Elliot Sachs",
+      "url": "https://github.com/elliotsa"
+    },
+    {
+      "name": "John Haytko",
+      "url": "https://github.com/jjjjhhhhhh"
+    },
+    {
+      "name": "Joe Lencioni",
+      "url": "https://github.com/lencioni"
+    }
+  ],
+  "homepage": "https://github.com/airbnb/ts-migrate#readme",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^6.1.0",
+    "jscodeshift": "^0.7.0",
+    "ts-migrate-server": "^0.0.5",
+    "typescript": "3.9.7"
+  },
+  "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3"
+}

@@ -1,0 +1,80 @@
+{
+  "name": "ts-migrate",
+  "version": "0.0.5",
+  "description": "A tool for migrating frontend application from JavaScript to TypeScript",
+  "directories": {
+    "test": "tests"
+  },
+  "bin": {
+    "ts-migrate": "build/cli.js",
+    "ts-migrate-full": "bin/ts-migrate-full.sh"
+  },
+  "keywords": [
+    "ts-migrate",
+    "typescript",
+    "migration",
+    "codemod"
+  ],
+  "files": [
+    "build",
+    "bin",
+    "package.json",
+    "README.md",
+    "LICENCE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/airbnb/ts-migrate.git",
+    "directory": "packages/ts-migrate"
+  },
+  "bugs": {
+    "url": "https://github.com/airbnb/ts-migrate/issues"
+  },
+  "scripts": {
+    "test": "jest --config jest-config.json",
+    "lint": "eslint . --ext=.js,.jsx,.ts,.tsx --ignore-path ../../.eslintignore",
+    "build": "tsc -p tsconfig.json",
+    "prepublish": "yarn build",
+    "clean": "rm -rf build"
+  },
+  "contributors": [
+    {
+      "name": "Brie Bunge",
+      "url": "https://github.com/brieb"
+    },
+    {
+      "name": "Sergii Rudenko",
+      "url": "https://github.com/Rudeg"
+    },
+    {
+      "name": "Elliot Sachs",
+      "url": "https://github.com/elliotsa"
+    },
+    {
+      "name": "John Haytko",
+      "url": "https://github.com/jjjjhhhhhh"
+    },
+    {
+      "name": "Joe Lencioni",
+      "url": "https://github.com/lencioni"
+    }
+  ],
+  "homepage": "https://github.com/airbnb/ts-migrate#readme",
+  "license": "MIT",
+  "dependencies": {
+    "create-jest-runner": "^0.5.3",
+    "json5": "^2.1.1",
+    "json5-writer": "^0.1.8",
+    "ts-migrate-plugins": "^0.0.5",
+    "ts-migrate-server": "^0.0.5",
+    "typescript": "3.9.7",
+    "updatable-log": "^0.2.0",
+    "yargs": "^15.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.16",
+    "glob": "^7.1.6",
+    "react": "^16.12.0"
+  },
+  "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3"
+}

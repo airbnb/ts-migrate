@@ -1,0 +1,52 @@
+{
+  "name": "ts-migrate",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/airbnb/ts-migrate.git",
+    "directory": "packages/ts-migrate-server"
+  },
+  "bugs": {
+    "url": "https://github.com/airbnb/ts-migrate/issues"
+  },
+  "private": true,
+  "description": "ts-migrate monorepo",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "test": "lerna run test"
+  },
+  "devDependencies": {
+    "@types/eslint": "^6.1.3",
+    "@types/jest": "^26.0.9",
+    "@types/jscodeshift": "^0.6.3",
+    "@types/json5": "0.0.30",
+    "@types/node": "^9.6.55",
+    "@types/react": "^16.9.16",
+    "@types/rimraf": "^2.0.3",
+    "@types/yargs": "^13.0.3",
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
+    "babel-jest": "^26.3.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "glob": "^7.1.6",
+    "jest": "^26.4.0",
+    "lerna": "^3.22.1",
+    "prettier": "^2.0.5",
+    "react": "^16.12.0",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^26.2.0",
+    "typescript": "3.9.7"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "license": "MIT"
+}
