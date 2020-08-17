@@ -21,9 +21,9 @@ You can find instructions on how to install and run ts-migrate in the [main pack
 
 | Folder | Version | Package |
 | ------ | ------- | ------- |
-| [packages/ts-migrate](./packages/ts-migrate/) | TODO | [ts-migrate](https://www.npmjs.com/package/ts-migrate) |
-| [packages/ts-migrate-plugins](./packages/ts-migrate-plugins/) | TODO | [ts-migrate-plugins](https://www.npmjs.com/package/ts-migrate-plugins) |
-| [packages/ts-migrate-server](./packages/ts-migrate-server/) | TODO | [ts-migrate-server](https://www.npmjs.com/package/ts-migrate-server) |
+| [packages/ts-migrate](./packages/ts-migrate/) | [![npm version](https://badge.fury.io/js/ts-migrate.svg)](https://badge.fury.io/js/ts-migrate) | [ts-migrate](https://www.npmjs.com/package/ts-migrate) |
+| [packages/ts-migrate-plugins](./packages/ts-migrate-plugins/) | [![npm version](https://badge.fury.io/js/ts-migrate-plugins.svg)](https://badge.fury.io/js/ts-migrate-plugins) | [ts-migrate-plugins](https://www.npmjs.com/package/ts-migrate-plugins) |
+| [packages/ts-migrate-server](./packages/ts-migrate-server/) | [![npm version](https://badge.fury.io/js/ts-migrate-server.svg)](https://badge.fury.io/js/ts-migrate-server) | [ts-migrate-server](https://www.npmjs.com/package/ts-migrate-server) |
 
 # Unpublished Packages
 
