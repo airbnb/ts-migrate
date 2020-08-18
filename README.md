@@ -16,6 +16,8 @@ These configs can be moved out of the default script, and people can add custom 
 
 You can find instructions on how to install and run ts-migrate in the [main package](./packages/ts-migrate/). If you find any [issues](https://github.com/airbnb/ts-migrate/issues) or have ideas for improvements, we welcome your [contributions](https://github.com/airbnb/ts-migrate/blob/master/CONTRIBUTING.md)!
 
+Check out the [blog post](https://medium.com/airbnb-engineering/ts-migrate-a-tool-for-migrating-to-typescript-at-scale-cd23bfeb5cc) about ts-migrate!
+
 
 # Published Packages
 
