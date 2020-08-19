@@ -49,7 +49,7 @@ Examples:
 
 # Reignore
 
-If you are in sutiation when you made some big project-wise changes, update of the common library like TypeScript, React or Redux or improve types for the large codebase. As a result of these operations, you might get quite a few TypeScript compilation errors. There are two ways to proceed:
+If you are in a situation where you made some big project-wise changes, update of the common library like TypeScript, React or Redux or improve types for the large codebase. As a result of these operations, you might get quite a few TypeScript compilation errors. There are two ways to proceed:
 
  1) Fix all the errors (ideal, but time-consuming).
  2) Make the project compilable and fix errors gradually.
