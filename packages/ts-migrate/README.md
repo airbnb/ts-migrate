@@ -18,7 +18,7 @@ Or [yarn](https://yarnpkg.com):
 
 # Usage
 
-`npx ts-migrate-full <folder>`
+`npx ts-migrate <folder>`
 
 Or, you can run individual CLI commands:
 
