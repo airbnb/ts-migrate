@@ -4,7 +4,8 @@ set -e
 
 frontend_folder=$1
 folder_name=`basename $1`
-cli="./node_modules/.bin/ts-migrate"
+CLI_DIR=$(dirname "$0")
+cli="$CLI_DIR/ts-migrate"
 step_i=1
 step_count=4
 tsc_path="./node_modules/.bin/tsc"
