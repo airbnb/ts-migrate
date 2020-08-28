@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
 frontend_folder=$1
 folder_name=`basename $1`
 CLI_DIR=$(dirname "$0")
-cli="$CLI_DIR/ts-migrate"
+cli="./node_modules/ts-migrate/build/cli.js"
 step_i=1
 step_count=4
 tsc_path="./node_modules/.bin/tsc"
