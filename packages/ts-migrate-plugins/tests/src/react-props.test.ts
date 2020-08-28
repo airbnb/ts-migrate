@@ -35,6 +35,97 @@ export default Foo;
 `);
   });
 
+  it('handles functional component with forwardRef', async () => {
+    const text = `import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  foo: PropTypes.string.isRequired,
+};
+
+const Foo = forwardRef(({ foo }, ref) => <div ref={ref}>{foo}</div>)
+
+Foo.propTypes = propTypes;
+
+export default Foo;
+`;
+
+    const result = await reactPropsPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
+
+    expect(result).toBe(`import React, { forwardRef } from 'react';
+
+type Props = {
+    foo: string;
+};
+
+const Foo = forwardRef<any, Props>(({ foo }, ref) => <div ref={ref}>{foo}</div>)
+
+export default Foo;
+`);
+  });
+
+  it('handles react functional component if forward ref is not destructured', async () => {
+    const text = `import React from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  foo: PropTypes.string.isRequired,
+};
+
+const Foo = React.forwardRef(({ foo }, ref) => <div ref={ref}>{foo}</div>)
+
+Foo.propTypes = propTypes;
+
+export default Foo;
+`;
+
+    const result = await reactPropsPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
+
+    expect(result).toBe(`import React from 'react';
+
+type Props = {
+    foo: string;
+};
+
+const Foo = React.forwardRef<any, Props>(({ foo }, ref) => <div ref={ref}>{foo}</div>)
+
+export default Foo;
+`);
+  });
+
+  it('handles forwardRef being used separately from component', async () => {
+    const text = `import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  foo: PropTypes.string.isRequired,
+};
+
+const Foo = ({ foo }, ref) => <div ref={ref}>{foo}</div>;
+
+Foo.propTypes = propTypes;
+
+const WrappedComponent = forwardRef(Foo);
+
+export default WrappedComponent;
+`;
+
+    const result = await reactPropsPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
+
+    expect(result).toBe(`import React, { forwardRef } from 'react';
+
+type FooProps = {
+    foo: string;
+};
+
+const Foo = ({ foo }: FooProps, ref) => <div ref={ref}>{foo}</div>;
+
+const WrappedComponent = forwardRef(Foo);
+
+export default WrappedComponent;
+`);
+  });
+
   it('handles class with propTypes declared as a separate variable wrapped in forbidExtraProps', async () => {
     const text = `import React from 'react';
 import PropTypes from 'prop-types';

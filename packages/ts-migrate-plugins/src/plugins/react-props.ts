@@ -6,6 +6,7 @@ import {
   getReactComponentHeritageType,
   isReactSfcFunctionDeclaration,
   isReactSfcArrowFunction,
+  isReactForwardRefName,
 } from './utils/react';
 import isNotNull from '../utils/isNotNull';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
@@ -134,6 +135,8 @@ function updatePropTypes(
 
   if (isReactSfcNode(node)) {
     const propsParam = getPropsParam(node);
+    const forwardRefComponent = getReactForwardRefFuncExpression(node);
+
     if (propsParam && !propsParam.type) {
       const propTypesNode = findSfcPropTypesNode(node, sourceFile);
       const objectLiteral = propTypesNode && findPropTypesObjectLiteral(propTypesNode, sourceFile);
@@ -141,27 +144,45 @@ function updatePropTypes(
         updates.push(
           ...updateObjectLiteral(node, objectLiteral, propsTypeName, sourceFile, options, false),
         );
-
-        updates.push({
-          kind: 'replace',
-          index: propsParam.pos,
-          length: propsParam.end - propsParam.pos,
-          text: printer.printNode(
-            ts.EmitHint.Unspecified,
-            ts.updateParameter(
-              propsParam,
-              propsParam.decorators,
-              propsParam.modifiers,
-              propsParam.dotDotDotToken,
-              propsParam.name,
-              propsParam.questionToken,
-              ts.createTypeReferenceNode(propsTypeName, undefined),
-              propsParam.initializer,
+        if (forwardRefComponent) {
+          updates.push({
+            kind: 'replace',
+            index: forwardRefComponent.expression.pos,
+            length: forwardRefComponent.expression.end - forwardRefComponent.expression.pos,
+            text: ` ${printer.printNode(
+              ts.EmitHint.Unspecified,
+              ts.updateExpressionWithTypeArguments(
+                forwardRefComponent as any,
+                [
+                  ts.createTypeReferenceNode(options.anyAlias || 'any', undefined),
+                  ts.createTypeReferenceNode(propsTypeName, undefined),
+                ].filter(isNotNull) as any,
+                forwardRefComponent.expression,
+              ),
+              sourceFile,
+            )}`,
+          });
+        } else {
+          updates.push({
+            kind: 'replace',
+            index: propsParam.pos,
+            length: propsParam.end - propsParam.pos,
+            text: printer.printNode(
+              ts.EmitHint.Unspecified,
+              ts.updateParameter(
+                propsParam,
+                propsParam.decorators,
+                propsParam.modifiers,
+                propsParam.dotDotDotToken,
+                propsParam.name,
+                propsParam.questionToken,
+                ts.createTypeReferenceNode(propsTypeName, undefined),
+                propsParam.initializer,
+              ),
+              sourceFile,
             ),
-            sourceFile,
-          ),
-        });
-
+          });
+        }
         updates.push(...deleteSfcPropTypes(node, sourceFile));
       }
     }
@@ -273,13 +294,31 @@ function getPropsParam(node: ReactSfcNode) {
   }
 
   if (ts.isVariableStatement(node)) {
+    const forwardRefComponent = getReactForwardRefFuncExpression(node);
+    const forwardRefArgument =
+      forwardRefComponent && forwardRefComponent.arguments && forwardRefComponent.arguments[0];
+    const forwardRefProps: false | ts.ParameterDeclaration =
+      forwardRefArgument &&
+      ts.isFunctionLike(forwardRefArgument) &&
+      forwardRefArgument.parameters[0];
     const declaration = node.declarationList.declarations[0];
     const init = declaration && declaration.initializer;
     const arrowFunction = init && ts.isArrowFunction(init) ? init : undefined;
-    return arrowFunction && arrowFunction.parameters[0];
+    const arrowFunctionProps = arrowFunction && arrowFunction.parameters[0];
+    return forwardRefProps || arrowFunctionProps;
   }
 
   return undefined;
+}
+
+function getReactForwardRefFuncExpression(node: ReactNode): false | ts.CallExpression {
+  return (
+    !!ts.isVariableStatement(node) &&
+    !!node.declarationList?.declarations[0]?.initializer &&
+    ts.isCallExpression(node.declarationList?.declarations[0]?.initializer) &&
+    isReactForwardRefName(node.declarationList?.declarations[0]?.initializer) &&
+    node.declarationList?.declarations[0]?.initializer
+  );
 }
 
 function getParentVariableStatement(
