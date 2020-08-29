@@ -66,7 +66,7 @@ if [ ! -f "$frontend_folder/tsconfig.json" ]; then
   $cli init $frontend_folder
 fi
 
-if [ ! -f "$frontend_folder/.eslintrc" ]; then
+if [ ! -f "$frontend_folder/.eslintrc.*" ]; then
   touch $frontend_folder/.eslintrc
   should_remove_eslintrc=true
 fi
@@ -86,7 +86,7 @@ echo "
 $cli migrate $frontend_folder
 
 if [ "$should_remove_eslintrc" = "true" ]; then
-  rm $frontend_folder/.eslintrc
+  rm $frontend_folder/.eslintrc.*
 fi
 
 maybe_commit -m "[ts-migrate][$folder_name] Run TS Migrate" -m 'Co-authored-by: ts-migrate <>'
