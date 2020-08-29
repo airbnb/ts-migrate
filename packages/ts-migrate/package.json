@@ -1,6 +1,6 @@
 {
   "name": "ts-migrate",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A tool for migrating frontend application from JavaScript to TypeScript",
   "directories": {
     "test": "tests"
