@@ -297,7 +297,7 @@ function getPropsParam(node: ReactSfcNode) {
     const forwardRefComponent = getReactForwardRefFuncExpression(node);
     const forwardRefArgument =
       forwardRefComponent && forwardRefComponent.arguments && forwardRefComponent.arguments[0];
-    const forwardRefProps: false | ts.ParameterDeclaration =
+    const forwardRefProps =
       forwardRefArgument &&
       ts.isFunctionLike(forwardRefArgument) &&
       forwardRefArgument.parameters[0];
@@ -311,7 +311,7 @@ function getPropsParam(node: ReactSfcNode) {
   return undefined;
 }
 
-function getReactForwardRefFuncExpression(node: ReactNode): false | ts.CallExpression {
+function getReactForwardRefFuncExpression(node: ReactNode) {
   return (
     !!ts.isVariableStatement(node) &&
     !!node.declarationList?.declarations[0]?.initializer &&

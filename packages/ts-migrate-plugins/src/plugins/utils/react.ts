@@ -56,11 +56,11 @@ export function isReactForwardRefName(initializer: ts.CallExpression) {
   const { expression } = initializer;
 
   if (ts.isIdentifier(expression)) {
-    return /forwardRef/gi.test(expression.escapedText as string);
+    return /forwardRef/gi.test(expression.escapedText.toString());
   }
 
   if (ts.isPropertyAccessExpression(expression)) {
-    return /forwardRef/gi.test(expression.name?.escapedText as string);
+    return /forwardRef/gi.test(expression.name?.escapedText.toString());
   }
 
   return false;
