@@ -40,14 +40,30 @@ export function isReactSfcFunctionDeclaration(
 }
 
 export function isReactSfcArrowFunction(variableStatement: ts.VariableStatement): boolean {
-  return (
-    variableStatement.declarationList.declarations.length === 1 &&
+  return variableStatement.declarationList.declarations.length === 1 &&
     ts.isIdentifier(variableStatement.declarationList.declarations[0].name) &&
     /^[A-Z]\w*$/.test(variableStatement.declarationList.declarations[0].name.text) &&
     variableStatement.declarationList.declarations[0].initializer != null &&
-    ts.isArrowFunction(variableStatement.declarationList.declarations[0].initializer) &&
-    variableStatement.declarationList.declarations[0].initializer.parameters.length <= 2
-  );
+    ts.isCallExpression(variableStatement.declarationList.declarations[0].initializer) &&
+    isReactForwardRefName(variableStatement.declarationList.declarations[0].initializer)
+    ? true
+    : variableStatement.declarationList.declarations[0].initializer != null &&
+        ts.isArrowFunction(variableStatement.declarationList.declarations[0].initializer) &&
+        variableStatement.declarationList.declarations[0].initializer.parameters.length <= 2;
+}
+
+export function isReactForwardRefName(initializer: ts.CallExpression) {
+  const { expression } = initializer;
+
+  if (ts.isIdentifier(expression)) {
+    return /forwardRef/gi.test(expression.escapedText.toString());
+  }
+
+  if (ts.isPropertyAccessExpression(expression)) {
+    return /forwardRef/gi.test(expression.name?.escapedText.toString());
+  }
+
+  return false;
 }
 
 export function getReactComponentHeritageType(
