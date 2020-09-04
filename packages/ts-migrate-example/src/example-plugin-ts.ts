@@ -11,7 +11,7 @@ const examplePluginTs: Plugin<Options> = {
     const updates: SourceTextUpdate[] = [];
     const printer = ts.createPrinter();
 
-    // get all function decladations from the source file
+    // get all function declarations from the source file
     const functionDeclarations = sourceFile.statements.filter(ts.isFunctionDeclaration);
 
     functionDeclarations.forEach((functionDeclaration) => {
