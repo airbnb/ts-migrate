@@ -25,13 +25,13 @@ Or, you can run individual CLI commands:
 ```
 $ npx ts-migrate -- --help
 
-npm script ts-migrate -- <command> [options]
+npm run ts-migrate -- <command> [options]
 
 Commands:
-  npm ts-migrate -- init <folder>       Initialize tsconfig.json file in <folder>
-  npm ts-migrate -- rename <folder>     Rename files in folder from JS/JSX to TS/TSX
-  npm ts-migrate -- migrate <folder>    Fix TypeScript errors, using codemods
-  npm ts-migrate -- reignore <folder>   Re-run ts-ignore on a project
+  npm run ts-migrate -- init <folder>       Initialize tsconfig.json file in <folder>
+  npm run ts-migrate -- rename <folder>     Rename files in folder from JS/JSX to TS/TSX
+  npm run ts-migrate -- migrate <folder>    Fix TypeScript errors, using codemods
+  npm run ts-migrate -- reignore <folder>   Re-run ts-ignore on a project
 
 Options:
   -h,  -- help      Show help
@@ -41,9 +41,9 @@ Options:
   -ri, -- reignore  Re-run ts-ignore on a project
 
 Examples:
-  npm ts-migrate -- --help                Show help
-  npm ts-migrate -- init frontend/foo     Create tsconfig.json file at frontend/foo/tsconfig.json
-  npm ts-migrate -- rename frontend/foo   Rename files in frontend/foo from JS/JSX to TS/TSX
+  npm run ts-migrate -- --help                Show help
+  npm run ts-migrate -- init frontend/foo     Create tsconfig.json file at frontend/foo/tsconfig.json
+  npm run ts-migrate -- rename frontend/foo   Rename files in frontend/foo from JS/JSX to TS/TSX
 
 ```
 
