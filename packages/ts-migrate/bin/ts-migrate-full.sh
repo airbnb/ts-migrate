@@ -86,7 +86,7 @@ echo "
 $cli migrate $frontend_folder
 
 if [ "$should_remove_eslintrc" = "true" ]; then
-  rm $frontend_folder/.eslintrc.*
+  rm -f $frontend_folder/.eslintrc.*
 fi
 
 maybe_commit -m "[ts-migrate][$folder_name] Run TS Migrate" -m 'Co-authored-by: ts-migrate <>'
