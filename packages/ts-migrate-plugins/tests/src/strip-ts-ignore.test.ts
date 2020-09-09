@@ -22,9 +22,11 @@ describe('strip-ts-ignore plugin', () => {
     \${var2}
 \`);
 
+    // @ts-expect-error comment with expect error
     const result = Object.values(diffs).length
       ? Object.values(diffs)
           .reduce((x, y) => x + y)
+          // @ts-expect-error comment with expect error
           .toFixed(1)
       : 0;
 
