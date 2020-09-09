@@ -2,7 +2,7 @@ import { mockPluginParams } from '../test-utils';
 import eslintFixPlugin from '../../src/plugins/eslint-fix';
 
 describe('eslint-fix plugin', () => {
-  it.only('handles eslint comma', async () => {
+  it('handles eslint semicolon', async () => {
     const text = `const hello = 'world'`;
     const result = await eslintFixPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
 
@@ -10,4 +10,3 @@ describe('eslint-fix plugin', () => {
     expect(result).toBe(expected);
   });
 });
-
