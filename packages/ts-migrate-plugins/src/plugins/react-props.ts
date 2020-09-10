@@ -20,6 +20,8 @@ type Options = {
   shouldUpdateAirbnbImports?: boolean;
 };
 
+export type PropTypesIdentifierMap = { [property: string]: string };
+
 const reactPropsPlugin: Plugin<Options> = {
   name: 'react-props',
   run({ fileName, sourceFile, options }) {
@@ -28,11 +30,30 @@ const reactPropsPlugin: Plugin<Options> = {
     const updates: SourceTextUpdate[] = [];
     const getPropsTypeName = createPropsTypeNameGetter(sourceFile);
 
+    // Scan for prop type imports
+    const propTypeIdentifiers: PropTypesIdentifierMap = {};
+    for (const node of sourceFile.statements) {
+      if (ts.isImportDeclaration(node) && node.moduleSpecifier.getText() === '"prop-types"') {
+        const importBindings = node.importClause?.namedBindings;
+        if (importBindings && ts.isNamedImports(importBindings)) {
+          importBindings.elements.forEach((specifier) => {
+            if (!specifier.propertyName) {
+              propTypeIdentifiers[specifier.name.getText()] = specifier.name.getText();
+            } else {
+              propTypeIdentifiers[specifier.name.getText()] = specifier.propertyName.getText();
+            }
+          });
+        }
+      }
+    }
+
     for (const node of sourceFile.statements) {
       if (isReactNode(node)) {
         const componentName = getComponentName(node);
         const propsTypeName = getPropsTypeName(componentName);
-        updates.push(...updatePropTypes(node, propsTypeName, sourceFile, options));
+        updates.push(
+          ...updatePropTypes(node, propsTypeName, sourceFile, propTypeIdentifiers, options),
+        );
       }
     }
 
@@ -128,6 +149,7 @@ function updatePropTypes(
   node: ReactNode,
   propsTypeName: string,
   sourceFile: ts.SourceFile,
+  propTypeIdentifiers: PropTypesIdentifierMap,
   options: Options,
 ) {
   const updates: SourceTextUpdate[] = [];
@@ -142,7 +164,15 @@ function updatePropTypes(
       const objectLiteral = propTypesNode && findPropTypesObjectLiteral(propTypesNode, sourceFile);
       if (objectLiteral) {
         updates.push(
-          ...updateObjectLiteral(node, objectLiteral, propsTypeName, sourceFile, options, false),
+          ...updateObjectLiteral(
+            node,
+            objectLiteral,
+            propsTypeName,
+            sourceFile,
+            propTypeIdentifiers,
+            options,
+            false,
+          ),
         );
         if (forwardRefComponent) {
           updates.push({
@@ -196,7 +226,7 @@ function updatePropTypes(
       const objectLiteral = propTypesNode && findPropTypesObjectLiteral(propTypesNode, sourceFile);
       if (objectLiteral) {
         updates.push(
-          ...updateObjectLiteral(node, objectLiteral, propsTypeName, sourceFile, options, true),
+          ...updateObjectLiteral(node, objectLiteral, propsTypeName, sourceFile, {}, options, true),
         );
 
         updates.push({
@@ -233,6 +263,7 @@ function updateObjectLiteral(
   objectLiteral: ts.ObjectLiteralExpression,
   propsTypeName: string,
   sourceFile: ts.SourceFile,
+  propTypeIdentifiers: PropTypesIdentifierMap,
   options: Options,
   implicitChildren: boolean,
 ) {
@@ -244,6 +275,7 @@ function updateObjectLiteral(
     anyFunctionAlias: options.anyFunctionAlias,
     implicitChildren,
     spreadReplacements,
+    propTypeIdentifiers,
   });
   let propsTypeAlias = ts.createTypeAliasDeclaration(
     undefined,

@@ -1114,4 +1114,39 @@ class Foo extends React.Component<Props> {
 export default Foo;
 `);
   });
+
+  it('Handles destructuring of prop-types', async () => {
+    const text = `import React from "react";
+import { oneOf, node, func as propTypeFn } from "prop-types";
+import SomeClass from "someclass";
+
+const Foo = ({ children, className }) => {
+  return <div className={className}>children</div>;
+};
+
+Foo.propTypes = {
+  children: node,
+  callback: propTypeFn,
+  someObject: SomeClass,
+};
+
+export default Foo;`;
+
+    const result = await reactPropsPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
+
+    expect(result).toBe(`import React from "react";
+import SomeClass from "someclass";
+
+type Props = {
+    children?: React.ReactNode;
+    callback?: (...args: any[]) => any;
+    someObject?: SomeClass;
+};
+
+const Foo = ({ children, className }: Props) => {
+  return <div className={className}>children</div>;
+};
+
+export default Foo;`);
+  });
 });
