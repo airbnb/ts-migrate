@@ -10,6 +10,7 @@ import {
   eslintFixPlugin,
   explicitAnyPlugin,
   hoistClassStaticsPlugin,
+  jsDocPlugin,
   reactClassLifecycleMethodsPlugin,
   reactClassStatePlugin,
   reactDefaultPropsPlugin,
@@ -70,6 +71,7 @@ yargs
           eslintFixPlugin,
           explicitAnyPlugin,
           hoistClassStaticsPlugin,
+          jsDocPlugin,
           reactClassLifecycleMethodsPlugin,
           reactClassStatePlugin,
           reactDefaultPropsPlugin,
@@ -84,7 +86,16 @@ yargs
           process.exit(1);
           return;
         }
-        config = new MigrateConfig().addPlugin(plugin, {});
+        const options: any = {};
+        if (plugin === jsDocPlugin) {
+          if (typeof args.typeMap === 'string') {
+            options.typeMap = JSON.parse(args.typeMap);
+          }
+          if (args.aliases === 'tsfixme') {
+            options.anyAlias = '$TSFixMe';
+          }
+        }
+        config = new MigrateConfig().addPlugin(plugin, options);
       } else {
         const airbnbAnyAlias = '$TSFixMe';
         const airbnbAnyFunctionAlias = '$TSFixMeFunction';
