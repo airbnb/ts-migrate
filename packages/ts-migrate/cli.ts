@@ -10,6 +10,7 @@ import {
   eslintFixPlugin,
   explicitAnyPlugin,
   hoistClassStaticsPlugin,
+  memberAccessibilityPlugin,
   reactClassLifecycleMethodsPlugin,
   reactClassStatePlugin,
   reactDefaultPropsPlugin,
@@ -59,7 +60,15 @@ yargs
   .command(
     'migrate <folder>',
     'Fix TypeScript errors, using codemods',
-    (cmd) => cmd.positional('folder', { type: 'string' }).string('plugin').require(['folder']),
+    (cmd) =>
+      cmd
+        .positional('folder', { type: 'string' })
+        .choices('defaultAccessibility', ['private', 'protected', 'public'] as const)
+        .string('plugin')
+        .string('privateRegex')
+        .string('protectedRegex')
+        .string('publicRegex')
+        .require(['folder']),
     async (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
       let config: MigrateConfig;
@@ -70,6 +79,7 @@ yargs
           eslintFixPlugin,
           explicitAnyPlugin,
           hoistClassStaticsPlugin,
+          memberAccessibilityPlugin,
           reactClassLifecycleMethodsPlugin,
           reactClassStatePlugin,
           reactDefaultPropsPlugin,
@@ -93,6 +103,8 @@ yargs
         const anyFunctionAlias = args.aliases === 'tsfixme' ? airbnbAnyFunctionAlias : undefined;
         const useDefaultPropsHelper = args.useDefaultPropsHelper === 'true';
 
+        const { defaultAccessibility, privateRegex, protectedRegex, publicRegex } = args;
+
         config = new MigrateConfig()
           .addPlugin(stripTSIgnorePlugin, {})
           .addPlugin(hoistClassStaticsPlugin, { anyAlias })
@@ -111,6 +123,12 @@ yargs
             anyFunctionAlias,
           })
           .addPlugin(declareMissingClassPropertiesPlugin, { anyAlias })
+          .addPlugin(memberAccessibilityPlugin, {
+            defaultAccessibility,
+            privateRegex,
+            protectedRegex,
+            publicRegex,
+          })
           .addPlugin(explicitAnyPlugin, { anyAlias })
           // We need to run eslint-fix before ts-ignore because formatting may affect where
           // the errors are that need to get ignored.
