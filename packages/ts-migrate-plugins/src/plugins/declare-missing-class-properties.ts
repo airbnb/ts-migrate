@@ -11,7 +11,7 @@ const declareMissingClassPropertiesPlugin: Plugin<Options> = {
   async run({ text, getDiagnostics, options }) {
     const diagnostics = (await getDiagnostics()).semanticDiagnostics
       .filter(isDiagnosticWithLinePosition)
-      .filter((diagnostic) => diagnostic.code === 2339);
+      .filter((diagnostic) => diagnostic.code === 2339 || diagnostic.code === 2551);
 
     const root = j(text);
 
