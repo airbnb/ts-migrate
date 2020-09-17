@@ -130,6 +130,8 @@ function A(a) {}
 function B(b) {}
 /** @param [c] {Object} */
 function C({ c }) {}
+/** @param [d] {Number} */
+function D(d = 1) {}
 `;
 
     const result = jsDocPlugin.run(mockPluginParams({ text, fileName: 'file.tsx' }));
@@ -141,6 +143,8 @@ function A(a?: number) { }
 function B(b?: number) { }
 /** @param [c] {Object} */
 function C({ c }: object) { }
+/** @param [d] {Number} */
+function D(d: number = 1) { }
 `);
   });
 

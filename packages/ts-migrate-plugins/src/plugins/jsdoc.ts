@@ -118,7 +118,9 @@ const jsDocTransformerFactory = ({
       const type = visitJSDocType(typeNode, true);
 
       const questionToken =
-        ts.isIdentifier(param.name) && (paramNode.isBracketed || ts.isJSDocOptionalType(typeNode))
+        !param.initializer &&
+        ts.isIdentifier(param.name) &&
+        (paramNode.isBracketed || ts.isJSDocOptionalType(typeNode))
           ? ts.createToken(ts.SyntaxKind.QuestionToken)
           : param.questionToken;
 
