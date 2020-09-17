@@ -30,10 +30,12 @@ const reactPropsPlugin: Plugin<Options> = {
     const updates: SourceTextUpdate[] = [];
     const getPropsTypeName = createPropsTypeNameGetter(sourceFile);
 
-    // Scan for prop type imports
     const propTypeIdentifiers: PropTypesIdentifierMap = {};
+
     for (const node of sourceFile.statements) {
-      if (ts.isImportDeclaration(node) && node.moduleSpecifier.getText() === '"prop-types"') {
+      // Scan for prop type imports and build a map
+      // Assumes import statements are higher up in the file than react components
+      if (ts.isImportDeclaration(node) && /prop-types/.test(node.moduleSpecifier.getText())) {
         const importBindings = node.importClause?.namedBindings;
         if (importBindings && ts.isNamedImports(importBindings)) {
           importBindings.elements.forEach((specifier) => {
@@ -45,9 +47,7 @@ const reactPropsPlugin: Plugin<Options> = {
           });
         }
       }
-    }
 
-    for (const node of sourceFile.statements) {
       if (isReactNode(node)) {
         const componentName = getComponentName(node);
         const propsTypeName = getPropsTypeName(componentName);
