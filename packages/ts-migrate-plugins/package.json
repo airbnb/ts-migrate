@@ -1,6 +1,6 @@
 {
   "name": "ts-migrate-plugins",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Set of codemodes, which are doing transformation of js/jsx to ts/tsx",
   "main": "build/src/index.js",
   "directories": {
