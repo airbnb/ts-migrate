@@ -104,7 +104,7 @@ const jsDocTransformerFactory = ({
     }
 
     // create a new function declaration with a new type
-    return functionDeclaration.parameters.map((param) => {
+    const newParams = functionDeclaration.parameters.map((param) => {
       if (param.type) {
         // Don't overwrite existing annotations.
         return param;
@@ -136,6 +136,11 @@ const jsDocTransformerFactory = ({
 
       return newParam;
     });
+    if (functionDeclaration.parameters.some((param, i) => param !== newParams[i])) {
+      // Only return the new array if something changed.
+      return newParams;
+    }
+    return functionDeclaration.parameters;
   }
 
   function visitReturnType(functionDeclaration: ts.SignatureDeclaration): ts.TypeNode | undefined {

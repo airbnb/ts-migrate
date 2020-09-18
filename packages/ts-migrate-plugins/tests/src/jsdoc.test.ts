@@ -307,7 +307,7 @@ function A(a) {}
 
     expect(result).toBe(`\
 /** @param b {number} */
-function A(a) { }
+function A(a) {}
 `);
   });
 
@@ -339,9 +339,9 @@ function B(): string {}
 
     expect(result).toBe(`\
 /** @param a {number} */
-function A(a: string) { }
+function A(a: string) {}
 /** @return {number} */
-function B(): string { }
+function B(): string {}
 `);
   });
 
