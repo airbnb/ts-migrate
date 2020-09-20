@@ -71,7 +71,7 @@ const jsDocTransformerFactory = ({
   function visit<T extends ts.Node>(origNode: T): T {
     const node = ts.visitEachChild(origNode, visit, context);
     if (ts.isFunctionLike(node)) {
-      return visitFunctionLike(node, ts.isClassDeclaration(origNode.parent)) as T;
+      return visitFunctionLike(node, ts.isClassDeclaration(origNode.parent));
     }
     return node;
   }
@@ -249,9 +249,12 @@ const jsDocTransformerFactory = ({
   }
 
   function visitJSDocParameter(node: ts.ParameterDeclaration) {
+    if (!node.type) {
+      return node;
+    }
     const index = node.parent.parameters.indexOf(node);
     const isRest =
-      node.type!.kind === ts.SyntaxKind.JSDocVariadicType &&
+      node.type.kind === ts.SyntaxKind.JSDocVariadicType &&
       index === node.parent.parameters.length - 1;
     const name = node.name || (isRest ? 'rest' : `arg${index}`);
     const dotdotdot = isRest ? ts.createToken(ts.SyntaxKind.DotDotDotToken) : node.dotDotDotToken;
@@ -301,14 +304,15 @@ const jsDocTransformerFactory = ({
   }
 
   function visitJSDocIndexSignature(node: ts.TypeReferenceNode) {
+    const typeArguments = node.typeArguments!;
     const index = ts.createParameter(
       /* decorators */ undefined,
       /* modifiers */ undefined,
       /* dotDotDotToken */ undefined,
-      node.typeArguments![0].kind === ts.SyntaxKind.NumberKeyword ? 'n' : 's',
+      typeArguments[0].kind === ts.SyntaxKind.NumberKeyword ? 'n' : 's',
       /* questionToken */ undefined,
       ts.createTypeReferenceNode(
-        node.typeArguments![0].kind === ts.SyntaxKind.NumberKeyword ? 'number' : 'string',
+        typeArguments[0].kind === ts.SyntaxKind.NumberKeyword ? 'number' : 'string',
         [],
       ),
       /* initializer */ undefined,
@@ -318,7 +322,7 @@ const jsDocTransformerFactory = ({
         /* decorators */ undefined,
         /* modifiers */ undefined,
         [index],
-        node.typeArguments![1],
+        typeArguments[1],
       ),
     ]);
     ts.setEmitFlags(indexSignature, ts.EmitFlags.SingleLine);
