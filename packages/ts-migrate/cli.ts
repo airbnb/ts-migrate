@@ -86,16 +86,13 @@ yargs
           process.exit(1);
           return;
         }
-        const options: any = {};
         if (plugin === jsDocPlugin) {
-          if (typeof args.typeMap === 'string') {
-            options.typeMap = JSON.parse(args.typeMap);
-          }
-          if (args.aliases === 'tsfixme') {
-            options.anyAlias = '$TSFixMe';
-          }
+          const anyAlias = args.aliases === 'tsfixme' ? '$TSFixMe' : undefined;
+          const typeMap = typeof args.typeMap === 'string' ? JSON.parse(args.typeMap) : undefined;
+          config = new MigrateConfig().addPlugin(jsDocPlugin, { anyAlias, typeMap });
+        } else {
+          config = new MigrateConfig().addPlugin(plugin, {});
         }
-        config = new MigrateConfig().addPlugin(plugin, options);
       } else {
         const airbnbAnyAlias = '$TSFixMe';
         const airbnbAnyFunctionAlias = '$TSFixMeFunction';
