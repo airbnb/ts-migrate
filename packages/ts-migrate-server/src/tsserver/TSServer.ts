@@ -40,9 +40,7 @@ export default class TSServer {
     if (this.killed) return;
 
     this.childProcess.kill();
-    delete this.childProcess;
     this.emitter.removeAllListeners();
-    delete this.emitter;
     this.reader.dispose();
     this.logger.info('[TSServer] kill');
     this.killed = true;

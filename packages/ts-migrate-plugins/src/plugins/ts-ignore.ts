@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import ts from 'typescript';
 import tsp from 'typescript/lib/protocol';
-import diagnosticMessages from 'typescript/lib/diagnosticMessages.generated.json';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
@@ -18,13 +17,6 @@ const tsIgnorePlugin: Plugin<Options> = {
 };
 
 export default tsIgnorePlugin;
-
-const diagnosticMessagesByCode: { [code: string]: string } = {};
-Object.keys(diagnosticMessages).forEach((key) => {
-  const parts = key.split('_');
-  const code = parts[parts.length - 1];
-  diagnosticMessagesByCode[code] = diagnosticMessages[key as keyof typeof diagnosticMessages];
-});
 
 const TS_IGNORE_MESSAGE_LIMIT = 50;
 
