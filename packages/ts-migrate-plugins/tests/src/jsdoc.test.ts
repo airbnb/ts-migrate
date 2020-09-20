@@ -192,6 +192,32 @@ function B(b: { [s: string]: any; }) { }
 `);
   });
 
+  it('annotates function types', () => {
+    const text = `\
+/** @param a {function(number)} */
+function A(a) {}
+/** @param b {function(): number} */
+function B(b) {}
+/** @param c {function(this: number)} */
+function C(c) {}
+/** @param d {function(...number)} */
+function D(d) {}
+`;
+
+    const result = jsDocPlugin.run(mockPluginParams({ text, fileName: 'file.tsx' }));
+
+    expect(result).toBe(`\
+/** @param a {function(number)} */
+function A(a: (arg0: number) => any) { }
+/** @param b {function(): number} */
+function B(b: () => number) { }
+/** @param c {function(this: number)} */
+function C(c: (this: number) => any) { }
+/** @param d {function(...number)} */
+function D(d: (...rest: number[]) => any) { }
+`);
+  });
+
   it('annotates documented properties', () => {
     const text = `\
 /**
