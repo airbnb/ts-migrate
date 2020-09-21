@@ -2,6 +2,7 @@
 import ts from 'typescript';
 import { getNumComponentsInSourceFile } from './react';
 import { collectIdentifiers } from './identifiers';
+import { PropTypesIdentifierMap } from '../react-props';
 
 export type PropsTypeNode = ts.TypeLiteralNode | ts.IntersectionTypeNode;
 
@@ -10,6 +11,7 @@ type Params = {
   anyFunctionAlias?: string;
   implicitChildren?: boolean;
   spreadReplacements: { spreadId: string; typeRef: ts.TypeReferenceNode }[];
+  propTypeIdentifiers?: PropTypesIdentifierMap;
 };
 
 export default function getTypeFromPropTypesObjectLiteral(
@@ -109,10 +111,15 @@ function getTypeFromPropTypeExpression(
 ): ts.TypeNode {
   const { anyAlias, anyFunctionAlias } = params;
 
-  const text = node.getText(sourceFile).replace(/React\.PropTypes\./, '');
+  let text = node.getText(sourceFile).replace(/React\.PropTypes\./, '');
+  const isDestructuredProptypeImport =
+    params.propTypeIdentifiers && ts.isIdentifier(node) && params.propTypeIdentifiers[text];
 
   let result = null;
-  if (ts.isPropertyAccessExpression(node)) {
+  if (ts.isPropertyAccessExpression(node) || isDestructuredProptypeImport) {
+    if (isDestructuredProptypeImport && params.propTypeIdentifiers) {
+      text = params.propTypeIdentifiers[text];
+    }
     /**
      * PropTypes.array,
      * PropTypes.bool,

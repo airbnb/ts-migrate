@@ -3,6 +3,7 @@ import declareMissingClassPropertiesPlugin from './plugins/declare-missing-class
 import eslintFixPlugin from './plugins/eslint-fix';
 import explicitAnyPlugin from './plugins/explicit-any';
 import hoistClassStaticsPlugin from './plugins/hoist-class-statics';
+import jsDocPlugin from './plugins/jsdoc';
 import memberAccessibilityPlugin from './plugins/member-accessibility';
 import reactClassLifecycleMethodsPlugin from './plugins/react-class-lifecycle-methods';
 import reactClassStatePlugin from './plugins/react-class-state';
@@ -23,6 +24,7 @@ export {
   eslintFixPlugin,
   explicitAnyPlugin,
   hoistClassStaticsPlugin,
+  jsDocPlugin,
   memberAccessibilityPlugin,
   reactClassLifecycleMethodsPlugin,
   reactClassStatePlugin,
