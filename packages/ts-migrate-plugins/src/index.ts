@@ -4,6 +4,7 @@ import eslintFixPlugin from './plugins/eslint-fix';
 import explicitAnyPlugin from './plugins/explicit-any';
 import hoistClassStaticsPlugin from './plugins/hoist-class-statics';
 import jsDocPlugin from './plugins/jsdoc';
+import memberAccessibilityPlugin from './plugins/member-accessibility';
 import reactClassLifecycleMethodsPlugin from './plugins/react-class-lifecycle-methods';
 import reactClassStatePlugin from './plugins/react-class-state';
 import reactDefaultPropsPlugin from './plugins/react-default-props';
@@ -24,6 +25,7 @@ export {
   explicitAnyPlugin,
   hoistClassStaticsPlugin,
   jsDocPlugin,
+  memberAccessibilityPlugin,
   reactClassLifecycleMethodsPlugin,
   reactClassStatePlugin,
   reactDefaultPropsPlugin,
