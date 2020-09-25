@@ -76,7 +76,7 @@ const memberAccessibilityTransformerFactory = (options: Options) => (
         accessibilityFlag = ts.ModifierFlags.Public;
       }
 
-      const newNode = ts.getMutableClone(node);
+      const newNode = ts.getMutableClone(node) as any;
       newNode.modifiers = ts.createNodeArray(
         ts.createModifiersFromModifierFlags(modifierFlags | accessibilityFlag),
       );

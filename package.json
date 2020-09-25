@@ -13,6 +13,7 @@
   "description": "ts-migrate monorepo",
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
     "build": "lerna run build",
     "lint": "lerna run lint",
     "test": "lerna run test"

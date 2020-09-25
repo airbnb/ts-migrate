@@ -89,7 +89,7 @@ const jsDocTransformerFactory = ({
       return node;
     }
 
-    const newNode = ts.getMutableClone(node);
+    const newNode = ts.getMutableClone(node) as any;
     newNode.modifiers = ts.createNodeArray(modifiers);
     newNode.parameters = ts.createNodeArray(parameters);
     newNode.type = returnType;
@@ -201,7 +201,7 @@ const jsDocTransformerFactory = ({
   function visitJSDocNullableType(node: ts.JSDocNullableType) {
     return ts.createUnionTypeNode([
       ts.visitNode(node.type, visitJSDocType),
-      ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword),
+      ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword as any),
     ]);
   }
 
