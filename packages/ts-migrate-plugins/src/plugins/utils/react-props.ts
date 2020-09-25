@@ -222,8 +222,7 @@ function getTypeFromPropTypeExpression(
       const argument = node.arguments[0];
       if (ts.isArrayLiteralExpression(argument)) {
         const children: ts.Node[] = [];
-        result = ts.createUnionOrIntersectionTypeNode(
-          ts.SyntaxKind.UnionType,
+        result = ts.createUnionTypeNode(
           argument.elements.map((elm) => {
             const child = getTypeFromPropTypeExpression(elm, sourceFile, params);
             children.push(child);
