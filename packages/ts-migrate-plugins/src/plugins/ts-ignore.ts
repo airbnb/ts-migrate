@@ -1,6 +1,5 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import ts from 'typescript';
-import tsp from 'typescript/lib/protocol';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
@@ -9,8 +8,8 @@ type Options = { useTsIgnore?: boolean };
 
 const tsIgnorePlugin: Plugin<Options> = {
   name: 'ts-ignore',
-  async run({ getDiagnostics, sourceFile, options }) {
-    const allDiagnostics = await getDiagnostics();
+  run({ getDiagnostics, sourceFile, options }) {
+    const allDiagnostics = getDiagnostics();
     const diagnostics = allDiagnostics.semanticDiagnostics.filter(isDiagnosticWithLinePosition);
     return getTextWithIgnores(sourceFile, diagnostics, options);
   },
@@ -22,7 +21,7 @@ const TS_IGNORE_MESSAGE_LIMIT = 50;
 
 function getTextWithIgnores(
   sourceFile: ts.SourceFile,
-  diagnostics: tsp.DiagnosticWithLinePosition[],
+  diagnostics: ts.DiagnosticWithLocation[],
   options: Options,
 ): string {
   const { text } = sourceFile;
@@ -32,7 +31,11 @@ function getTextWithIgnores(
   diagnostics.forEach((diagnostic) => {
     const { line: diagnosticLine } = ts.getLineAndCharacterOfPosition(sourceFile, diagnostic.start);
     const { code } = diagnostic;
-    const messageLines = diagnostic.message
+    const messageText =
+      typeof diagnostic.messageText === 'string'
+        ? diagnostic.messageText
+        : diagnostic.messageText.messageText;
+    const messageLines = messageText
       .split('\n')
       .map((l) => l.trim())
       .filter(Boolean);
@@ -123,7 +126,7 @@ function getTextWithIgnores(
 }
 
 function findDiagnosticNode(
-  diagnostic: tsp.DiagnosticWithLinePosition,
+  diagnostic: ts.DiagnosticWithLocation,
   sourceFile: ts.SourceFile,
 ): ts.Node | undefined {
   const visitor = (node: ts.Node): ts.Node | undefined =>
@@ -134,7 +137,7 @@ function findDiagnosticNode(
 
 function isDiagnosticNode(
   node: ts.Node,
-  diagnostic: tsp.DiagnosticWithLinePosition,
+  diagnostic: ts.DiagnosticWithLocation,
   sourceFile: ts.SourceFile,
 ): boolean {
   return (

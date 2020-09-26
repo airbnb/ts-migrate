@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-import { TSServer, forkTSServerWithNoopLogger } from '../../../src';
 import { createDir, copyDir, deleteDir, getDirData } from '../../test-utils';
 import migrate, { MigrateConfig } from '../../../src/migrate';
 
@@ -12,15 +11,12 @@ jest.mock('updatable-log', () => {
 
 describe('migrate command', () => {
   let rootDir: string;
-  let server: TSServer;
   beforeEach(() => {
     rootDir = createDir();
-    server = forkTSServerWithNoopLogger();
   });
 
   afterEach(() => {
     deleteDir(rootDir);
-    server.kill();
   });
 
   it('Migrates project', async () => {
@@ -42,7 +38,7 @@ describe('migrate command', () => {
       {},
     );
 
-    const exitCode = await migrate({ rootDir, config, server });
+    const exitCode = await migrate({ rootDir, config });
     fs.unlinkSync(path.resolve(rootDir, 'tsconfig.json'));
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);

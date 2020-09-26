@@ -1,7 +1,7 @@
 import path from 'path';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { tsIgnorePlugin, eslintFixPlugin, explicitAnyPlugin } from 'ts-migrate-plugins';
-import { migrate, MigrateConfig, TSServer, forkTSServerWithNoopLogger } from 'ts-migrate-server';
+import { migrate, MigrateConfig } from 'ts-migrate-server';
 import { createDir, copyDir, deleteDir, getDirData } from '../../test-utils';
 
 jest.mock('updatable-log', () => {
@@ -12,15 +12,12 @@ jest.mock('updatable-log', () => {
 
 describe('migrate command', () => {
   let rootDir: string;
-  let server: TSServer;
   beforeEach(() => {
     rootDir = createDir();
-    server = forkTSServerWithNoopLogger();
   });
 
   afterEach(() => {
     deleteDir(rootDir);
-    server.kill();
   });
 
   it('Migrates project', async () => {
@@ -32,7 +29,7 @@ describe('migrate command', () => {
       .addPlugin(tsIgnorePlugin, {})
       .addPlugin(eslintFixPlugin, {});
 
-    const exitCode = await migrate({ rootDir, config, server });
+    const exitCode = await migrate({ rootDir, config });
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);
     expect(exitCode).toBe(0);

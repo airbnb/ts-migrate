@@ -1,3 +1,4 @@
+import ts from 'typescript';
 import { mockPluginParams, mockDiagnostic } from '../test-utils';
 import explicitAnyPlugin from '../../src/plugins/explicit-any';
 
@@ -37,7 +38,7 @@ const { deepobjA = {
 `;
 
     const diagnosticFor = (str: string, code: number) =>
-      mockDiagnostic(text, str, { category: 'error', code });
+      mockDiagnostic(text, str, { category: ts.DiagnosticCategory.Error, code });
 
     const result = await explicitAnyPlugin.run(
       mockPluginParams({
@@ -129,7 +130,7 @@ const {
     const text = `const var1 = [];`;
 
     const diagnosticFor = (str: string, code: number) =>
-      mockDiagnostic(text, str, { category: 'error', code });
+      mockDiagnostic(text, str, { category: ts.DiagnosticCategory.Error, code });
 
     const result = await explicitAnyPlugin.run(
       mockPluginParams({

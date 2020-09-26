@@ -107,7 +107,7 @@ export default Foo;
         text,
         semanticDiagnostics: [
           mockDiagnostic(text, 'comsole', {
-            message: 'This message is too long to print and should be truncated',
+            messageText: 'This message is too long to print and should be truncated',
           }),
         ],
       }),
