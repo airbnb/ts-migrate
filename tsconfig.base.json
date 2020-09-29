@@ -20,7 +20,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "importHelpers": true,
+    "importHelpers": false,
     "preserveSymlinks": true,
     "outDir": "build",
   },
