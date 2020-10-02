@@ -9,14 +9,15 @@ import { PluginParams } from '../../types';
 
 interface MigrateParams {
   rootDir: string;
+  tsConfigDir?: string;
   config: MigrateConfig;
   server: TSServer;
 }
 
-export default async function migrate({ rootDir, config, server }: MigrateParams): Promise<number> {
+export default async function migrate({ rootDir, tsConfigDir = rootDir, config, server }: MigrateParams): Promise<number> {
   let exitCode = 0;
 
-  const parseResult = parseTSConfig(rootDir);
+  const parseResult = parseTSConfig(tsConfigDir);
   const { options } = parseResult;
   const projectFileName = path.resolve(rootDir, '../..', parseResult.configFile);
   const fileNames = parseResult.fileNames.map((fileName) =>
