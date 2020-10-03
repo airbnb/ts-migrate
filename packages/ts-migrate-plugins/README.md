@@ -1,7 +1,7 @@
 # ts-migrate-plugins
 
 *ts-migrate-plugins* is designed as a set of plugins, so that it can be pretty customizable for different use-cases.
-This package contains a set of [codemodes](https://medium.com/@cpojer/effective-javascript-codemods-5a6686bb46fb) (plugins), which are doing transformation of js/jsx -> ts/tsx.
+This package contains a set of [codemods](https://medium.com/@cpojer/effective-javascript-codemods-5a6686bb46fb) (plugins), which are doing transformation of js/jsx -> ts/tsx.
 
 *ts-migrate-plugins* is designed around Airbnb projects. Use at your own risk.
 
@@ -78,7 +78,7 @@ We have three main categories of plugins:
 
 > What is the ts-migrate plugin?
 
-The plugin is an abstraction around codemodes which provides centralized interfaces for the *ts-migrate*. Plugins should implement the following interface:
+The plugin is an abstraction around codemods which provides centralized interfaces for the *ts-migrate*. Plugins should implement the following interface:
 
 ```typescript
 interface Plugin {
