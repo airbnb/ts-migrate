@@ -7,9 +7,9 @@ type Options = { force?: boolean };
 
 const reactClassLifecycleMethodsPlugin: Plugin<Options> = {
   name: 'react-class-lifecycle-methods',
-  run({ fileName, text, options }) {
+  run({ fileName, sourceFile, text, options }) {
     return /\.tsx$/.test(fileName)
-      ? annotateReactComponentLifecycleMethods(fileName, text, options.force)
+      ? annotateReactComponentLifecycleMethods(sourceFile, text, options.force)
       : undefined;
   },
 };
@@ -37,7 +37,7 @@ const reactLifecycleMethodAnnotations: { [method: string]: AnnotationKind[] } = 
 };
 
 function updateParameterType(parameter: ts.ParameterDeclaration, type: ts.TypeNode | undefined) {
-  return ts.updateParameter(
+  return ts.factory.updateParameterDeclaration(
     parameter,
     parameter.decorators,
     parameter.modifiers,
@@ -50,11 +50,10 @@ function updateParameterType(parameter: ts.ParameterDeclaration, type: ts.TypeNo
 }
 
 function annotateReactComponentLifecycleMethods(
-  fileName: string,
+  sourceFile: ts.SourceFile,
   sourceText: string,
   force = false,
 ) {
-  const sourceFile = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true);
   const printer = ts.createPrinter();
   const updates: SourceTextUpdate[] = [];
 
@@ -62,12 +61,14 @@ function annotateReactComponentLifecycleMethods(
     if (ts.isClassDeclaration(statement) && isReactClassComponent(statement)) {
       const heritageType = getReactComponentHeritageType(statement)!;
       const heritageTypeArgs = heritageType.typeArguments || [];
-      const propsType = heritageTypeArgs[0] || ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
-      const stateType = heritageTypeArgs[1] || ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+      const propsType =
+        heritageTypeArgs[0] || ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+      const stateType =
+        heritageTypeArgs[1] || ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
       const annotationToType = {
         [AnnotationKind.Props]: propsType,
         [AnnotationKind.State]: stateType,
-        [AnnotationKind.Context]: ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+        [AnnotationKind.Context]: ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
       };
 
       statement.members.forEach((member) => {
@@ -110,7 +111,7 @@ function annotateReactComponentLifecycleMethods(
 
             let text = printer.printList(
               ts.ListFormat.Parameters,
-              ts.createNodeArray(parametersToPrint),
+              ts.factory.createNodeArray(parametersToPrint),
               sourceFile,
             );
             // Remove surrounding parentheses

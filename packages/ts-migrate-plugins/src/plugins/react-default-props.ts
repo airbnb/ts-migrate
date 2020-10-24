@@ -102,9 +102,9 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
         ts.isIntersectionTypeNode(propsTypeAliasDeclaration.type) && indexOfTypeValue === -1;
 
       const propsTypeValueNode = ts.isIntersectionTypeNode(propsTypeAliasDeclaration.type)
-        ? ts.updateIntersectionTypeNode(
+        ? ts.factory.updateIntersectionTypeNode(
             propsTypeAliasDeclaration.type,
-            ts.createNodeArray(
+            ts.factory.createNodeArray(
               propsTypeAliasDeclaration.type.types.filter(
                 (_, k) => propTypesAreOnlyReferences || indexOfTypeValue === k,
               ),
@@ -120,11 +120,11 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
 
       // rename type PropName -> type OwnPropName
       const updatedPropTypesName = doesPropsTypeHaveExport ? propsTypeName : `Own${propsTypeName}`;
-      const updatedPropTypeAlias = ts.updateTypeAliasDeclaration(
+      const updatedPropTypeAlias = ts.factory.updateTypeAliasDeclaration(
         propsTypeAliasDeclaration,
         propsTypeAliasDeclaration.decorators,
         propsTypeAliasDeclaration.modifiers,
-        ts.createIdentifier(updatedPropTypesName),
+        ts.factory.createIdentifier(updatedPropTypesName),
         propsTypeAliasDeclaration.typeParameters,
         propsTypeValueNode,
       );
@@ -136,26 +136,26 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
 
       // create type Props = WithDefaultProps<OwnProps, typeof defaultProps> & types;
       const newPropsTypeValue = options.useDefaultPropsHelper
-        ? ts.createTypeReferenceNode(WITH_DEFAULT_PROPS_HELPER, [
-            ts.createTypeReferenceNode(updatedPropTypesName, undefined),
-            ts.createTypeQueryNode(ts.createIdentifier(defaultPropsTypeName)),
+        ? ts.factory.createTypeReferenceNode(WITH_DEFAULT_PROPS_HELPER, [
+            ts.factory.createTypeReferenceNode(updatedPropTypesName, undefined),
+            ts.factory.createTypeQueryNode(ts.factory.createIdentifier(defaultPropsTypeName)),
           ])
-        : ts.createIntersectionTypeNode([
-            ts.createTypeReferenceNode(updatedPropTypesName, undefined),
-            ts.createTypeQueryNode(ts.createIdentifier(defaultPropsTypeName)),
+        : ts.factory.createIntersectionTypeNode([
+            ts.factory.createTypeReferenceNode(updatedPropTypesName, undefined),
+            ts.factory.createTypeQueryNode(ts.factory.createIdentifier(defaultPropsTypeName)),
           ]);
 
       const componentPropsTypeName = doesPropsTypeHaveExport
         ? `Private${propsTypeName}`
         : propsTypeName;
 
-      const newPropsTypeAlias = ts.createTypeAliasDeclaration(
+      const newPropsTypeAlias = ts.factory.createTypeAliasDeclaration(
         undefined,
         undefined,
-        ts.createIdentifier(componentPropsTypeName),
+        ts.factory.createIdentifier(componentPropsTypeName),
         undefined,
         ts.isIntersectionTypeNode(propsTypeAliasDeclaration.type)
-          ? ts.createIntersectionTypeNode([
+          ? ts.factory.createIntersectionTypeNode([
               newPropsTypeValue,
               ...propsTypeAliasDeclaration.type.types.filter((el, k) =>
                 propTypesAreOnlyReferences
@@ -175,9 +175,9 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
 
       // we should rename component prop type in that case
       if (doesPropsTypeHaveExport) {
-        const updatedComponentTypeReference = ts.updateTypeReferenceNode(
+        const updatedComponentTypeReference = ts.factory.updateTypeReferenceNode(
           componentTypeReference,
-          ts.createIdentifier(componentPropsTypeName),
+          ts.factory.createIdentifier(componentPropsTypeName),
           undefined,
         );
 
@@ -333,16 +333,20 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
 // the target project might not have this as an internal dependency in project.json
 // It would have to be manually added, otherwise CI will complain about it
 function getWithDefaultPropsImport() {
-  return ts.createImportDeclaration(
+  return ts.factory.createImportDeclaration(
     undefined,
     undefined,
-    ts.createImportClause(
+    ts.factory.createImportClause(
+      false,
       undefined,
-      ts.createNamedImports([
-        ts.createImportSpecifier(undefined, ts.createIdentifier('WithDefaultProps')),
+      ts.factory.createNamedImports([
+        ts.factory.createImportSpecifier(
+          undefined,
+          ts.factory.createIdentifier('WithDefaultProps'),
+        ),
       ]),
     ),
-    ts.createStringLiteral(':ts-utils/types/WithDefaultProps'),
+    ts.factory.createStringLiteral(':ts-utils/types/WithDefaultProps'),
   );
 }
 

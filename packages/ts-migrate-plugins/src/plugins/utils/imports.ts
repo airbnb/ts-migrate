@@ -63,11 +63,11 @@ export function updateImports(
       importClause.name &&
       !usedIdentifiers.has(importClause.name.text)
     ) {
-      importClause = ts.updateImportClause(
+      importClause = ts.factory.updateImportClause(
         importClause,
+        importClause.isTypeOnly,
         undefined,
         importClause.namedBindings,
-        importClause.isTypeOnly,
       );
     }
 
@@ -83,11 +83,11 @@ export function updateImports(
       .filter(isModuleSpecifier)
       .filter(isNotAdded);
     if (nameToAdd.length > 0 && importClause.name == null) {
-      importClause = ts.updateImportClause(
+      importClause = ts.factory.updateImportClause(
         importClause,
-        ts.createIdentifier(nameToAdd[0].defaultImport),
-        importClause.namedBindings,
         importClause.isTypeOnly,
+        ts.factory.createIdentifier(nameToAdd[0].defaultImport),
+        importClause.namedBindings,
       );
       added.add(nameToAdd[0]);
     }
@@ -98,11 +98,11 @@ export function updateImports(
       ts.isNamespaceImport(importClause.namedBindings) &&
       !usedIdentifiers.has(importClause.namedBindings.name.text)
     ) {
-      importClause = ts.updateImportClause(
+      importClause = ts.factory.updateImportClause(
         importClause,
+        importClause.isTypeOnly,
         importClause.name,
         undefined,
-        importClause.isTypeOnly,
       );
     }
 
@@ -129,13 +129,13 @@ export function updateImports(
         .forEach((cur) => added.add(cur));
 
       if (elements.length !== importClause.namedBindings.elements.length) {
-        importClause = ts.updateImportClause(
+        importClause = ts.factory.updateImportClause(
           importClause,
+          importClause.isTypeOnly,
           importClause.name,
           elements.length > 0
-            ? ts.updateNamedImports(importClause.namedBindings, elements)
+            ? ts.factory.updateNamedImports(importClause.namedBindings, elements)
             : undefined,
-          importClause.isTypeOnly,
         );
       }
     }
@@ -145,18 +145,21 @@ export function updateImports(
       .filter(isModuleSpecifier)
       .filter(isNotAdded);
     if (namedToAdd.length > 0) {
-      importClause = ts.updateImportClause(
+      importClause = ts.factory.updateImportClause(
         importClause,
+        importClause.isTypeOnly,
         importClause.name,
-        ts.createNamedImports([
+        ts.factory.createNamedImports([
           ...(importClause.namedBindings && ts.isNamedImports(importClause.namedBindings)
             ? importClause.namedBindings.elements
             : []),
           ...namedToAdd.map((cur) =>
-            ts.createImportSpecifier(undefined, ts.createIdentifier(cur.namedImport)),
+            ts.factory.createImportSpecifier(
+              undefined,
+              ts.factory.createIdentifier(cur.namedImport),
+            ),
           ),
         ]),
-        importClause.isTypeOnly,
       );
       namedToAdd.forEach((cur) => added.add(cur));
     }
@@ -176,7 +179,7 @@ export function updateImports(
       }
 
       if (numImports > 0) {
-        const upImpDec = ts.updateImportDeclaration(
+        const upImpDec = ts.factory.updateImportDeclaration(
           importDeclaration,
           importDeclaration.decorators,
           importDeclaration.modifiers,
@@ -220,41 +223,51 @@ export function updateImports(
 
       const namedImports =
         namedToAdd.length > 0
-          ? ts.createNamedImports(
+          ? ts.factory.createNamedImports(
               namedToAdd.map((cur) =>
-                ts.createImportSpecifier(undefined, ts.createIdentifier(cur.namedImport)),
+                ts.factory.createImportSpecifier(
+                  undefined,
+                  ts.factory.createIdentifier(cur.namedImport),
+                ),
               ),
             )
           : undefined;
 
       if (nameToAdd.length <= 1) {
         nodes.push(
-          ts.createImportDeclaration(
+          ts.factory.createImportDeclaration(
             undefined,
             undefined,
-            ts.createImportClause(
-              nameToAdd.length === 1 ? ts.createIdentifier(nameToAdd[0].defaultImport) : undefined,
+            ts.factory.createImportClause(
+              false,
+              nameToAdd.length === 1
+                ? ts.factory.createIdentifier(nameToAdd[0].defaultImport)
+                : undefined,
               namedImports,
             ),
-            ts.createStringLiteral(moduleSpecifier),
+            ts.factory.createStringLiteral(moduleSpecifier),
           ),
         );
       } else {
         nodes.push(
-          ts.createImportDeclaration(
+          ts.factory.createImportDeclaration(
             undefined,
             undefined,
-            ts.createImportClause(undefined, namedImports),
-            ts.createStringLiteral(moduleSpecifier),
+            ts.factory.createImportClause(false, undefined, namedImports),
+            ts.factory.createStringLiteral(moduleSpecifier),
           ),
         );
         nameToAdd.forEach((cur) => {
           nodes.push(
-            ts.createImportDeclaration(
+            ts.factory.createImportDeclaration(
               undefined,
               undefined,
-              ts.createImportClause(ts.createIdentifier(cur.defaultImport), undefined),
-              ts.createStringLiteral(moduleSpecifier),
+              ts.factory.createImportClause(
+                false,
+                ts.factory.createIdentifier(cur.defaultImport),
+                undefined,
+              ),
+              ts.factory.createStringLiteral(moduleSpecifier),
             ),
           );
         });

@@ -29,24 +29,24 @@ const examplePluginTs: Plugin<Options> = {
 
       if (options.shouldReplaceText && hasTwoParams && multiplierReturn) {
         // create a new function declaration with a new type
-        const newFunctionDeclaration = ts.createFunctionDeclaration(
+        const newFunctionDeclaration = ts.factory.createFunctionDeclaration(
           functionDeclaration.decorators,
           functionDeclaration.modifiers,
           functionDeclaration.asteriskToken,
           functionDeclaration.name,
           functionDeclaration.typeParameters,
           functionDeclaration.parameters.map((x) =>
-            ts.createParameter(
+            ts.factory.createParameterDeclaration(
               x.decorators,
               x.modifiers,
               x.dotDotDotToken,
               x.name,
               x.questionToken,
-              ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
+              ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
               x.initializer,
             ),
           ),
-          ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
+          ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
           functionDeclaration.body,
         );
 
