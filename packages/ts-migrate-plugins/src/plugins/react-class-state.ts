@@ -59,9 +59,9 @@ const reactClassStatePlugin: Plugin<Options> = {
         const stateTypeName = getStateTypeName();
         const anyType =
           options.anyAlias != null
-            ? ts.createTypeReferenceNode(options.anyAlias, undefined)
-            : ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
-        const newStateType = ts.createTypeAliasDeclaration(
+            ? ts.factory.createTypeReferenceNode(options.anyAlias, undefined)
+            : ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+        const newStateType = ts.factory.createTypeAliasDeclaration(
           undefined,
           undefined,
           stateTypeName,
@@ -81,14 +81,10 @@ const reactClassStatePlugin: Plugin<Options> = {
           length: heritageType.end - heritageType.pos,
           text: ` ${printer.printNode(
             ts.EmitHint.Unspecified,
-            ts.updateExpressionWithTypeArguments(
-              heritageType,
-              [
-                propsType || ts.createTypeLiteralNode([]),
-                ts.createTypeReferenceNode(stateTypeName, undefined),
-              ],
-              heritageType.expression,
-            ),
+            ts.factory.updateExpressionWithTypeArguments(heritageType, heritageType.expression, [
+              propsType || ts.factory.createTypeLiteralNode([]),
+              ts.factory.createTypeReferenceNode(stateTypeName, undefined),
+            ]),
             sourceFile,
           )}`,
         });

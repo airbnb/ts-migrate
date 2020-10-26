@@ -15,8 +15,8 @@ type Options = {
 
 const hoistClassStaticsPlugin: Plugin<Options> = {
   name: 'hoist-class-statics',
-  run({ fileName, text, options }) {
-    return hoistStaticClassProperties(fileName, text, options);
+  run({ sourceFile, text, options }) {
+    return hoistStaticClassProperties(sourceFile, text, options);
   },
 };
 
@@ -90,11 +90,10 @@ function isAlreadyHoisted(
 }
 
 function hoistStaticClassProperties(
-  fileName: string,
+  sourceFile: ts.SourceFile,
   sourceText: string,
   options: Options,
 ): string {
-  const sourceFile = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true);
   const printer = ts.createPrinter();
   const updates: SourceTextUpdate[] = [];
 
@@ -126,9 +125,9 @@ function hoistStaticClassProperties(
           canHoistExpression(statement.expression.right, classDeclaration.pos, knownDefinitions)
         ) {
           properties.push(
-            ts.createProperty(
+            ts.factory.createPropertyDeclaration(
               undefined,
-              [ts.createModifier(ts.SyntaxKind.StaticKeyword)],
+              [ts.factory.createModifier(ts.SyntaxKind.StaticKeyword)],
               statement.expression.left.name.text,
               undefined,
               undefined,
@@ -143,14 +142,14 @@ function hoistStaticClassProperties(
         } else {
           // otherwise add a static type annotation for this expression
           properties.push(
-            ts.createProperty(
+            ts.factory.createPropertyDeclaration(
               undefined,
-              [ts.createModifier(ts.SyntaxKind.StaticKeyword)],
+              [ts.factory.createModifier(ts.SyntaxKind.StaticKeyword)],
               statement.expression.left.name.text,
               undefined,
               options.anyAlias != null
-                ? ts.createTypeReferenceNode(options.anyAlias, undefined)
-                : ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+                ? ts.factory.createTypeReferenceNode(options.anyAlias, undefined)
+                : ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
               undefined,
             ),
           );
@@ -160,14 +159,14 @@ function hoistStaticClassProperties(
 
     if (properties.length > 0) {
       if (classDeclaration.members.length === 0) {
-        const updatedClassDeclaration = ts.updateClassDeclaration(
+        const updatedClassDeclaration = ts.factory.updateClassDeclaration(
           classDeclaration,
           classDeclaration.decorators,
           classDeclaration.modifiers,
           classDeclaration.name,
           classDeclaration.typeParameters,
           classDeclaration.heritageClauses,
-          ts.createNodeArray(properties),
+          ts.factory.createNodeArray(properties),
         );
 
         let index = classDeclaration.pos;

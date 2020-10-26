@@ -51,9 +51,11 @@ export default function getTypeFromPropTypesObjectLiteral(
     }
   }
 
-  let node: ts.TypeLiteralNode | ts.IntersectionTypeNode = ts.createTypeLiteralNode(members);
+  let node: ts.TypeLiteralNode | ts.IntersectionTypeNode = ts.factory.createTypeLiteralNode(
+    members,
+  );
   if (intersectionTypes.length > 0) {
-    node = ts.createIntersectionTypeNode([node, ...intersectionTypes]);
+    node = ts.factory.createIntersectionTypeNode([node, ...intersectionTypes]);
   }
   if (comments.length > 0) {
     node = ts.addSyntheticLeadingComment(
@@ -93,12 +95,11 @@ function convertPropertyAssignment(
 
   const typeNode = getTypeFromPropTypeExpression(typeExpression, sourceFile, params);
 
-  let propertySignature = ts.createPropertySignature(
+  let propertySignature = ts.factory.createPropertySignature(
     undefined,
     name,
-    isRequired ? undefined : ts.createToken(ts.SyntaxKind.QuestionToken),
+    isRequired ? undefined : ts.factory.createToken(ts.SyntaxKind.QuestionToken),
     typeNode,
-    undefined,
   );
   propertySignature = ts.moveSyntheticComments(propertySignature, typeNode);
   return propertySignature;
@@ -133,67 +134,75 @@ function getTypeFromPropTypeExpression(
      * PropTypes.any,
      */
     if (/string/.test(text)) {
-      result = ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword);
+      result = ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword);
     } else if (/any/.test(text)) {
       if (anyAlias) {
-        result = ts.createTypeReferenceNode(anyAlias, undefined);
+        result = ts.factory.createTypeReferenceNode(anyAlias, undefined);
       } else {
-        result = ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+        result = ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
       }
     } else if (/array/.test(text)) {
       if (anyAlias) {
-        result = ts.createArrayTypeNode(ts.createTypeReferenceNode(anyAlias, undefined));
-      } else {
-        result = ts.createArrayTypeNode(ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword));
-      }
-    } else if (/bool/.test(text)) {
-      result = ts.createKeywordTypeNode(ts.SyntaxKind.BooleanKeyword);
-    } else if (/number/.test(text)) {
-      result = ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword);
-    } else if (/object/.test(text)) {
-      if (anyAlias) {
-        result = ts.createTypeReferenceNode(anyAlias, undefined);
-      } else {
-        result = ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
-      }
-    } else if (/node/.test(text)) {
-      result = ts.createTypeReferenceNode('React.ReactNode', undefined);
-    } else if (/element/.test(text)) {
-      result = ts.createTypeReferenceNode('React.ReactElement', undefined);
-    } else if (/func/.test(text)) {
-      if (anyFunctionAlias) {
-        result = ts.createTypeReferenceNode(anyFunctionAlias, undefined);
-      } else if (anyAlias) {
-        result = ts.createFunctionTypeNode(
-          undefined,
-          [
-            ts.createParameter(
-              undefined,
-              undefined,
-              ts.createToken(ts.SyntaxKind.DotDotDotToken),
-              'args',
-              undefined,
-              ts.createArrayTypeNode(ts.createTypeReferenceNode(anyAlias, undefined)),
-              undefined,
-            ),
-          ],
-          ts.createTypeReferenceNode(anyAlias, undefined),
+        result = ts.factory.createArrayTypeNode(
+          ts.factory.createTypeReferenceNode(anyAlias, undefined),
         );
       } else {
-        result = ts.createFunctionTypeNode(
+        result = ts.factory.createArrayTypeNode(
+          ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+        );
+      }
+    } else if (/bool/.test(text)) {
+      result = ts.factory.createKeywordTypeNode(ts.SyntaxKind.BooleanKeyword);
+    } else if (/number/.test(text)) {
+      result = ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword);
+    } else if (/object/.test(text)) {
+      if (anyAlias) {
+        result = ts.factory.createTypeReferenceNode(anyAlias, undefined);
+      } else {
+        result = ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+      }
+    } else if (/node/.test(text)) {
+      result = ts.factory.createTypeReferenceNode('React.ReactNode', undefined);
+    } else if (/element/.test(text)) {
+      result = ts.factory.createTypeReferenceNode('React.ReactElement', undefined);
+    } else if (/func/.test(text)) {
+      if (anyFunctionAlias) {
+        result = ts.factory.createTypeReferenceNode(anyFunctionAlias, undefined);
+      } else if (anyAlias) {
+        result = ts.factory.createFunctionTypeNode(
           undefined,
           [
-            ts.createParameter(
+            ts.factory.createParameterDeclaration(
               undefined,
               undefined,
-              ts.createToken(ts.SyntaxKind.DotDotDotToken),
+              ts.factory.createToken(ts.SyntaxKind.DotDotDotToken),
               'args',
               undefined,
-              ts.createArrayTypeNode(ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)),
+              ts.factory.createArrayTypeNode(
+                ts.factory.createTypeReferenceNode(anyAlias, undefined),
+              ),
               undefined,
             ),
           ],
-          ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+          ts.factory.createTypeReferenceNode(anyAlias, undefined),
+        );
+      } else {
+        result = ts.factory.createFunctionTypeNode(
+          undefined,
+          [
+            ts.factory.createParameterDeclaration(
+              undefined,
+              undefined,
+              ts.factory.createToken(ts.SyntaxKind.DotDotDotToken),
+              'args',
+              undefined,
+              ts.factory.createArrayTypeNode(
+                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+              ),
+              undefined,
+            ),
+          ],
+          ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
         );
       }
     }
@@ -211,9 +220,9 @@ function getTypeFromPropTypeExpression(
       const argument = node.arguments[0];
       if (ts.isArrayLiteralExpression(argument)) {
         if (argument.elements.every((elm) => ts.isStringLiteral(elm) || ts.isNumericLiteral(elm))) {
-          result = ts.createUnionTypeNode(
+          result = ts.factory.createUnionTypeNode(
             (argument.elements as ts.NodeArray<ts.StringLiteral | ts.NumericLiteral>).map((elm) =>
-              ts.createLiteralTypeNode(elm),
+              ts.factory.createLiteralTypeNode(elm),
             ),
           );
         }
@@ -222,7 +231,7 @@ function getTypeFromPropTypeExpression(
       const argument = node.arguments[0];
       if (ts.isArrayLiteralExpression(argument)) {
         const children: ts.Node[] = [];
-        result = ts.createUnionTypeNode(
+        result = ts.factory.createUnionTypeNode(
           argument.elements.map((elm) => {
             const child = getTypeFromPropTypeExpression(elm, sourceFile, params);
             children.push(child);
@@ -237,25 +246,25 @@ function getTypeFromPropTypeExpression(
       const argument = node.arguments[0];
       if (argument) {
         const child = getTypeFromPropTypeExpression(argument, sourceFile, params);
-        result = ts.createArrayTypeNode(child);
+        result = ts.factory.createArrayTypeNode(child);
         result = ts.moveSyntheticComments(result, child);
       }
     } else if (/objectOf$/.test(expressionText)) {
       const argument = node.arguments[0];
       if (argument) {
         const child = getTypeFromPropTypeExpression(argument, sourceFile, params);
-        result = ts.createTypeLiteralNode([
-          ts.createIndexSignature(
+        result = ts.factory.createTypeLiteralNode([
+          ts.factory.createIndexSignature(
             undefined,
             undefined,
             [
-              ts.createParameter(
+              ts.factory.createParameterDeclaration(
                 undefined,
                 undefined,
                 undefined,
                 'key',
                 undefined,
-                ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+                ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
               ),
             ],
             child,
@@ -270,12 +279,12 @@ function getTypeFromPropTypeExpression(
       }
     }
   } else if (ts.isIdentifier(node) && node.text === 'textlike') {
-    result = ts.createUnionTypeNode([
-      ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
-      ts.createTypeReferenceNode('React.ReactNode', undefined),
+    result = ts.factory.createUnionTypeNode([
+      ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+      ts.factory.createTypeReferenceNode('React.ReactNode', undefined),
     ]);
   } else if (ts.isIdentifier(node)) {
-    result = ts.createTypeReferenceNode(node.text, undefined);
+    result = ts.factory.createTypeReferenceNode(node.text, undefined);
   }
 
   /**
@@ -284,9 +293,9 @@ function getTypeFromPropTypeExpression(
    */
   if (!result) {
     if (anyAlias) {
-      result = ts.createTypeReferenceNode(anyAlias, undefined);
+      result = ts.factory.createTypeReferenceNode(anyAlias, undefined);
     } else {
-      result = ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+      result = ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
     }
 
     // Add comment about what the original proptype was.

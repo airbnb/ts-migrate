@@ -32,6 +32,7 @@ const accessibilityMask =
 const memberAccessibilityTransformerFactory = (options: Options) => (
   context: ts.TransformationContext,
 ) => {
+  const { factory } = context;
   let defaultAccessibility: ts.ModifierFlags;
   switch (options.defaultAccessibility) {
     case 'private':
@@ -77,8 +78,8 @@ const memberAccessibilityTransformerFactory = (options: Options) => (
       }
 
       const newNode = ts.getMutableClone(node) as any;
-      newNode.modifiers = ts.createNodeArray(
-        ts.createModifiersFromModifierFlags(modifierFlags | accessibilityFlag),
+      newNode.modifiers = factory.createNodeArray(
+        factory.createModifiersFromModifierFlags(modifierFlags | accessibilityFlag),
       );
       return newNode;
     }

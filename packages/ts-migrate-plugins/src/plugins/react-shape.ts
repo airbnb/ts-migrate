@@ -50,13 +50,13 @@ const reactShapePlugin: Plugin<Options> = {
         length: EXPORT_KEYWOARD.length + 1,
       });
 
-      const newExport = ts.createExportDeclaration(
+      const newExport = ts.factory.createExportDeclaration(
         undefined,
         undefined,
-        ts.createNamedExports([
-          ts.createExportSpecifier(undefined, ts.createIdentifier(shapeName)),
+        false,
+        ts.factory.createNamedExports([
+          ts.factory.createExportSpecifier(undefined, ts.factory.createIdentifier(shapeName)),
         ]),
-        undefined,
       );
       updates.push({
         kind: 'insert',
@@ -106,9 +106,10 @@ const reactShapePlugin: Plugin<Options> = {
                 )}`,
               });
             }
-            const updatedVariableDeclaration = ts.updateVariableDeclaration(
+            const updatedVariableDeclaration = ts.factory.updateVariableDeclaration(
               variableDeclaration,
               variableDeclaration.name,
+              undefined,
               getShapeTypeNode(shapeName),
               variableDeclaration.initializer,
             );
@@ -179,10 +180,17 @@ const reactShapePlugin: Plugin<Options> = {
           length: node.end,
           text: `${ts.sys.newLine}${printer.printNode(
             ts.EmitHint.Unspecified,
-            ts.createVariableStatement(
+            ts.factory.createVariableStatement(
               [],
-              ts.createVariableDeclarationList(
-                [ts.createVariableDeclaration(shapeName, getShapeTypeNode(shapeName), shapeNode)],
+              ts.factory.createVariableDeclarationList(
+                [
+                  ts.factory.createVariableDeclaration(
+                    shapeName,
+                    undefined,
+                    getShapeTypeNode(shapeName),
+                    shapeNode,
+                  ),
+                ],
                 ts.NodeFlags.Const,
               ),
             ),
@@ -192,11 +200,11 @@ const reactShapePlugin: Plugin<Options> = {
 
         const exportShapeExpression = `${ts.sys.newLine}${printer.printNode(
           ts.EmitHint.Unspecified,
-          ts.createExportAssignment(
+          ts.factory.createExportAssignment(
             undefined,
             undefined,
             undefined,
-            ts.createIdentifier(shapeName),
+            ts.factory.createIdentifier(shapeName),
           ),
           sourceFile,
         )}`;
@@ -228,12 +236,12 @@ function getTypeForTheShape(
       spreadReplacements: [],
     },
   );
-  const propsTypeAlias = ts.createTypeAliasDeclaration(
+  const propsTypeAlias = ts.factory.createTypeAliasDeclaration(
     undefined,
     undefined,
     shapeName,
     undefined,
-    isArrayShapeType ? ts.createArrayTypeNode(shapeTypeVariable) : shapeTypeVariable,
+    isArrayShapeType ? ts.factory.createArrayTypeNode(shapeTypeVariable) : shapeTypeVariable,
   );
   return ts.moveSyntheticComments(propsTypeAlias, shapeTypeVariable);
 }
@@ -251,19 +259,22 @@ function isPropTypesArrayOfShapes(node: ts.CallExpression) {
 }
 
 function getPropTypesImportNode() {
-  return ts.createImportDeclaration(
+  return ts.factory.createImportDeclaration(
     undefined,
     undefined,
-    ts.createImportClause(ts.createIdentifier('PropTypes'), undefined),
-    ts.createStringLiteral('prop-types'),
+    ts.factory.createImportClause(false, ts.factory.createIdentifier('PropTypes'), undefined),
+    ts.factory.createStringLiteral('prop-types'),
   );
 }
 
 // @TODO: PropTypes.Requireable<ShapeType> doesn't works with react-validators Shapes
 function getShapeTypeNode(shapeName: string) {
-  return ts.createTypeReferenceNode(
-    ts.createQualifiedName(ts.createIdentifier('PropTypes'), ts.createIdentifier('Requireable')),
-    [ts.createTypeReferenceNode(ts.createIdentifier(shapeName), undefined)],
+  return ts.factory.createTypeReferenceNode(
+    ts.factory.createQualifiedName(
+      ts.factory.createIdentifier('PropTypes'),
+      ts.factory.createIdentifier('Requireable'),
+    ),
+    [ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(shapeName), undefined)],
   );
 }
 

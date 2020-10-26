@@ -96,7 +96,7 @@ const spreadReplacements: SpreadReplacement[] = [
       namedImport: 'withStylesPropTypes',
       moduleSpecifier: ':dls-themes/withStyles',
     },
-    typeRef: ts.createTypeReferenceNode('WithStylesProps', undefined),
+    typeRef: ts.factory.createTypeReferenceNode('WithStylesProps', undefined),
     typeImport: {
       namedImport: 'WithStylesProps',
       moduleSpecifier: ':dls-themes/withStyles',
@@ -108,7 +108,7 @@ const spreadReplacements: SpreadReplacement[] = [
       namedImport: 'withBreakpointPropTypes',
       moduleSpecifier: ':dls-core/components/breakpoints/withBreakpoint',
     },
-    typeRef: ts.createTypeReferenceNode('WithBreakpointProps', undefined),
+    typeRef: ts.factory.createTypeReferenceNode('WithBreakpointProps', undefined),
     typeImport: {
       namedImport: 'WithBreakpointProps',
       moduleSpecifier: ':dls-core/components/breakpoints/withBreakpoint',
@@ -120,8 +120,8 @@ const spreadReplacements: SpreadReplacement[] = [
       defaultImport: 'withRouterPropTypes',
       moduleSpecifier: ':routing/shapes/RR4PropTypes',
     },
-    typeRef: ts.createTypeReferenceNode('RouteConfigComponentProps', [
-      ts.createTypeLiteralNode([]),
+    typeRef: ts.factory.createTypeReferenceNode('RouteConfigComponentProps', [
+      ts.factory.createTypeLiteralNode([]),
     ]),
     typeImport: {
       namedImport: 'RouteConfigComponentProps',
@@ -181,13 +181,13 @@ function updatePropTypes(
             length: forwardRefComponent.expression.end - forwardRefComponent.expression.pos,
             text: ` ${printer.printNode(
               ts.EmitHint.Unspecified,
-              ts.updateExpressionWithTypeArguments(
+              ts.factory.updateExpressionWithTypeArguments(
                 forwardRefComponent as any,
-                [
-                  ts.createTypeReferenceNode(options.anyAlias || 'any', undefined),
-                  ts.createTypeReferenceNode(propsTypeName, undefined),
-                ].filter(isNotNull) as any,
                 forwardRefComponent.expression,
+                [
+                  ts.factory.createTypeReferenceNode(options.anyAlias || 'any', undefined),
+                  ts.factory.createTypeReferenceNode(propsTypeName, undefined),
+                ].filter(isNotNull) as any,
               ),
               sourceFile,
             )}`,
@@ -199,14 +199,14 @@ function updatePropTypes(
             length: propsParam.end - propsParam.pos,
             text: printer.printNode(
               ts.EmitHint.Unspecified,
-              ts.updateParameter(
+              ts.factory.updateParameterDeclaration(
                 propsParam,
                 propsParam.decorators,
                 propsParam.modifiers,
                 propsParam.dotDotDotToken,
                 propsParam.name,
                 propsParam.questionToken,
-                ts.createTypeReferenceNode(propsTypeName, undefined),
+                ts.factory.createTypeReferenceNode(propsTypeName, undefined),
                 propsParam.initializer,
               ),
               sourceFile,
@@ -235,12 +235,12 @@ function updatePropTypes(
           length: heritageType.end - heritageType.pos,
           text: ` ${printer.printNode(
             ts.EmitHint.Unspecified,
-            ts.updateExpressionWithTypeArguments(
+            ts.factory.updateExpressionWithTypeArguments(
               heritageType,
-              [ts.createTypeReferenceNode(propsTypeName, undefined), stateType].filter(
+              heritageType.expression,
+              [ts.factory.createTypeReferenceNode(propsTypeName, undefined), stateType].filter(
                 isNotNull,
               ) as any,
-              heritageType.expression,
             ),
             sourceFile,
           )}`,
@@ -277,7 +277,7 @@ function updateObjectLiteral(
     spreadReplacements,
     propTypeIdentifiers,
   });
-  let propsTypeAlias = ts.createTypeAliasDeclaration(
+  let propsTypeAlias = ts.factory.createTypeAliasDeclaration(
     undefined,
     undefined,
     propsTypeName,
