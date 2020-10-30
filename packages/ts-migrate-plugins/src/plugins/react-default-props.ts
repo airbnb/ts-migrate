@@ -20,6 +20,8 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
     const importDeclarations = sourceFile.statements.filter(ts.isImportDeclaration);
     const expressionStatements = sourceFile.statements.filter(ts.isExpressionStatement);
     const classDeclarations = sourceFile.statements.filter(ts.isClassDeclaration);
+    const interfaceDeclarations = sourceFile.statements.filter(ts.isInterfaceDeclaration);
+
     // sfcs default props assignments
     const sfcsDefaultPropsAssignments = expressionStatements.filter(
       (expressionStatement) =>
@@ -75,6 +77,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
       propsTypeName: string,
       newTypeInsertPos: number,
       componentTypeReference: ts.TypeReferenceNode,
+      componentName: string,
     ) => {
       // we don't want process props types more than once
       if (processedPropTypes.get(propsTypeName) === defaultPropsTypeName) return;
@@ -119,7 +122,18 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
         );
 
       // rename type PropName -> type OwnPropName
-      const updatedPropTypesName = doesPropsTypeHaveExport ? propsTypeName : `Own${propsTypeName}`;
+      let updatedProptypesName = `Own${propsTypeName}`;
+      // not an ideal way to prevent a double declaration of the OwnPropname,
+      // however, this should cover most of the cases
+      const alreadyHaveUpdatedName =
+        interfaceDeclarations.some((node) => node.name.text.includes(updatedProptypesName)) ||
+        typeAliasDeclarations.some((node) => node.name.text.includes(updatedProptypesName));
+
+      updatedProptypesName = alreadyHaveUpdatedName
+        ? `Own${componentName}${propsTypeName}`
+        : updatedProptypesName;
+
+      const updatedPropTypesName = doesPropsTypeHaveExport ? propsTypeName : updatedProptypesName;
       const updatedPropTypeAlias = ts.factory.updateTypeAliasDeclaration(
         propsTypeAliasDeclaration,
         propsTypeAliasDeclaration.decorators,
@@ -256,6 +270,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
             propsTypeName,
             newTypeInsertPos,
             componentDeclaration.parameters[0].type,
+            componentName,
           );
         }
       }
@@ -322,6 +337,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
           propsTypeName,
           newTypeInsertPos,
           propsTypeReferenceNode,
+          componentName,
         );
       }
     });
