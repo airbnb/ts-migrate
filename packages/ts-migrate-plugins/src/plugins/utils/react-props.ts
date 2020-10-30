@@ -274,7 +274,7 @@ function getTypeFromPropTypeExpression(
       }
     } else if (/shape$/.test(expressionText)) {
       const argument = node.arguments[0];
-      if (ts.isObjectLiteralExpression(argument)) {
+      if (argument && ts.isObjectLiteralExpression(argument)) {
         return getTypeFromPropTypesObjectLiteral(argument, sourceFile, params);
       }
     }

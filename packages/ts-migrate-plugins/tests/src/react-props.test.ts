@@ -1149,4 +1149,74 @@ const Foo = ({ children, className }: Props) => {
 
 export default Foo;`);
   });
+
+  it('do not crash on the Types.shape()', async () => {
+    const text = `
+import React from 'react';
+import Types from 'prop-types';
+import Link from ':dls-legacy-16/components/deprecated/Link_20190703';
+import Spacing from ':dls-legacy-16/components/exp/Spacing';
+const propTypes = {
+  subtitle: Types.string.isRequired,
+  learnMoreLinkText: Types.string.isRequired,
+  paymentPlanModalContent: Types.shape().isRequired,
+  showPaymentPlanModal: Types.func.isRequired,
+};
+export default class PaymentPlanOptionExplanation extends React.PureComponent {
+  render() {
+    const {
+      subtitle,
+      learnMoreLinkText,
+      paymentPlanModalContent,
+      showPaymentPlanModal,
+    } = this.props;
+    return (
+      <div>
+        {subtitle}
+        <Spacing left={0.5} inline>
+          <Link onPress={() => showPaymentPlanModal(paymentPlanModalContent)}>
+            {learnMoreLinkText}
+          </Link>
+        </Spacing>
+      </div>
+    );
+  }
+}
+PaymentPlanOptionExplanation.propTypes = propTypes;
+`;
+
+    const result = await reactPropsPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
+
+    expect(result).toBe(`
+import React from 'react';
+import Link from ':dls-legacy-16/components/deprecated/Link_20190703';
+import Spacing from ':dls-legacy-16/components/exp/Spacing';
+type Props = {
+    subtitle: string;
+    learnMoreLinkText: string;
+    paymentPlanModalContent: any; // TODO: Types.shape()
+    showPaymentPlanModal: (...args: any[]) => any;
+};
+export default class PaymentPlanOptionExplanation extends React.PureComponent<Props> {
+  render() {
+    const {
+      subtitle,
+      learnMoreLinkText,
+      paymentPlanModalContent,
+      showPaymentPlanModal,
+    } = this.props;
+    return (
+      <div>
+        {subtitle}
+        <Spacing left={0.5} inline>
+          <Link onPress={() => showPaymentPlanModal(paymentPlanModalContent)}>
+            {learnMoreLinkText}
+          </Link>
+        </Spacing>
+      </div>
+    );
+  }
+}
+`);
+  });
 });
