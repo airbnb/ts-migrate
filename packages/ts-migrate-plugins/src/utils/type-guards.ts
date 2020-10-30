@@ -1,17 +1,17 @@
-import tsp from 'typescript/lib/protocol';
+import ts from 'typescript';
 
 export function isDiagnosticWithLinePosition(
-  diagnostic: tsp.Diagnostic | tsp.DiagnosticWithLinePosition | undefined,
-): diagnostic is tsp.DiagnosticWithLinePosition {
+  diagnostic: ts.Diagnostic | ts.DiagnosticWithLocation | undefined,
+): diagnostic is ts.DiagnosticWithLocation {
   return (
     diagnostic != null &&
-    (diagnostic as tsp.DiagnosticWithLinePosition).startLocation !== undefined &&
-    (diagnostic as tsp.DiagnosticWithLinePosition).endLocation !== undefined
+    (diagnostic as ts.DiagnosticWithLocation).start !== undefined &&
+    (diagnostic as ts.DiagnosticWithLocation).length !== undefined
   );
 }
 
 export function isDiagnostic(
-  diagnostic: tsp.Diagnostic | tsp.DiagnosticWithLinePosition | undefined,
-): diagnostic is tsp.Diagnostic {
+  diagnostic: ts.Diagnostic | ts.DiagnosticWithLocation | undefined,
+): diagnostic is ts.Diagnostic {
   return diagnostic != null && !isDiagnosticWithLinePosition(diagnostic);
 }

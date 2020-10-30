@@ -21,7 +21,7 @@ import {
   tsIgnorePlugin,
   Plugin,
 } from 'ts-migrate-plugins';
-import { forkTSServer, migrate, MigrateConfig } from 'ts-migrate-server';
+import { migrate, MigrateConfig } from 'ts-migrate-server';
 import init from './commands/init';
 import rename from './commands/rename';
 
@@ -146,15 +146,7 @@ yargs
           .addPlugin(eslintFixPlugin, {});
       }
 
-      const server = forkTSServer();
-
-      process.on('exit', () => {
-        server.kill();
-      });
-
-      const exitCode = await migrate({ rootDir, config, server });
-
-      server.kill();
+      const exitCode = await migrate({ rootDir, config });
 
       process.exit(exitCode);
     },
@@ -165,11 +157,6 @@ yargs
     (cmd) => cmd.positional('folder', { type: 'string' }).require(['folder']),
     async (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
-      const server = forkTSServer();
-
-      process.on('exit', () => {
-        server.kill();
-      });
 
       const changedFiles = new Map<string, string>();
       function withChangeTracking(plugin: Plugin<unknown>): Plugin<unknown> {
@@ -200,9 +187,7 @@ yargs
         .addPlugin(withChangeTracking(tsIgnorePlugin), {})
         .addPlugin(eslintFixChangedPlugin, {});
 
-      const exitCode = await migrate({ rootDir, config, server });
-
-      server.kill();
+      const exitCode = await migrate({ rootDir, config });
 
       process.exit(exitCode);
     },

@@ -22,25 +22,17 @@ Or [yarn](https://yarnpkg.com):
 ```typescript
 import path from 'path';
 import { tsIgnorePlugin } from 'ts-migrate-plugins';
-import { forkTSServer, migrate, MigrateConfig } from 'ts-migrate-server';
+import { migrate, MigrateConfig } from 'ts-migrate-server';
 
 // get input files folder
 const inputDir = path.resolve(__dirname, 'input');
-
-// initialize a typescript server
-const server = forkTSServer();
-process.on('exit', () => {
-  server.kill();
-});
 
 // create new migration config and add ts-ignore plugin with empty options
 const config = new MigrateConfig().addPlugin(tsIgnorePlugin, {});
 
 // run migration
-const exitCode = await migrate({ rootDir: inputDir, config, server });
+const exitCode = await migrate({ rootDir: inputDir, config });
 
-// kill server
-server.kill();
 process.exit(exitCode);
 ```
 

@@ -1,6 +1,6 @@
 # ts-migrate-server
 
-`ts-migrate-server` is a package that contains the main migration runner and spawns a TSServer process.
+`ts-migrate-server` is a package that contains the main migration runner.
 `ts-migrate-server` is designed around Airbnb projects. Use at your own risk.
 
 # Install
@@ -18,25 +18,17 @@ Or [yarn](https://yarnpkg.com):
 
 ```typescript
 import path from 'path';
-import { forkTSServer, migrate, MigrateConfig } from 'ts-migrate-server';
+import { migrate, MigrateConfig } from 'ts-migrate-server';
 
 // get input files folder
 const inputDir = path.resolve(__dirname, 'input');
-
-// initialize typescript server
-const server = forkTSServer();
-process.on('exit', () => {
-  server.kill();
-});
 
 // create new migration config. You can add your plugins there
 const config = new MigrateConfig();
 
 // run migration
-const exitCode = await migrate({ rootDir: inputDir, config, server });
+const exitCode = await migrate({ rootDir: inputDir, config });
 
-// kill server
-server.kill();
 process.exit(exitCode);
 ```
 
@@ -50,7 +42,7 @@ Another resource would be [source code](https://github.com/airbnb/ts-migrate/blo
 > Why not just use codemods?
 
 You actually can use [codemods](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-plugins/src/plugins/declare-missing-class-properties.ts) in your plugins!
-*ts-migrate-server* provides more standartalized API around TypeScript compiler usage and allows us to use the benefits of the TypeScript Server protocol.
+*ts-migrate-server* provides a more standardized API around TypeScript compiler usage and allows us to use the benefits of the TypeScript APIs without complicated setup.
 
 > I have an issue with a specific plugin, what should I do?
 

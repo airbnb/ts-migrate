@@ -1,6 +1,6 @@
 import jscodeshift, { Identifier, TSTypeAnnotation } from 'jscodeshift';
 import { Collection } from 'jscodeshift/src/Collection';
-import tsp from 'typescript/lib/protocol';
+import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 
@@ -8,11 +8,11 @@ type Options = { anyAlias?: string };
 
 const explicitAnyPlugin: Plugin<Options> = {
   name: 'explicit-any',
-  async run({ options, text, getDiagnostics }) {
-    const { semanticDiagnostics } = await getDiagnostics();
+  run({ options, text, getDiagnostics }) {
+    const { semanticDiagnostics } = getDiagnostics();
     const diagnostics = semanticDiagnostics
       .filter(isDiagnosticWithLinePosition)
-      .filter((d) => d.category === 'error');
+      .filter((d) => d.category === ts.DiagnosticCategory.Error);
     return withExplicitAny(text, diagnostics, options.anyAlias);
   },
 };
@@ -23,7 +23,7 @@ const j = jscodeshift.withParser('tsx');
 
 function withExplicitAny(
   text: string,
-  diagnostics: tsp.DiagnosticWithLinePosition[],
+  diagnostics: ts.DiagnosticWithLocation[],
   anyAlias?: string,
 ): string {
   const root = j(text);
@@ -61,7 +61,7 @@ function withExplicitAny(
 // TS7006: "Parameter '{0}' implicitly has an '{1}' type."
 function replaceTS7006(
   root: Collection<any>,
-  diagnostics: tsp.DiagnosticWithLinePosition[],
+  diagnostics: ts.DiagnosticWithLocation[],
   typeAnnotation: TSTypeAnnotation,
 ) {
   diagnostics.forEach((diagnostic) => {
@@ -103,7 +103,7 @@ function replaceTS7006(
 // TS7031: "Binding element '{0}' implicitly has an '{1}' type."
 function replaceTS7031(
   root: Collection<any>,
-  diagnostics: tsp.DiagnosticWithLinePosition[],
+  diagnostics: ts.DiagnosticWithLocation[],
   typeAnnotation: TSTypeAnnotation,
 ) {
   const getParentObjectPattern = (path: any) => {
@@ -142,7 +142,7 @@ function replaceTS7031(
 // TS7034: Variable '{0}' implicitly has type '{1}' in some locations where its type cannot be determined.
 function replaceTS7034(
   root: Collection<any>,
-  diagnostics: tsp.DiagnosticWithLinePosition[],
+  diagnostics: ts.DiagnosticWithLocation[],
   typeAnnotation: TSTypeAnnotation,
 ) {
   diagnostics.forEach((diagnostic) => {
@@ -169,7 +169,7 @@ function replaceTS7034(
 // TS2459: Type '{0}' has no property '{1}' and no string index signature.
 function replaceTS2459(
   root: Collection<any>,
-  diagnostics: tsp.DiagnosticWithLinePosition[],
+  diagnostics: ts.DiagnosticWithLocation[],
   typeAnnotation: TSTypeAnnotation,
 ) {
   diagnostics.forEach((diagnostic) => {
@@ -217,7 +217,7 @@ function replaceTS2459(
 // TS2525: Initializer provides no value for this binding element and the binding element has no default value.
 function replaceTS2525(
   root: Collection<any>,
-  diagnostics: tsp.DiagnosticWithLinePosition[],
+  diagnostics: ts.DiagnosticWithLocation[],
   typeAnnotation: TSTypeAnnotation,
 ) {
   diagnostics.forEach((diagnostic) => {
