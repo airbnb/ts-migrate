@@ -21,7 +21,7 @@ function getTextWithoutIgnores(sourceFile: ts.SourceFile): string {
     printerWithoutComments.printNode(ts.EmitHint.Unspecified, node, sourceFile);
 
   const { text } = sourceFile;
-  const regExp = /\/\/ *@ts-(?:ignore|expect-error)\b/g;
+  const regExp = /(\/\/|\/\*) *@ts-(?:ignore|expect-error)\b/g;
   let result: RegExpExecArray | null;
   // eslint-disable-next-line no-cond-assign
   while ((result = regExp.exec(text)) != null) {
