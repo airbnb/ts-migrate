@@ -105,4 +105,71 @@ describe('strip-ts-ignore plugin', () => {
 }
 `);
   });
+
+  it(`returns text without {/* @ts-ignores */}`, async () => {
+    const text = `import React from 'react'
+    import './App.css';
+
+
+    const a:any = {}
+    function App() {
+      const fn = () => {
+        // @ts-expect-error ts-migrate(2339) FIXME: Property 'b' does not exist on type '{}'.
+        console.log('ab', a.b)
+      }
+      return (
+        <div className="App">
+          <header className="App-header">
+            <p>
+      {/* @ts-expect-error ts-migrate(2339) FIXME: Property 'b' does not exist on type '{}'. */}
+      Edit <code>src/App.js {a.b}</code> and save to reload.
+            </p>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+
+            </a>
+          </header>
+        </div>
+      );
+    }
+
+    export default App;
+    `;
+    const result = await stripTSIgnorePlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
+
+    expect(result).toBe(`import React from 'react'
+    import './App.css';
+
+
+    const a:any = {}
+    function App() {
+      const fn = () => {
+        console.log('ab', a.b)
+      }
+      return (
+        <div className="App">
+          <header className="App-header">
+            <p>
+      Edit <code>src/App.js {a.b}</code> and save to reload.
+            </p>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+
+            </a>
+          </header>
+        </div>
+      );
+    }
+
+    export default App;
+    `);
+  });
 });
