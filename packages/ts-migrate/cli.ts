@@ -51,10 +51,11 @@ yargs
   .command(
     'rename <folder>',
     'Rename files in folder from JS/JSX to TS/TSX',
-    (cmd) => cmd.positional('folder', { type: 'string' }).require(['folder']),
+    (cmd) => cmd.positional('folder', { type: 'string' }).string('sources').require(['folder']),
     (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
-      const exitCode = rename({ rootDir });
+      const sources = args.sources;
+      const exitCode = rename({ rootDir, sources });
       process.exit(exitCode);
     },
   )
@@ -69,9 +70,11 @@ yargs
         .string('privateRegex')
         .string('protectedRegex')
         .string('publicRegex')
+        .string('sources')
         .require(['folder']),
     async (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
+      const sources = args.sources;
       let config: MigrateConfig;
 
       if (args.plugin) {
@@ -146,7 +149,7 @@ yargs
           .addPlugin(eslintFixPlugin, {});
       }
 
-      const exitCode = await migrate({ rootDir, config });
+      const exitCode = await migrate({ rootDir, config, sources });
 
       process.exit(exitCode);
     },
