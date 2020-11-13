@@ -40,6 +40,12 @@ export default async function migrate({
     addFilesFromTsConfig: sources === undefined,
   });
 
+  // If we passed in our own sources, let's add them to the project.
+  // If not, let's just get all the sources in the project.
+  if (sources) {
+    await project.addSourceFilesByPaths(sources);
+  }
+
   log.info(`Initialized tsserver project in ${serverInitTimer.elapsedStr()}.`);
 
   log.info('Start...');
@@ -53,16 +59,9 @@ export default async function migrate({
     const pluginTimer = new PerfTimer();
     log.info(`${pluginLogPrefix} Plugin ${i + 1} of ${config.plugins.length}. Start...`);
 
-    let sourceFiles: ts.SourceFile[] = [];
-
-    // If we passed in our own sources, let's add them to the project.
-    // If not, let's just get all the sources in the project.
-    if (sources) {
-      sourceFiles = await project.addSourceFilesByPaths(sources);
-    } else {
-      sourceFiles = project.getSourceFiles();
-    }
-    sourceFiles = sourceFiles.filter(({ fileName }) => !/(\.d\.ts|\.json)$/.test(fileName));
+    const sourceFiles = project
+      .getSourceFiles()
+      .filter(({ fileName }) => !/(\.d\.ts|\.json)$/.test(fileName));
 
     // eslint-disable-next-line no-restricted-syntax
     for (const sourceFile of sourceFiles) {
