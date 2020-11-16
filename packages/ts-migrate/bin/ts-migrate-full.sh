@@ -10,6 +10,7 @@ step_i=1
 step_count=4
 tsc_path="./node_modules/.bin/tsc"
 should_remove_eslintrc=false
+additional_args="${@:2}"
 
 
 echo "Welcome to TS Migrate! :D
@@ -66,7 +67,7 @@ if [ ! -f "$frontend_folder/tsconfig.json" ]; then
   $cli init $frontend_folder
 fi
 
-if [ ! -f "$frontend_folder/.eslintrc.*" ]; then
+if ! stat -t $frontend_folder/.eslintrc.* >/dev/null 2>&1; then
   touch $frontend_folder/.eslintrc
   should_remove_eslintrc=true
 fi
@@ -76,17 +77,17 @@ maybe_commit -m "[ts-migrate][$folder_name] Init tsconfig.json file" -m 'Co-auth
 echo "
 [Step $((step_i++)) of ${step_count}] Renaming files from JS/JSX to TS/TSX and updating project.json\...
 "
-$cli rename $frontend_folder
+$cli rename $frontend_folder $additional_args
 
 maybe_commit -m "[ts-migrate][$folder_name] Rename files from JS/JSX to TS/TSX" -m 'Co-authored-by: ts-migrate <>'
 
 echo "
 [Step $((step_i++)) of ${step_count}] Fixing TypeScript errors...
 "
-$cli migrate $frontend_folder
+$cli migrate $frontend_folder $additional_args
 
 if [ "$should_remove_eslintrc" = "true" ]; then
-  rm -f $frontend_folder/.eslintrc.*
+  rm -f $frontend_folder/.eslintrc
 fi
 
 maybe_commit -m "[ts-migrate][$folder_name] Run TS Migrate" -m 'Co-authored-by: ts-migrate <>'
