@@ -74,8 +74,12 @@ function findJSFiles(rootDir: string, configFile: string, sources?: string | str
 
   let { include } = config;
 
+  // Sources come from either `config.files` or `config.includes`.
+  // If the --sources flag is set, let's ignore both of those config properties
+  // and set our own `config.includes` instead.
   if (sources !== undefined) {
     include = Array.isArray(sources) ? sources : [sources];
+    delete config.files;
   }
 
   const { fileNames, errors } = ts.parseJsonConfigFileContent(

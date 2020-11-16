@@ -25,12 +25,11 @@ export default async function migrate({
 
   const serverInitTimer = new PerfTimer();
 
+  // Normalize sources to be an array of full paths.
   if (sources !== undefined) {
-    if (Array.isArray(sources)) {
-      sources = sources.map((source) => path.join(rootDir, source));
-    } else {
-      sources = [sources];
-    }
+    sources = Array.isArray(sources) ? sources : [sources];
+    sources = sources.map((source) => path.join(rootDir, source));
+
     log.info(`Ignoring sources from tsconfig.json, using the ones provided manually instead.`);
   }
 
