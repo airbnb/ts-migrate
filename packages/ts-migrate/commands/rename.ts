@@ -8,9 +8,10 @@ import json5Writer from 'json5-writer';
 
 interface RenameParams {
   rootDir: string;
+  sources?: string | string[];
 }
 
-export default function rename({ rootDir }: RenameParams): number {
+export default function rename({ rootDir, sources }: RenameParams): number {
   const configFile = path.resolve(rootDir, 'tsconfig.json');
   if (!fs.existsSync(configFile)) {
     log.error('Could not find tsconfig.json at', configFile);
@@ -19,7 +20,7 @@ export default function rename({ rootDir }: RenameParams): number {
 
   let jsFiles: string[];
   try {
-    jsFiles = findJSFiles(rootDir, configFile);
+    jsFiles = findJSFiles(rootDir, configFile, sources);
   } catch (err) {
     log.error(err);
     return -1;
@@ -57,7 +58,7 @@ export default function rename({ rootDir }: RenameParams): number {
   return 0;
 }
 
-function findJSFiles(rootDir: string, configFile: string) {
+function findJSFiles(rootDir: string, configFile: string, sources?: string | string[]) {
   const configFileContents = ts.sys.readFile(configFile);
   if (configFileContents == null) {
     throw new Error(`Failed to read TypeScript config file: ${configFile}`);
@@ -71,6 +72,16 @@ function findJSFiles(rootDir: string, configFile: string) {
     );
   }
 
+  let { include } = config;
+
+  // Sources come from either `config.files` or `config.includes`.
+  // If the --sources flag is set, let's ignore both of those config properties
+  // and set our own `config.includes` instead.
+  if (sources !== undefined) {
+    include = Array.isArray(sources) ? sources : [sources];
+    delete config.files;
+  }
+
   const { fileNames, errors } = ts.parseJsonConfigFileContent(
     {
       ...config,
@@ -79,6 +90,7 @@ function findJSFiles(rootDir: string, configFile: string) {
         // Force JS/JSX files to be included
         allowJs: true,
       },
+      include,
     },
     ts.sys,
     rootDir,

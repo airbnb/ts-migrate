@@ -10,12 +10,14 @@ interface MigrateParams {
   rootDir: string;
   tsConfigDir?: string;
   config: MigrateConfig;
+  sources?: string | string[];
 }
 
 export default async function migrate({
   rootDir,
   tsConfigDir = rootDir,
   config,
+  sources,
 }: MigrateParams): Promise<number> {
   let exitCode = 0;
 
@@ -23,8 +25,25 @@ export default async function migrate({
 
   const serverInitTimer = new PerfTimer();
 
+  // Normalize sources to be an array of full paths.
+  if (sources !== undefined) {
+    sources = Array.isArray(sources) ? sources : [sources];
+    sources = sources.map((source) => path.join(rootDir, source));
+
+    log.info(`Ignoring sources from tsconfig.json, using the ones provided manually instead.`);
+  }
+
   const tsConfigFilePath = path.join(tsConfigDir, 'tsconfig.json');
-  const project = await createProject({ tsConfigFilePath });
+  const project = await createProject({
+    tsConfigFilePath,
+    addFilesFromTsConfig: sources === undefined,
+  });
+
+  // If we passed in our own sources, let's add them to the project.
+  // If not, let's just get all the sources in the project.
+  if (sources) {
+    await project.addSourceFilesByPaths(sources);
+  }
 
   log.info(`Initialized tsserver project in ${serverInitTimer.elapsedStr()}.`);
 
@@ -42,6 +61,7 @@ export default async function migrate({
     const sourceFiles = project
       .getSourceFiles()
       .filter(({ fileName }) => !/(\.d\.ts|\.json)$/.test(fileName));
+
     // eslint-disable-next-line no-restricted-syntax
     for (const sourceFile of sourceFiles) {
       const { fileName } = sourceFile;
