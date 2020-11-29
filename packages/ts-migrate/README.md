@@ -24,7 +24,8 @@ Migrate an entire project like this:
 npx ts-migrate-full <folder>
 ```
 
-Or migrate individual parts of a project by specifying a subset of sources:
+Please note that it may take a long time to do a full migration.
+You can also migrate individual parts of a project by specifying a subset of sources:
 
 ```sh
 npx ts-migrate-full <folder> /                # specify the project root, and
