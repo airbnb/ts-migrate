@@ -12,9 +12,7 @@ type Options = {
 const memberAccessibilityPlugin: Plugin<Options> = {
   name: 'member-accessibility',
   run({ sourceFile, text, options }) {
-    const result = ts.transform<ts.SourceFile>(sourceFile, [
-      memberAccessibilityTransformerFactory(options),
-    ]);
+    const result = ts.transform(sourceFile, [memberAccessibilityTransformerFactory(options)]);
     const newSourceFile = result.transformed[0];
     if (newSourceFile === sourceFile) {
       return text;
@@ -54,11 +52,11 @@ const memberAccessibilityTransformerFactory = (options: Options) => (
 
   if (defaultAccessibility === 0 && !privateRegex && !protectedRegex && !publicRegex) {
     // Nothing to do. Don't bother traversing the AST.
-    return <T extends ts.Node>(node: T) => node;
+    return (file: ts.SourceFile) => file;
   }
-  return visit;
+  return (file: ts.SourceFile) => ts.visitNode(file, visit);
 
-  function visit<T extends ts.Node>(origNode: T): T {
+  function visit(origNode: ts.Node): ts.Node {
     const node = ts.visitEachChild(origNode, visit, context);
     if (ts.isClassElement(node) && node.name && ts.isIdentifier(node.name)) {
       const modifierFlags = ts.getCombinedModifierFlags(node);
@@ -77,11 +75,64 @@ const memberAccessibilityTransformerFactory = (options: Options) => (
         accessibilityFlag = ts.ModifierFlags.Public;
       }
 
-      const newNode = ts.getMutableClone(node) as any;
-      newNode.modifiers = factory.createNodeArray(
+      const modifiers = factory.createNodeArray(
         factory.createModifiersFromModifierFlags(modifierFlags | accessibilityFlag),
       );
-      return newNode;
+      switch (node.kind) {
+        case ts.SyntaxKind.PropertyDeclaration: {
+          const propertyNode = node as ts.PropertyDeclaration;
+          return factory.updatePropertyDeclaration(
+            propertyNode,
+            propertyNode.decorators,
+            modifiers,
+            propertyNode.name,
+            propertyNode.questionToken,
+            propertyNode.type,
+            propertyNode.initializer,
+          );
+        }
+        case ts.SyntaxKind.MethodDeclaration: {
+          const methodNode = node as ts.MethodDeclaration;
+          return factory.updateMethodDeclaration(
+            methodNode,
+            methodNode.decorators,
+            modifiers,
+            methodNode.asteriskToken,
+            methodNode.name,
+            methodNode.questionToken,
+            methodNode.typeParameters,
+            methodNode.parameters,
+            methodNode.type,
+            methodNode.body,
+          );
+        }
+        case ts.SyntaxKind.GetAccessor: {
+          const accessorNode = node as ts.GetAccessorDeclaration;
+          return factory.updateGetAccessorDeclaration(
+            accessorNode,
+            accessorNode.decorators,
+            modifiers,
+            accessorNode.name,
+            accessorNode.parameters,
+            accessorNode.type,
+            accessorNode.body,
+          );
+        }
+        case ts.SyntaxKind.SetAccessor: {
+          const accessorNode = node as ts.SetAccessorDeclaration;
+          return factory.updateSetAccessorDeclaration(
+            accessorNode,
+            accessorNode.decorators,
+            modifiers,
+            accessorNode.name,
+            accessorNode.parameters,
+            accessorNode.body,
+          );
+        }
+        default:
+          // Should be impossible.
+          return node;
+      }
     }
     return node;
   }
