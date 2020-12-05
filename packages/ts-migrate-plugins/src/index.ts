@@ -16,7 +16,7 @@ import updateSourceText, {
   SourceTextUpdate as SourceTextUpdateType,
 } from './utils/updateSourceText';
 
-export type Plugin<T = {}> = PluginType<T>;
+export type Plugin<T = unknown> = PluginType<T>;
 export type SourceTextUpdate = SourceTextUpdateType;
 
 export {

@@ -5,8 +5,8 @@ import {
   PluginDiagnostics as Diagnostocs,
 } from '../types';
 
-export type Plugin<T = {}> = PluginType<T>;
-export type PluginParams<TPluginOptions = {}> = Params<TPluginOptions>;
+export type Plugin<T = unknown> = PluginType<T>;
+export type PluginParams<TPluginOptions = unknown> = Params<TPluginOptions>;
 export type PluginDiagnostics = Diagnostocs;
 
 export { migrate, MigrateConfig };

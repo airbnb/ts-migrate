@@ -3,7 +3,7 @@ import { PluginParams } from 'ts-migrate-server';
 
 type WithoutFile<T> = Omit<T, 'file'>;
 
-export function mockPluginParams<TOptions = {}>(params: {
+export function mockPluginParams<TOptions = unknown>(params: {
   fileName?: string;
   text?: string;
   semanticDiagnostics?: WithoutFile<ts.Diagnostic>[];

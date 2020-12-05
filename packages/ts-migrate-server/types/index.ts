@@ -18,12 +18,12 @@ export interface PluginDiagnostics {
 
 export type PluginResult = string | void;
 
-export interface Plugin<TPluginOptions = {}> {
+export interface Plugin<TPluginOptions = unknown> {
   name: string;
   run(params: PluginParams<TPluginOptions>): Promise<PluginResult> | PluginResult;
 }
 
-export type PluginWithOptions<TPluginOptions = {}> = {
+export type PluginWithOptions<TPluginOptions = unknown> = {
   plugin: Plugin<TPluginOptions>;
   options: TPluginOptions;
 };
