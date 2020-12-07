@@ -68,6 +68,7 @@ module.exports = {
         "no-shadow": "off",
         "arrow-parens": "off",
         "no-confusing-arrow": "off",
+        "no-use-before-define": "off",
         "object-curly-newline": "off",
         "function-paren-newline": "off",
         "import/prefer-default-export": "off",
