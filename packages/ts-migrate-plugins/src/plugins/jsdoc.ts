@@ -46,7 +46,7 @@ type Options = {
 const jsDocPlugin: Plugin<Options> = {
   name: 'jsdoc',
   run({ sourceFile, text, options }) {
-    const result = ts.transform<ts.SourceFile>(sourceFile, [jsDocTransformerFactory(options)]);
+    const result = ts.transform(sourceFile, [jsDocTransformerFactory(options)]);
     const newSourceFile = result.transformed[0];
     if (newSourceFile === sourceFile) {
       return text;
@@ -69,7 +69,9 @@ const jsDocTransformerFactory = ({
     : factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
   const typeMap: TypeMap = { ...defaultTypeMap, ...optionsTypeMap };
 
-  function visit<T extends ts.Node>(origNode: T): T {
+  return (file: ts.SourceFile) => ts.visitNode(file, visit);
+
+  function visit(origNode: ts.Node): ts.Node {
     const node = ts.visitEachChild(origNode, visit, context);
     if (ts.isFunctionLike(node)) {
       return visitFunctionLike(node, ts.isClassDeclaration(origNode.parent));
@@ -77,7 +79,10 @@ const jsDocTransformerFactory = ({
     return node;
   }
 
-  function visitFunctionLike<T extends ts.SignatureDeclaration>(node: T, insideClass: boolean): T {
+  function visitFunctionLike(
+    node: ts.SignatureDeclaration,
+    insideClass: boolean,
+  ): ts.SignatureDeclaration {
     const modifiers =
       ts.isMethodDeclaration(node) && insideClass
         ? modifiersFromJSDoc(node, factory)
@@ -92,11 +97,88 @@ const jsDocTransformerFactory = ({
       return node;
     }
 
-    const newNode = ts.getMutableClone(node) as any;
-    newNode.modifiers = factory.createNodeArray(modifiers);
-    newNode.parameters = factory.createNodeArray(parameters);
-    newNode.type = returnType;
-    return newNode;
+    const newModifiers = factory.createNodeArray(modifiers);
+    const newParameters = factory.createNodeArray(parameters);
+    const newType = returnType;
+
+    switch (node.kind) {
+      case ts.SyntaxKind.FunctionDeclaration:
+        return factory.updateFunctionDeclaration(
+          node,
+          node.decorators,
+          newModifiers,
+          node.asteriskToken,
+          node.name,
+          node.typeParameters,
+          newParameters,
+          newType,
+          node.body,
+        );
+      case ts.SyntaxKind.MethodDeclaration:
+        return factory.updateMethodDeclaration(
+          node,
+          node.decorators,
+          newModifiers,
+          node.asteriskToken,
+          node.name,
+          node.questionToken,
+          node.typeParameters,
+          newParameters,
+          newType,
+          node.body,
+        );
+      case ts.SyntaxKind.Constructor:
+        return factory.updateConstructorDeclaration(
+          node,
+          node.decorators,
+          newModifiers,
+          newParameters,
+          node.body,
+        );
+      case ts.SyntaxKind.GetAccessor:
+        return factory.updateGetAccessorDeclaration(
+          node,
+          node.decorators,
+          newModifiers,
+          node.name,
+          newParameters,
+          newType,
+          node.body,
+        );
+      case ts.SyntaxKind.SetAccessor:
+        return factory.updateSetAccessorDeclaration(
+          node,
+          node.decorators,
+          newModifiers,
+          node.name,
+          newParameters,
+          node.body,
+        );
+      case ts.SyntaxKind.FunctionExpression:
+        return factory.updateFunctionExpression(
+          node,
+          newModifiers,
+          node.asteriskToken,
+          node.name,
+          node.typeParameters,
+          newParameters,
+          newType,
+          node.body,
+        );
+      case ts.SyntaxKind.ArrowFunction:
+        return factory.updateArrowFunction(
+          node,
+          newModifiers,
+          node.typeParameters,
+          newParameters,
+          newType,
+          node.equalsGreaterThanToken,
+          node.body,
+        );
+      default:
+        // Should be impossible.
+        return node;
+    }
   }
 
   function visitParameters(
@@ -204,7 +286,7 @@ const jsDocTransformerFactory = ({
   function visitJSDocNullableType(node: ts.JSDocNullableType) {
     return factory.createUnionTypeNode([
       ts.visitNode(node.type, visitJSDocType),
-      factory.createKeywordTypeNode(ts.SyntaxKind.NullKeyword as any),
+      factory.createLiteralTypeNode(factory.createToken(ts.SyntaxKind.NullKeyword)),
     ]);
   }
 
@@ -335,8 +417,6 @@ const jsDocTransformerFactory = ({
     ts.setEmitFlags(indexSignature, ts.EmitFlags.SingleLine);
     return indexSignature;
   }
-
-  return visit;
 };
 
 const accessibilityMask =
