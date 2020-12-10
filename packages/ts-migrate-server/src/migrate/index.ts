@@ -36,7 +36,7 @@ export default async function migrate({
   const tsConfigFilePath = path.join(tsConfigDir, 'tsconfig.json');
   const project = await createProject({
     tsConfigFilePath,
-    addFilesFromTsConfig: sources === undefined,
+    skipAddingFilesFromTsConfig: sources !== undefined,
   });
 
   // If we passed in our own sources, let's add them to the project.
