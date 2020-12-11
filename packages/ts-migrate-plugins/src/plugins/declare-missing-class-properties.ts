@@ -8,8 +8,9 @@ const j = jscodeshift.withParser('tsx');
 
 const declareMissingClassPropertiesPlugin: Plugin<Options> = {
   name: 'declare-missing-class-properties',
-  async run({ text, getDiagnostics, options }) {
-    const diagnostics = (await getDiagnostics()).semanticDiagnostics
+  async run({ text, fileName, getLanguageService, options }) {
+    const diagnostics = getLanguageService()
+      .getSemanticDiagnostics(fileName)
       .filter(isDiagnosticWithLinePosition)
       .filter((diagnostic) => diagnostic.code === 2339 || diagnostic.code === 2551);
 

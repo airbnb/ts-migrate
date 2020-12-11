@@ -8,9 +8,10 @@ type Options = { useTsIgnore?: boolean };
 
 const tsIgnorePlugin: Plugin<Options> = {
   name: 'ts-ignore',
-  run({ getDiagnostics, sourceFile, options }) {
-    const allDiagnostics = getDiagnostics();
-    const diagnostics = allDiagnostics.semanticDiagnostics.filter(isDiagnosticWithLinePosition);
+  run({ getLanguageService, fileName, sourceFile, options }) {
+    const diagnostics = getLanguageService()
+      .getSemanticDiagnostics(fileName)
+      .filter(isDiagnosticWithLinePosition);
     return getTextWithIgnores(sourceFile, diagnostics, options);
   },
 };

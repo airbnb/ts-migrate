@@ -84,15 +84,7 @@ interface PluginParams<TPluginOptions = {}> {
   rootDir: string;
   text: string;
   sourceFile: ts.SourceFile;
-  getDiagnostics: () => Promise<PluginDiagnostics>;
-}
-
-export type Diagnostic = tsp.Diagnostic | tsp.DiagnosticWithLinePosition;
-
-export interface PluginDiagnostics {
-  semanticDiagnostics: Diagnostic[];
-  syntacticDiagnostics: Diagnostic[];
-  suggestionDiagnostics: Diagnostic[];
+  getLanguageService: () => ts.LanguageService;
 }
 ```
 

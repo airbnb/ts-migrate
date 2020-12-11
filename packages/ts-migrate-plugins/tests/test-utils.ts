@@ -38,11 +38,12 @@ export function mockPluginParams<TOptions = unknown>(params: {
     rootDir: __dirname,
     text,
     sourceFile,
-    getDiagnostics: () => ({
-      semanticDiagnostics: semanticDiagnostics.map(withFile),
-      syntacticDiagnostics: syntacticDiagnostics.map(withFile),
-      suggestionDiagnostics: suggestionDiagnostics.map(withFile),
-    }),
+    getLanguageService: () =>
+      ({
+        getSemanticDiagnostics: () => semanticDiagnostics.map(withFile),
+        getSyntacticDiagnostics: () => syntacticDiagnostics.map(withFile),
+        getSuggestionDiagnostics: () => suggestionDiagnostics.map(withFile),
+      } as any),
   };
 }
 

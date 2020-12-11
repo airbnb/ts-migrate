@@ -69,20 +69,7 @@ export default async function migrate({
       const relFile = path.relative(rootDir, sourceFile.fileName);
       const fileLogPrefix = `${pluginLogPrefix}[${relFile}]`;
 
-      const getDiagnostics = () => {
-        const languageService = project.getLanguageService();
-        const semanticDiagnostics = languageService.getSemanticDiagnostics(fileName);
-
-        const syntacticDiagnostics = languageService.getSyntacticDiagnostics(fileName);
-
-        const suggestionDiagnostics = languageService.getSuggestionDiagnostics(fileName);
-
-        return {
-          semanticDiagnostics,
-          syntacticDiagnostics,
-          suggestionDiagnostics,
-        };
-      };
+      const getLanguageService = () => project.getLanguageService();
 
       const params: PluginParams<unknown> = {
         fileName,
@@ -90,7 +77,7 @@ export default async function migrate({
         sourceFile,
         text: sourceFile.text,
         options: pluginOptions,
-        getDiagnostics,
+        getLanguageService,
       };
       try {
         // eslint-disable-next-line no-await-in-loop
