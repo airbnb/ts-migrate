@@ -66,6 +66,7 @@
   },
   "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3",
   "devDependencies": {
+    "@ts-morph/bootstrap": "^0.8.0",
     "jest": "^26.4.2"
   }
 }
