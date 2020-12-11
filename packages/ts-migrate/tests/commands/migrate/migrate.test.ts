@@ -33,5 +33,5 @@ describe('migrate command', () => {
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);
     expect(exitCode).toBe(0);
-  });
+  }, 10000);
 });
