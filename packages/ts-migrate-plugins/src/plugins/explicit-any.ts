@@ -8,8 +8,8 @@ type Options = { anyAlias?: string };
 
 const explicitAnyPlugin: Plugin<Options> = {
   name: 'explicit-any',
-  run({ options, text, getDiagnostics }) {
-    const { semanticDiagnostics } = getDiagnostics();
+  run({ options, fileName, text, getLanguageService }) {
+    const semanticDiagnostics = getLanguageService().getSemanticDiagnostics(fileName);
     const diagnostics = semanticDiagnostics
       .filter(isDiagnosticWithLinePosition)
       .filter((d) => d.category === ts.DiagnosticCategory.Error);

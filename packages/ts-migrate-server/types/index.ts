@@ -7,13 +7,7 @@ export interface PluginParams<TPluginOptions> {
   rootDir: string;
   text: string;
   sourceFile: ts.SourceFile;
-  getDiagnostics: () => PluginDiagnostics;
-}
-
-export interface PluginDiagnostics {
-  semanticDiagnostics: ts.Diagnostic[];
-  syntacticDiagnostics: ts.DiagnosticWithLocation[];
-  suggestionDiagnostics: ts.DiagnosticWithLocation[];
+  getLanguageService: () => ts.LanguageService;
 }
 
 export type PluginResult = string | void;
