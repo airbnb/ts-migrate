@@ -2,28 +2,13 @@
 
 /* eslint-disable no-await-in-loop, no-restricted-syntax */
 import path from 'path';
-import log from 'updatable-log';
 import yargs from 'yargs';
 
-import {
-  declareMissingClassPropertiesPlugin,
-  eslintFixPlugin,
-  explicitAnyPlugin,
-  hoistClassStaticsPlugin,
-  jsDocPlugin,
-  memberAccessibilityPlugin,
-  reactClassLifecycleMethodsPlugin,
-  reactClassStatePlugin,
-  reactDefaultPropsPlugin,
-  reactPropsPlugin,
-  reactShapePlugin,
-  stripTSIgnorePlugin,
-  tsIgnorePlugin,
-  Plugin,
-} from 'ts-migrate-plugins';
+import { eslintFixPlugin, stripTSIgnorePlugin, tsIgnorePlugin, Plugin } from 'ts-migrate-plugins';
 import { migrate, MigrateConfig } from 'ts-migrate-server';
 import init from './commands/init';
 import rename from './commands/rename';
+import { defaultMigrateConfig, migrateConfigFromFile, singlePluginConfig } from './config';
 
 // eslint-disable-next-line no-unused-expressions
 yargs
@@ -76,6 +61,8 @@ yargs
     (cmd) =>
       cmd
         .positional('folder', { type: 'string' })
+        .string('config')
+        .alias('config', 'c')
         .choices('defaultAccessibility', ['private', 'protected', 'public'] as const)
         .string('plugin')
         .string('privateRegex')
@@ -84,6 +71,7 @@ yargs
         .string('sources')
         .alias('sources', 's')
         .describe('sources', 'Path to a subset of your project to rename (globs are ok).')
+        .string('typeMap')
         .example('migrate /frontend/foo', 'Migrate all the files in /frontend/foo')
         .example(
           '$0 migrate /frontend/foo -s "bar/**/*" -s "node_modules/**/*.d.ts"',
@@ -94,77 +82,12 @@ yargs
       const rootDir = path.resolve(process.cwd(), args.folder);
       const { sources } = args;
       let config: MigrateConfig;
-
-      if (args.plugin) {
-        const availablePlugins = [
-          declareMissingClassPropertiesPlugin,
-          eslintFixPlugin,
-          explicitAnyPlugin,
-          hoistClassStaticsPlugin,
-          jsDocPlugin,
-          memberAccessibilityPlugin,
-          reactClassLifecycleMethodsPlugin,
-          reactClassStatePlugin,
-          reactDefaultPropsPlugin,
-          reactPropsPlugin,
-          reactShapePlugin,
-          stripTSIgnorePlugin,
-          tsIgnorePlugin,
-        ];
-        const plugin = availablePlugins.find((cur) => cur.name === args.plugin);
-        if (!plugin) {
-          log.error(`Could not find a plugin named ${args.plugin}.`);
-          process.exit(1);
-          return;
-        }
-        if (plugin === jsDocPlugin) {
-          const anyAlias = args.aliases === 'tsfixme' ? '$TSFixMe' : undefined;
-          const typeMap = typeof args.typeMap === 'string' ? JSON.parse(args.typeMap) : undefined;
-          config = new MigrateConfig().addPlugin(jsDocPlugin, { anyAlias, typeMap });
-        } else {
-          config = new MigrateConfig().addPlugin(plugin, {});
-        }
+      if (args.config) {
+        config = migrateConfigFromFile(args.config);
+      } else if (args.plugin) {
+        config = singlePluginConfig(args.plugin, args);
       } else {
-        const airbnbAnyAlias = '$TSFixMe';
-        const airbnbAnyFunctionAlias = '$TSFixMeFunction';
-        // by default, we're not going to use any aliases in ts-migrate
-        const anyAlias = args.aliases === 'tsfixme' ? airbnbAnyAlias : undefined;
-        const anyFunctionAlias = args.aliases === 'tsfixme' ? airbnbAnyFunctionAlias : undefined;
-        const useDefaultPropsHelper = args.useDefaultPropsHelper === 'true';
-
-        const { defaultAccessibility, privateRegex, protectedRegex, publicRegex } = args;
-
-        config = new MigrateConfig()
-          .addPlugin(stripTSIgnorePlugin, {})
-          .addPlugin(hoistClassStaticsPlugin, { anyAlias })
-          .addPlugin(reactPropsPlugin, {
-            anyAlias,
-            anyFunctionAlias,
-            shouldUpdateAirbnbImports: true,
-          })
-          .addPlugin(reactClassStatePlugin, { anyAlias })
-          .addPlugin(reactClassLifecycleMethodsPlugin, { force: true })
-          .addPlugin(reactDefaultPropsPlugin, {
-            useDefaultPropsHelper,
-          })
-          .addPlugin(reactShapePlugin, {
-            anyAlias,
-            anyFunctionAlias,
-          })
-          .addPlugin(declareMissingClassPropertiesPlugin, { anyAlias })
-          .addPlugin(memberAccessibilityPlugin, {
-            defaultAccessibility,
-            privateRegex,
-            protectedRegex,
-            publicRegex,
-          })
-          .addPlugin(explicitAnyPlugin, { anyAlias })
-          // We need to run eslint-fix before ts-ignore because formatting may affect where
-          // the errors are that need to get ignored.
-          .addPlugin(eslintFixPlugin, {})
-          .addPlugin(tsIgnorePlugin, {})
-          // We need to run eslint-fix again after ts-ignore to fix up formatting.
-          .addPlugin(eslintFixPlugin, {});
+        config = defaultMigrateConfig(args);
       }
 
       const exitCode = await migrate({ rootDir, config, sources });
