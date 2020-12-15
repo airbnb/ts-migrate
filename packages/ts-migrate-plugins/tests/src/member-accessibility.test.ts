@@ -28,4 +28,20 @@ class C {
 }
 `);
   });
+
+  it('does not add accessibility modifiers to object literals', () => {
+    const text = `\
+const o = {
+    _privateMethod() {},
+    publicMethod() {},
+    get _privateGetter() {},
+    set _privateSetter(v) {}
+}`;
+
+    const result = memberAccessibilityPlugin.run(
+      mockPluginParams({ text, fileName: 'file.tsx', options: { privateRegex: '^_' } }),
+    );
+
+    expect(result).toBe(text);
+  });
 });

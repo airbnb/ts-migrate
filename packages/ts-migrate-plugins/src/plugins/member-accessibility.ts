@@ -58,7 +58,12 @@ const memberAccessibilityTransformerFactory = (options: Options) => (
 
   function visit(origNode: ts.Node): ts.Node {
     const node = ts.visitEachChild(origNode, visit, context);
-    if (ts.isClassElement(node) && node.name && ts.isIdentifier(node.name)) {
+    if (
+      ts.isClassElement(node) &&
+      ts.isClassLike(node.parent) &&
+      node.name &&
+      ts.isIdentifier(node.name)
+    ) {
       const modifierFlags = ts.getCombinedModifierFlags(node);
       if ((modifierFlags & accessibilityMask) !== 0) {
         // Don't overwrite existing modifier.
