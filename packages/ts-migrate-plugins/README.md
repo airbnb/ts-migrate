@@ -40,6 +40,7 @@ process.exit(exitCode);
 
 | Name | Description |
 | ---- | ----------- |
+| [add-conversions](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-plugins/src/plugins/add-conversions.ts) | Add conversions to `any` (`$TSFixMe`) in the case of type errors. |
 | [declare-missing-class-properties](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-plugins/src/plugins/declare-missing-class-properties.ts) | Declare missing class properties. |
 | [eslint-fix](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-plugins/src/plugins/eslint-fix.ts) | Run eslint fix to fix any eslint violations that happened along the way. |
 | [explicit-any](https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate-plugins/src/plugins/explicit-any.ts) | Annotate variables with `any` (`$TSFixMe`) in the case of an implicit any violation. |

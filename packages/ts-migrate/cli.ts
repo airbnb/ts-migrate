@@ -6,6 +6,7 @@ import log from 'updatable-log';
 import yargs from 'yargs';
 
 import {
+  addConversionsPlugin,
   declareMissingClassPropertiesPlugin,
   eslintFixPlugin,
   explicitAnyPlugin,
@@ -97,6 +98,7 @@ yargs
 
       if (args.plugin) {
         const availablePlugins = [
+          addConversionsPlugin,
           declareMissingClassPropertiesPlugin,
           eslintFixPlugin,
           explicitAnyPlugin,
@@ -159,6 +161,7 @@ yargs
             publicRegex,
           })
           .addPlugin(explicitAnyPlugin, { anyAlias })
+          .addPlugin(addConversionsPlugin, { anyAlias })
           // We need to run eslint-fix before ts-ignore because formatting may affect where
           // the errors are that need to get ignored.
           .addPlugin(eslintFixPlugin, {})
