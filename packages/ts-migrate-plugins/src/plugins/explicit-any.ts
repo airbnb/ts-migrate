@@ -35,6 +35,11 @@ function withExplicitAny(
     diagnostics.filter((diagnostic) => diagnostic.code === 7006),
     typeAnnotation,
   );
+  replaceTS7019(
+    root,
+    diagnostics.filter((diagnostic) => diagnostic.code === 7019),
+    j.tsTypeAnnotation(j.tsArrayType(anyType)),
+  );
   replaceTS7031(
     root,
     diagnostics.filter((diagnostic) => diagnostic.code === 7031),
@@ -96,6 +101,27 @@ function replaceTS7006(
         } else {
           path.get('typeAnnotation').replace(typeAnnotation);
         }
+      });
+  });
+}
+
+// TS7019: "Rest parameter '{0}' implicitly has an 'any[]' type."
+function replaceTS7019(
+  root: Collection<any>,
+  diagnostics: ts.DiagnosticWithLocation[],
+  typeAnnotation: TSTypeAnnotation,
+) {
+  diagnostics.forEach((diagnostic) => {
+    root
+      .find(
+        j.RestElement,
+        (node: any) =>
+          node.start === diagnostic.start &&
+          node.end === diagnostic.start + diagnostic.length &&
+          node.typeAnnotation == null,
+      )
+      .forEach((path) => {
+        path.get('typeAnnotation').replace(typeAnnotation);
       });
   });
 }
