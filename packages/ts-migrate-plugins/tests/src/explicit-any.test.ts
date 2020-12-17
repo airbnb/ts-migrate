@@ -16,6 +16,8 @@ function f3() {
   return var1;
 }
 function fn4({ arg4: { arg5, arg_6: arg6 } }) {}
+function fn5(...rest) {}
+const fn6 = (...rest) => {}
 const {
   root_see_all_link_text: rootSeeAllLinkText,
   root_subtitle: rootSubtitle,
@@ -57,6 +59,8 @@ function f3() {
 function fn4({
   arg4: { arg5, arg_6: arg6 }
 }: any) {}
+function fn5(...rest: any[]) {}
+const fn6 = (...rest: any[]) => {}
 const {
   root_see_all_link_text: rootSeeAllLinkText,
   root_subtitle: rootSubtitle,
