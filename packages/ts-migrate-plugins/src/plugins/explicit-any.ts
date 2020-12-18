@@ -30,6 +30,11 @@ function withExplicitAny(
 
   const anyType = anyAlias != null ? j.tsTypeReference(j.identifier(anyAlias)) : j.tsAnyKeyword();
   const typeAnnotation = j.tsTypeAnnotation(anyType);
+  replaceTS2683(
+    root,
+    diagnostics.filter((diagnostic) => diagnostic.code === 2683),
+    typeAnnotation,
+  );
   replaceTS7006(
     root,
     diagnostics.filter((diagnostic) => diagnostic.code === 7006),
@@ -61,6 +66,34 @@ function withExplicitAny(
     typeAnnotation,
   );
   return root.toSource();
+}
+
+// TS2683: "'this' implicitly has type 'any' because it does not have a type annotation."
+function replaceTS2683(
+  root: Collection<any>,
+  diagnostics: ts.DiagnosticWithLocation[],
+  typeAnnotation: TSTypeAnnotation,
+) {
+  diagnostics.forEach((diagnostic) => {
+    root
+      .find(
+        j.ThisExpression,
+        (node: any) =>
+          node.start === diagnostic.start && node.end === diagnostic.start + diagnostic.length,
+      )
+      .forEach((path) => {
+        let newNode = path.parentPath;
+        // Find the containing function declaration/expression.
+        while (
+          newNode.parentPath &&
+          !j.FunctionDeclaration.check(newNode.node) &&
+          !j.FunctionExpression.check(newNode.node)
+        ) {
+          newNode = newNode.parentPath;
+        }
+        newNode.get('params').unshift(j.identifier.from({ name: 'this', typeAnnotation }));
+      });
+  });
 }
 
 // TS7006: "Parameter '{0}' implicitly has an '{1}' type."

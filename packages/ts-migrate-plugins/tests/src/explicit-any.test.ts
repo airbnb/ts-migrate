@@ -84,6 +84,26 @@ const {
 `);
   });
 
+  it('adds explicit any to this', async () => {
+    const text = `\
+function f1(a: any) { return this; }
+const f2 = function() { return this; }
+function f3() { return () => this; }
+`;
+
+    const result = await explicitAnyPlugin.run(
+      await realPluginParams({
+        text,
+      }),
+    );
+
+    expect(result).toBe(`\
+function f1(this: any, a: any) { return this; }
+const f2 = function(this: any) { return this; }
+function f3(this: any) { return () => this; }
+`);
+  });
+
   it('adds explicit any with alias', async () => {
     const text = `const var1 = [];`;
 
