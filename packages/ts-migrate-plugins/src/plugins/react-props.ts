@@ -193,24 +193,37 @@ function updatePropTypes(
             )}`,
           });
         } else {
+          let updateText = printer.printNode(
+            ts.EmitHint.Unspecified,
+            ts.factory.updateParameterDeclaration(
+              propsParam,
+              propsParam.decorators,
+              propsParam.modifiers,
+              propsParam.dotDotDotToken,
+              propsParam.name,
+              propsParam.questionToken,
+              ts.factory.createTypeReferenceNode(propsTypeName, undefined),
+              propsParam.initializer,
+            ),
+            sourceFile,
+          );
+
+          const signature = propsParam.parent;
+          if (
+            ts.isArrowFunction(signature) &&
+            signature.parameters.length === 1 &&
+            signature.getFirstToken()?.kind !== ts.SyntaxKind.OpenParenToken
+          ) {
+            // Special case: when an arrow function has a single parameter and no parentheses,
+            // add parentheses.
+            updateText = `(${updateText})`;
+          }
+
           updates.push({
             kind: 'replace',
             index: propsParam.pos,
             length: propsParam.end - propsParam.pos,
-            text: printer.printNode(
-              ts.EmitHint.Unspecified,
-              ts.factory.updateParameterDeclaration(
-                propsParam,
-                propsParam.decorators,
-                propsParam.modifiers,
-                propsParam.dotDotDotToken,
-                propsParam.name,
-                propsParam.questionToken,
-                ts.factory.createTypeReferenceNode(propsTypeName, undefined),
-                propsParam.initializer,
-              ),
-              sourceFile,
-            ),
+            text: updateText,
           });
         }
         updates.push(...deleteSfcPropTypes(node, sourceFile));
