@@ -1219,4 +1219,27 @@ export default class PaymentPlanOptionExplanation extends React.PureComponent<Pr
 }
 `);
   });
+
+  it('handles single-parameter arrow functions with no parentheses', async () => {
+    const text = `\
+const InfoPanel = props => {
+  return null;
+};
+
+InfoPanel.propTypes = {
+  foo: PropTypes.bool,
+};
+`;
+
+    const result = await reactPropsPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
+
+    expect(result).toBe(`
+
+type Props = {
+    foo?: boolean;
+};const InfoPanel =(props: Props) => {
+  return null;
+};
+`);
+  });
 });
