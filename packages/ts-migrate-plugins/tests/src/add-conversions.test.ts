@@ -29,4 +29,20 @@ const a = {};
 console.log((a as $TSFixMe).c);
 `);
   });
+
+  it('adds conversions to unknown types', async () => {
+    const text = `\
+function f(u: unknown) {
+    console.log(u.prop);
+}
+`;
+
+    const result = addConversionsPlugin.run(await realPluginParams({ text }));
+
+    expect(result).toBe(`\
+function f(u: unknown) {
+    console.log((u as any).prop);
+}
+`);
+  });
 });
