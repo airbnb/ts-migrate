@@ -7,6 +7,13 @@ type Options = {
   anyAlias?: string;
 };
 
+const supportedDiagnostics = new Set([
+  // TS2339: Property '{0}' does not exist on type '{1}'.
+  2339,
+  // TS2571: Object is of type 'unknown'.
+  2571,
+]);
+
 const addConversionsPlugin: Plugin<Options> = {
   name: 'add-conversions',
   run({ fileName, sourceFile, text, options, getLanguageService }) {
@@ -14,7 +21,7 @@ const addConversionsPlugin: Plugin<Options> = {
     const diags = getLanguageService()
       .getSemanticDiagnostics(fileName)
       .filter(isDiagnosticWithLinePosition)
-      .filter((diag) => diag.code === 2339 || diag.code === 2571);
+      .filter((diag) => supportedDiagnostics.has(diag.code));
 
     const result = ts.transform(sourceFile, [addConversionsTransformerFactory(diags, options)]);
     const newSourceFile = result.transformed[0];
@@ -45,14 +52,12 @@ const addConversionsTransformerFactory = (
         .map((diag) => {
           const token = getTokenAtPosition(file, diag.start);
           switch (diag.code) {
-            // TS2339: Property '{0}' does not exist on type '{1}'.
             case 2339:
               if (!ts.isPropertyAccessExpression(token.parent)) {
                 return null;
               }
               return token.parent.expression;
 
-            // TS2571: Object is of type 'unknown'.
             case 2571:
               return token;
 
