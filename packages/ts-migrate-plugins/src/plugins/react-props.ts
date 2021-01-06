@@ -18,6 +18,7 @@ type Options = {
   anyAlias?: string;
   anyFunctionAlias?: string;
   shouldUpdateAirbnbImports?: boolean;
+  shouldKeepPropTypes?: boolean;
 };
 
 export type PropTypesIdentifierMap = { [property: string]: string };
@@ -63,17 +64,19 @@ const reactPropsPlugin: Plugin<Options> = {
       updatedSourceText,
       sourceFile.languageVersion,
     );
-    const importUpdates = updateImports(
-      updatedSourceFile,
-      spreadReplacements.map((cur) => cur.typeImport),
-      [
-        { moduleSpecifier: 'prop-types' },
-        ...(options.shouldUpdateAirbnbImports ? importReplacements : []),
-        ...(options.shouldUpdateAirbnbImports
-          ? spreadReplacements.map((cur) => cur.spreadImport)
-          : []),
-      ],
-    );
+    const importUpdates = !options.shouldKeepPropTypes
+      ? updateImports(
+          updatedSourceFile,
+          spreadReplacements.map((cur) => cur.typeImport),
+          [
+            { moduleSpecifier: 'prop-types' },
+            ...(options.shouldUpdateAirbnbImports ? importReplacements : []),
+            ...(options.shouldUpdateAirbnbImports
+              ? spreadReplacements.map((cur) => cur.spreadImport)
+              : []),
+          ],
+        )
+      : [];
     return updateSourceText(updatedSourceText, importUpdates);
   },
 };
@@ -226,7 +229,10 @@ function updatePropTypes(
             text: updateText,
           });
         }
-        updates.push(...deleteSfcPropTypes(node, sourceFile));
+
+        if (!options.shouldKeepPropTypes) {
+          updates.push(...deleteSfcPropTypes(node, sourceFile));
+        }
       }
     }
   } else {
@@ -259,7 +265,9 @@ function updatePropTypes(
           )}`,
         });
 
-        updates.push(...deleteClassPropTypes(node, sourceFile));
+        if (!options.shouldKeepPropTypes) {
+          updates.push(...deleteClassPropTypes(node, sourceFile));
+        }
       }
     }
   }
@@ -300,7 +308,7 @@ function updateObjectLiteral(
   propsTypeAlias = ts.moveSyntheticComments(propsTypeAlias, propsTypeNode);
 
   const varStatement = getParentVariableStatement(objectLiteral, sourceFile);
-  if (varStatement) {
+  if (varStatement && !options.shouldKeepPropTypes) {
     updates.push({
       kind: 'replace',
       index: varStatement.pos,
