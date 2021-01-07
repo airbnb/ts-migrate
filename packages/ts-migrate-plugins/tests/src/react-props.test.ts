@@ -33,6 +33,30 @@ class Foo extends React.Component<Props> {
 
 export default Foo;
 `);
+
+    const resultWithProps = await reactPropsPlugin.run(
+      mockPluginParams({ text, fileName: 'Foo.tsx', options: { shouldKeepPropTypes: true } }),
+    );
+
+    expect(resultWithProps).toBe(`import React from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  foo: PropTypes.string.isRequired,
+};
+
+type Props = {
+    foo: string;
+};
+
+class Foo extends React.Component<Props> {
+  render() {}
+}
+
+Foo.propTypes = propTypes;
+
+export default Foo;
+`);
   });
 
   it('handles functional component with forwardRef', async () => {
@@ -59,6 +83,28 @@ type Props = {
 };
 
 const Foo = forwardRef<any, Props>(({ foo }, ref) => <div ref={ref}>{foo}</div>)
+
+export default Foo;
+`);
+
+    const resultWithProps = await reactPropsPlugin.run(
+      mockPluginParams({ text, fileName: 'Foo.tsx', options: { shouldKeepPropTypes: true } }),
+    );
+
+    expect(resultWithProps).toBe(`import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  foo: PropTypes.string.isRequired,
+};
+
+type Props = {
+    foo: string;
+};
+
+const Foo = forwardRef<any, Props>(({ foo }, ref) => <div ref={ref}>{foo}</div>)
+
+Foo.propTypes = propTypes;
 
 export default Foo;
 `);
@@ -119,6 +165,30 @@ type FooProps = {
 };
 
 const Foo = ({ foo }: FooProps, ref) => <div ref={ref}>{foo}</div>;
+
+const WrappedComponent = forwardRef(Foo);
+
+export default WrappedComponent;
+`);
+
+    const resultWithProps = await reactPropsPlugin.run(
+      mockPluginParams({ text, fileName: 'Foo.tsx', options: { shouldKeepPropTypes: true } }),
+    );
+
+    expect(resultWithProps).toBe(`import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  foo: PropTypes.string.isRequired,
+};
+
+type FooProps = {
+    foo: string;
+};
+
+const Foo = ({ foo }: FooProps, ref) => <div ref={ref}>{foo}</div>;
+
+Foo.propTypes = propTypes;
 
 const WrappedComponent = forwardRef(Foo);
 
@@ -206,6 +276,35 @@ class Foo extends React.Component<Props> {
 
 export default Foo;
 `);
+    const resultWithProps = await reactPropsPlugin.run(
+      mockPluginParams({
+        text,
+        fileName: 'Foo.tsx',
+        options: {
+          shouldUpdateAirbnbImports: true,
+          shouldKeepPropTypes: true,
+        },
+      }),
+    );
+
+    expect(resultWithProps).toBe(`import React from 'react';
+import PropTypes from 'prop-types';
+import { forbidExtraProps } from 'airbnb-prop-types';
+
+type Props = {
+    foo: string;
+};
+
+class Foo extends React.Component<Props> {
+  render() {}
+}
+
+Foo.propTypes = forbidExtraProps({
+  foo: PropTypes.string.isRequired,
+});
+
+export default Foo;
+`);
   });
 
   it('handles class with propTypes declared as a static class property', async () => {
@@ -241,6 +340,36 @@ type Props = {
 };
 
 class Foo extends React.Component<Props> {
+
+  render() {}
+}
+
+export default Foo;
+`);
+
+    const resultWithProps = await reactPropsPlugin.run(
+      mockPluginParams({
+        text,
+        fileName: 'Foo.tsx',
+        options: {
+          shouldUpdateAirbnbImports: true,
+          shouldKeepPropTypes: true,
+        },
+      }),
+    );
+
+    expect(resultWithProps).toBe(`import React from 'react';
+import PropTypes from 'prop-types';
+import { forbidExtraProps } from 'airbnb-prop-types';
+
+type Props = {
+    foo: string;
+};
+
+class Foo extends React.Component<Props> {
+  static propTypes = forbidExtraProps({
+    foo: PropTypes.string.isRequired,
+  });
 
   render() {}
 }
@@ -483,6 +612,12 @@ export default Foo;
     const result = await reactPropsPlugin.run(mockPluginParams({ text, fileName: 'Foo.tsx' }));
 
     expect(result).toBe(text);
+
+    const resultWithProps = await reactPropsPlugin.run(
+      mockPluginParams({ text, fileName: 'Foo.tsx', options: { shouldKeepPropTypes: true } }),
+    );
+
+    expect(resultWithProps).toBe(text);
   });
 
   it('preserves existing state type', async () => {
