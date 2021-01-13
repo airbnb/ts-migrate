@@ -21,7 +21,7 @@ Or [yarn](https://yarnpkg.com):
 Migrate an entire project like this:
 
 ```sh
-npx ts-migrate-full <folder>
+npx -p ts-migrate -c "ts-migrate-full <folder>"
 ```
 
 Please note that it may take a long time to do a full migration.
