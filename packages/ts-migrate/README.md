@@ -91,7 +91,7 @@ npx ts-migrate-full /path/to/your/project --sources "some/components/**/*"
 npx ts-migrate -- rename /path/to/your/project -s "some/components/**/*"
 ```
 
-Because your project's default sources are ignored when `--sources` is used, it's a good idea to specify any ambient type files your project uses as well. Otherwise, `ts-migrate` might mark unidentifialbe globals as type errors, even when they aren't. For example, re-including ambient types from your node_modules folder looks like this:
+Because your project's default sources are ignored when `--sources` is used, it's a good idea to specify any ambient type files your project uses as well. Otherwise, `ts-migrate` might mark unidentifiable globals as type errors, even when they aren't. For example, re-including ambient types from your node_modules folder looks like this:
 
 ```sh
 npx ts-migrate-full /path/to/your/project \
