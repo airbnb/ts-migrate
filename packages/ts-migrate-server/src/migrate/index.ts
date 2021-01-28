@@ -60,7 +60,7 @@ export default async function migrate({
 
     const sourceFiles = project
       .getSourceFiles()
-      .filter(({ fileName }) => !/(\.d\.ts|\.json)$/.test(fileName));
+      .filter(({ fileName }) => !/(\.d\.ts|\.json)$|node_modules/.test(fileName));
 
     // eslint-disable-next-line no-restricted-syntax
     for (const sourceFile of sourceFiles) {
