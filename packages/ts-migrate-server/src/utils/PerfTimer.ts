@@ -1,4 +1,5 @@
 import { performance } from 'perf_hooks';
+import prettyMilliseconds from 'pretty-ms';
 
 export default class PerfTimer {
   private start = performance.now();
@@ -8,6 +9,6 @@ export default class PerfTimer {
   }
 
   elapsedStr(): string {
-    return `${this.elapsed().toFixed(3)}ms`;
+    return prettyMilliseconds(this.elapsed());
   }
 }
