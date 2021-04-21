@@ -8,7 +8,7 @@
     "example": "ts-node -T -O '{ \"esModuleInterop\": true }' --skip-project src/index.ts"
   },
   "dependencies": {
-    "jscodeshift": "^0.7.0",
+    "jscodeshift": "^0.12.0",
     "ts-migrate-plugins": "^0.1.16",
     "ts-migrate-server": "^0.1.16",
     "ts-node": "^8.3.0",

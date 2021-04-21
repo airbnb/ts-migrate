@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/eslint": "^7.2.2",
     "@types/jest": "^26.0.9",
-    "@types/jscodeshift": "^0.6.3",
+    "@types/jscodeshift": "^0.11.0",
     "@types/json5": "0.0.30",
     "@types/node": "^9.6.55",
     "@types/react": "^16.9.16",
