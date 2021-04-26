@@ -44,4 +44,41 @@ describe('migrate command', () => {
     expect(rootData).toEqual(outputData);
     expect(exitCode).toBe(0);
   });
+
+  it('Migrates project with two plugins', async () => {
+    const inputDir = path.resolve(__dirname, 'input');
+    const outputDir = path.resolve(__dirname, 'output_two');
+    const configDir = path.resolve(__dirname, 'config');
+
+    copyDir(inputDir, rootDir);
+    copyDir(configDir, rootDir);
+
+    const config = new MigrateConfig()
+      .addPlugin(
+        {
+          name: 'test-plugin-1',
+          run({ text }) {
+            const newText = text.replace('test string', 'updated string');
+            return newText;
+          },
+        },
+        {},
+      )
+      .addPlugin(
+        {
+          name: 'test-plugin-2',
+          run({ text }) {
+            const newText = text.replace('updated string', 'another updated string');
+            return newText;
+          },
+        },
+        {},
+      );
+
+    const exitCode = await migrate({ rootDir, config });
+    fs.unlinkSync(path.resolve(rootDir, 'tsconfig.json'));
+    const [rootData, outputData] = getDirData(rootDir, outputDir);
+    expect(rootData).toEqual(outputData);
+    expect(exitCode).toBe(0);
+  });
 });
