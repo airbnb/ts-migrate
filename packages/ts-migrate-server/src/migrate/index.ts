@@ -50,9 +50,6 @@ export default async function migrate({
   log.info('Start...');
   const pluginsTimer = new PerfTimer();
   const updatedSourceFiles = new Set<string>();
-  const sourceFiles = project
-    .getSourceFiles()
-    .filter(({ fileName }) => !/(\.d\.ts|\.json)$|node_modules/.test(fileName));
 
   for (let i = 0; i < config.plugins.length; i += 1) {
     const { plugin, options: pluginOptions } = config.plugins[i];
@@ -60,6 +57,10 @@ export default async function migrate({
     const pluginLogPrefix = `[${plugin.name}]`;
     const pluginTimer = new PerfTimer();
     log.info(`${pluginLogPrefix} Plugin ${i + 1} of ${config.plugins.length}. Start...`);
+
+    const sourceFiles = project
+      .getSourceFiles()
+      .filter(({ fileName }) => !/(\.d\.ts|\.json)$|node_modules/.test(fileName));
 
     // eslint-disable-next-line no-restricted-syntax
     for (const sourceFile of sourceFiles) {
