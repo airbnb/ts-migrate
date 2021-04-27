@@ -1,6 +1,6 @@
 {
   "name": "ts-migrate",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "A tool for migrating frontend application from JavaScript to TypeScript",
   "directories": {
     "test": "tests"
@@ -65,8 +65,8 @@
     "create-jest-runner": "^0.5.3",
     "json5": "^2.1.1",
     "json5-writer": "^0.1.8",
-    "ts-migrate-plugins": "^0.1.16",
-    "ts-migrate-server": "^0.1.16",
+    "ts-migrate-plugins": "^0.1.17",
+    "ts-migrate-server": "^0.1.17",
     "typescript": "4.2.4",
     "updatable-log": "^0.2.0",
     "yargs": "^15.0.2"
