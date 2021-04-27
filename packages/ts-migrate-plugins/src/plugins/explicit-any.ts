@@ -35,9 +35,9 @@ function withExplicitAny(
     diagnostics.filter((diagnostic) => diagnostic.code === 2683),
     typeAnnotation,
   );
-  replaceTS7006(
+  replaceTS7006AndTS7008(
     root,
-    diagnostics.filter((diagnostic) => diagnostic.code === 7006),
+    diagnostics.filter((diagnostic) => diagnostic.code === 7006 || diagnostic.code === 7008),
     typeAnnotation,
   );
   replaceTS7019(
@@ -97,7 +97,8 @@ function replaceTS2683(
 }
 
 // TS7006: "Parameter '{0}' implicitly has an '{1}' type."
-function replaceTS7006(
+// TS7008: "Member '{0}' implicitly has an '{1}' type."
+function replaceTS7006AndTS7008(
   root: Collection<any>,
   diagnostics: ts.DiagnosticWithLocation[],
   typeAnnotation: TSTypeAnnotation,
