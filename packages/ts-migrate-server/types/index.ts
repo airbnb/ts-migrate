@@ -15,6 +15,14 @@ export type PluginResult = string | void;
 export interface Plugin<TPluginOptions = unknown> {
   name: string;
   run(params: PluginParams<TPluginOptions>): Promise<PluginResult> | PluginResult;
+
+  /**
+   * Returns true if options is a valid options object for this plugin.
+   * If options is invalid, it throws a PluginOptionsError.
+   *
+   * This method should be implemented if TPluginOptions is anything other than unknown.
+   */
+  validate?(options: unknown): options is TPluginOptions;
 }
 
 export type PluginWithOptions<TPluginOptions = unknown> = {
