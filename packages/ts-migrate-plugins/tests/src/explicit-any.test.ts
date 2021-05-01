@@ -122,4 +122,16 @@ function f3(this: any) { return () => this; }
 
     expect(result).toBe(`const var1: $TSFixMe = [];`);
   });
+
+  it('handles arrow functions returning object literals', async () => {
+    const text = `const fn = (b) => ({});`;
+
+    const result = await explicitAnyPlugin.run(
+      await realPluginParams({
+        text,
+      }),
+    );
+
+    expect(result).toBe(`const fn = (b: any) => ({});`);
+  });
 });

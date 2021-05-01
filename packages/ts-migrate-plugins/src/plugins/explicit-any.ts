@@ -113,26 +113,44 @@ function replaceTS7006AndTS7008(
           node.typeAnnotation == null,
       )
       .forEach((path) => {
-        // Special case for single-parameter arrow surrounding parens issue.
-        if (
-          j.ArrowFunctionExpression.check(path.parent.node) &&
-          path.parent.node.params.length === 1
-        ) {
-          const paramIndex = path.parent.node.params.indexOf(path.node);
-          path.parent.replace(
-            j.arrowFunctionExpression.from({
-              ...path.parent.node,
-              params: [
-                ...path.parent.node.params.slice(0, paramIndex),
-                j.identifier.from({
-                  ...(path.parent.node.params[paramIndex] as Identifier),
-                  typeAnnotation,
-                }),
-                ...path.parent.node.params.slice(paramIndex + 1),
-              ],
-            }),
-          );
-        } else {
+        let replaceArrow = false;
+
+        const parentNode = path.parent.node;
+        if (j.ArrowFunctionExpression.check(parentNode)) {
+          // Special casing to work around jscodeshift bugs.
+          let { body, params } = parentNode;
+
+          // Object literals used as arrow function returns do not have
+          // parentheses added.
+          // https://github.com/benjamn/recast/issues/743
+          if (j.ObjectExpression.check(body)) {
+            replaceArrow = true;
+            body = j.objectExpression.from({ ...body });
+          }
+
+          // Make sure to add parentheses around single parameters.
+          if (params.length === 1) {
+            replaceArrow = true;
+            params = [
+              j.identifier.from({
+                ...(parentNode.params[0] as Identifier),
+                typeAnnotation,
+              }),
+            ];
+          }
+
+          if (replaceArrow) {
+            path.parent.replace(
+              j.arrowFunctionExpression.from({
+                ...parentNode,
+                params,
+                body,
+              }),
+            );
+          }
+        }
+
+        if (!replaceArrow) {
           path.get('typeAnnotation').replace(typeAnnotation);
         }
       });
