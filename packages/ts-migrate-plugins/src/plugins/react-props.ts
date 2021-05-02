@@ -13,18 +13,33 @@ import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 import getTypeFromPropTypesObjectLiteral, { createPropsTypeNameGetter } from './utils/react-props';
 import { getTextPreservingWhitespace } from './utils/text';
 import { updateImports, DefaultImport, NamedImport } from './utils/imports';
-import { AnyAliasOptions } from '../utils/validateOptions';
+import {
+  AnyAliasOptions,
+  AnyFunctionAliasOptions,
+  Properties,
+  anyAliasProperty,
+  anyFunctionAliasProperty,
+  createValidate,
+} from '../utils/validateOptions';
 
 type Options = {
-  anyFunctionAlias?: string;
   shouldUpdateAirbnbImports?: boolean;
   shouldKeepPropTypes?: boolean;
-} & AnyAliasOptions;
+} & AnyAliasOptions &
+  AnyFunctionAliasOptions;
+
+const optionProperties: Properties = {
+  ...anyAliasProperty,
+  ...anyFunctionAliasProperty,
+  shouldUpdateAirbnbImports: { type: 'boolean' },
+  shouldKeepPropTypes: { type: 'boolean' },
+};
 
 export type PropTypesIdentifierMap = { [property: string]: string };
 
 const reactPropsPlugin: Plugin<Options> = {
   name: 'react-props',
+
   run({ fileName, sourceFile, options }) {
     if (!fileName.endsWith('.tsx')) return undefined;
 
@@ -79,6 +94,8 @@ const reactPropsPlugin: Plugin<Options> = {
       : [];
     return updateSourceText(updatedSourceText, importUpdates);
   },
+
+  validate: createValidate(optionProperties),
 };
 
 export default reactPropsPlugin;

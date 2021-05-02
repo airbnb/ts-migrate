@@ -2,10 +2,9 @@ import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import getTokenAtPosition from './utils/token-pos';
+import { AnyAliasOptions, validateAnyAliasOptions } from '../utils/validateOptions';
 
-type Options = {
-  anyAlias?: string;
-};
+type Options = AnyAliasOptions;
 
 const supportedDiagnostics = new Set([
   // TS2339: Property '{0}' does not exist on type '{1}'.
@@ -16,6 +15,7 @@ const supportedDiagnostics = new Set([
 
 const addConversionsPlugin: Plugin<Options> = {
   name: 'add-conversions',
+
   run({ fileName, sourceFile, text, options, getLanguageService }) {
     // Filter out diagnostics we care about.
     const diags = getLanguageService()
@@ -31,6 +31,8 @@ const addConversionsPlugin: Plugin<Options> = {
     const printer = ts.createPrinter();
     return printer.printFile(newSourceFile);
   },
+
+  validate: validateAnyAliasOptions,
 };
 
 export default addConversionsPlugin;

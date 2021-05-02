@@ -1,9 +1,14 @@
 import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
+import { createValidate, Properties } from '../utils/validateOptions';
 
 type Options = {
   useDefaultPropsHelper?: boolean;
+};
+
+const optionProperties: Properties = {
+  useDefaultPropsHelper: { type: 'boolean' },
 };
 
 /**
@@ -16,6 +21,7 @@ const WITH_DEFAULT_PROPS_HELPER = `WithDefaultProps`;
 
 const reactDefaultPropsPlugin: Plugin<Options> = {
   name: 'react-default-props',
+
   run({ sourceFile, text, options }) {
     const importDeclarations = sourceFile.statements.filter(ts.isImportDeclaration);
     const expressionStatements = sourceFile.statements.filter(ts.isExpressionStatement);
@@ -344,6 +350,8 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
 
     return updateSourceText(text, updates);
   },
+
+  validate: createValidate(optionProperties),
 };
 
 // the target project might not have this as an internal dependency in project.json
