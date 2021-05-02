@@ -7,11 +7,13 @@ import {
 } from './utils/react';
 import { collectIdentifiers } from './utils/identifiers';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
+import { AnyAliasOptions, validateAnyAliasOptions } from '../utils/validateOptions';
 
-type Options = { anyAlias?: string };
+type Options = AnyAliasOptions;
 
 const reactClassStatePlugin: Plugin<Options> = {
   name: 'react-class-state',
+
   async run({ fileName, sourceFile, options }) {
     if (!fileName.endsWith('.tsx')) return undefined;
 
@@ -93,6 +95,8 @@ const reactClassStatePlugin: Plugin<Options> = {
 
     return updateSourceText(sourceFile.text, updates);
   },
+
+  validate: validateAnyAliasOptions,
 };
 
 export default reactClassStatePlugin;

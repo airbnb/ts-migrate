@@ -8,16 +8,18 @@ import {
   collectIdentifierNodes,
   KnownDefinitionMap,
 } from './utils/identifiers';
+import { AnyAliasOptions, validateAnyAliasOptions } from '../utils/validateOptions';
 
-type Options = {
-  anyAlias?: string;
-};
+type Options = AnyAliasOptions;
 
 const hoistClassStaticsPlugin: Plugin<Options> = {
   name: 'hoist-class-statics',
+
   run({ sourceFile, text, options }) {
     return hoistStaticClassProperties(sourceFile, text, options);
   },
+
+  validate: validateAnyAliasOptions,
 };
 
 export default hoistClassStaticsPlugin;

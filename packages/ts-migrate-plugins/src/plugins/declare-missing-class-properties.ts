@@ -1,13 +1,15 @@
 import jscodeshift, { ASTPath, ClassBody } from 'jscodeshift';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
+import { AnyAliasOptions, validateAnyAliasOptions } from '../utils/validateOptions';
 
-type Options = { anyAlias?: string };
+type Options = AnyAliasOptions;
 
 const j = jscodeshift.withParser('tsx');
 
 const declareMissingClassPropertiesPlugin: Plugin<Options> = {
   name: 'declare-missing-class-properties',
+
   async run({ text, fileName, getLanguageService, options }) {
     const diagnostics = getLanguageService()
       .getSemanticDiagnostics(fileName)
@@ -82,6 +84,8 @@ const declareMissingClassPropertiesPlugin: Plugin<Options> = {
 
     return root.toSource();
   },
+
+  validate: validateAnyAliasOptions,
 };
 
 export default declareMissingClassPropertiesPlugin;

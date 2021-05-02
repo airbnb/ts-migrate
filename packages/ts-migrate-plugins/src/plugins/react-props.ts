@@ -13,13 +13,13 @@ import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 import getTypeFromPropTypesObjectLiteral, { createPropsTypeNameGetter } from './utils/react-props';
 import { getTextPreservingWhitespace } from './utils/text';
 import { updateImports, DefaultImport, NamedImport } from './utils/imports';
+import { AnyAliasOptions } from '../utils/validateOptions';
 
 type Options = {
-  anyAlias?: string;
   anyFunctionAlias?: string;
   shouldUpdateAirbnbImports?: boolean;
   shouldKeepPropTypes?: boolean;
-};
+} & AnyAliasOptions;
 
 export type PropTypesIdentifierMap = { [property: string]: string };
 

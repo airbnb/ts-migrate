@@ -1,6 +1,7 @@
 /* eslint-disable no-bitwise */
 import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
+import { AnyAliasOptions } from '../utils/validateOptions';
 
 type TypeMap = Record<string, TypeOptions>;
 
@@ -39,9 +40,8 @@ const defaultTypeMap: TypeMap = {
 
 type Options = {
   annotateReturns?: boolean;
-  anyAlias?: string;
   typeMap?: TypeMap;
-};
+} & AnyAliasOptions;
 
 const jsDocPlugin: Plugin<Options> = {
   name: 'jsdoc',

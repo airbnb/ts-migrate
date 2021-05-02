@@ -4,8 +4,9 @@ import path from 'path';
 import { Plugin } from 'ts-migrate-server';
 import getTypeFromPropTypesObjectLiteral from './utils/react-props';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
+import { AnyAliasOptions } from '../utils/validateOptions';
 
-type Options = { anyAlias?: string; anyFunctionAlias?: string };
+type Options = { anyFunctionAlias?: string } & AnyAliasOptions;
 
 /**
  * first we are checking if we have imports of `prop-types` or `react-validators`
