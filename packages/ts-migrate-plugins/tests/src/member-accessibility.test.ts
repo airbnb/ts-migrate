@@ -1,3 +1,4 @@
+import { PluginOptionsError } from 'ts-migrate-server';
 import { mockPluginParams } from '../test-utils';
 import memberAccessibilityPlugin from '../../src/plugins/member-accessibility';
 
@@ -44,4 +45,15 @@ const o = {
 
     expect(result).toBe(text);
   });
+
+  it.each([{}, { defaultAccessibility: 'private' }])('accepts valid options: %p', (options) => {
+    expect(memberAccessibilityPlugin.validate!(options)).toBe(true);
+  });
+
+  it.each([42, { additional: true }, { defaultAccessibility: 'static' }, { privateRegex: '+' }])(
+    'rejects invalid options: %p',
+    (options) => {
+      expect(() => memberAccessibilityPlugin.validate!(options)).toThrow(PluginOptionsError);
+    },
+  );
 });
