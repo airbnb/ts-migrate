@@ -78,6 +78,8 @@ function replaceTS2683(
   diagnostics: ts.DiagnosticWithLocation[],
   typeAnnotation: TSTypeAnnotation,
 ) {
+  const annotated = new Set();
+
   diagnostics.forEach((diagnostic) => {
     root
       .find(
@@ -95,7 +97,12 @@ function replaceTS2683(
         ) {
           newNode = newNode.parentPath;
         }
-        newNode.get('params').unshift(j.identifier.from({ name: 'this', typeAnnotation }));
+
+        // Add annotation only if we haven't already added one to this function.
+        if (!annotated.has(newNode)) {
+          newNode.get('params').unshift(j.identifier.from({ name: 'this', typeAnnotation }));
+          annotated.add(newNode);
+        }
       });
   });
 }

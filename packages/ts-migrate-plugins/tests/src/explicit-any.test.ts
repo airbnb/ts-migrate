@@ -91,6 +91,7 @@ const {
 function f1(a: any) { return this; }
 const f2 = function() { return this; }
 function f3() { return () => this; }
+function f4() { this.a = 1; this.b = 2; }
 `;
 
     const result = await explicitAnyPlugin.run(
@@ -103,6 +104,7 @@ function f3() { return () => this; }
 function f1(this: any, a: any) { return this; }
 const f2 = function(this: any) { return this; }
 function f3(this: any) { return () => this; }
+function f4(this: any) { this.a = 1; this.b = 2; }
 `);
   });
 
