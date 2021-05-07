@@ -2,16 +2,24 @@ import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import { getReactComponentHeritageType, isReactClassComponent } from './utils/react';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
+import { createValidate, Properties } from '../utils/validateOptions';
 
 type Options = { force?: boolean };
 
+const optionProperties: Properties = {
+  force: { type: 'boolean' },
+};
+
 const reactClassLifecycleMethodsPlugin: Plugin<Options> = {
   name: 'react-class-lifecycle-methods',
+
   run({ fileName, sourceFile, text, options }) {
     return /\.tsx$/.test(fileName)
       ? annotateReactComponentLifecycleMethods(sourceFile, text, options.force)
       : undefined;
   },
+
+  validate: createValidate(optionProperties),
 };
 
 export default reactClassLifecycleMethodsPlugin;

@@ -1,6 +1,12 @@
 /* eslint-disable no-bitwise */
 import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
+import {
+  AnyAliasOptions,
+  Properties,
+  anyAliasProperty,
+  createValidate,
+} from '../utils/validateOptions';
 
 type TypeMap = Record<string, TypeOptions>;
 
@@ -39,12 +45,27 @@ const defaultTypeMap: TypeMap = {
 
 type Options = {
   annotateReturns?: boolean;
-  anyAlias?: string;
   typeMap?: TypeMap;
+} & AnyAliasOptions;
+
+const optionProperties: Properties = {
+  ...anyAliasProperty,
+  annotateReturns: { type: 'boolean' },
+  typeMap: {
+    oneOf: [
+      { type: 'string' },
+      {
+        type: 'object',
+        properties: { tsName: { type: 'string' }, acceptsTypeParameters: { type: 'boolean' } },
+        additionalProperties: false,
+      },
+    ],
+  },
 };
 
 const jsDocPlugin: Plugin<Options> = {
   name: 'jsdoc',
+
   run({ sourceFile, text, options }) {
     const result = ts.transform(sourceFile, [jsDocTransformerFactory(options)]);
     const newSourceFile = result.transformed[0];
@@ -54,6 +75,8 @@ const jsDocPlugin: Plugin<Options> = {
     const printer = ts.createPrinter();
     return printer.printFile(newSourceFile);
   },
+
+  validate: createValidate(optionProperties),
 };
 
 export default jsDocPlugin;

@@ -3,17 +3,25 @@ import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
+import { createValidate, Properties } from '../utils/validateOptions';
 
 type Options = { useTsIgnore?: boolean };
 
+const optionProperties: Properties = {
+  useTsIgnore: { type: 'boolean' },
+};
+
 const tsIgnorePlugin: Plugin<Options> = {
   name: 'ts-ignore',
+
   run({ getLanguageService, fileName, sourceFile, options }) {
     const diagnostics = getLanguageService()
       .getSemanticDiagnostics(fileName)
       .filter(isDiagnosticWithLinePosition);
     return getTextWithIgnores(sourceFile, diagnostics, options);
   },
+
+  validate: createValidate(optionProperties),
 };
 
 export default tsIgnorePlugin;

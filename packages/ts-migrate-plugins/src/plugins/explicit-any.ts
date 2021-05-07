@@ -3,11 +3,13 @@ import { Collection } from 'jscodeshift/src/Collection';
 import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
+import { AnyAliasOptions, validateAnyAliasOptions } from '../utils/validateOptions';
 
-type Options = { anyAlias?: string };
+type Options = AnyAliasOptions;
 
 const explicitAnyPlugin: Plugin<Options> = {
   name: 'explicit-any',
+
   run({ options, fileName, text, getLanguageService }) {
     const semanticDiagnostics = getLanguageService().getSemanticDiagnostics(fileName);
     const diagnostics = semanticDiagnostics
@@ -15,6 +17,8 @@ const explicitAnyPlugin: Plugin<Options> = {
       .filter((d) => d.category === ts.DiagnosticCategory.Error);
     return withExplicitAny(text, diagnostics, options.anyAlias);
   },
+
+  validate: validateAnyAliasOptions,
 };
 
 export default explicitAnyPlugin;

@@ -1,16 +1,28 @@
 /* eslint-disable no-bitwise */
 import ts from 'typescript';
-import { Plugin } from 'ts-migrate-server';
+import { Plugin, PluginOptionsError } from 'ts-migrate-server';
+
+import { Properties, validateOptions } from '../utils/validateOptions';
+
+const accessibility = ['private' as const, 'protected' as const, 'public' as const];
 
 type Options = {
-  defaultAccessibility?: 'private' | 'protected' | 'public';
+  defaultAccessibility?: typeof accessibility[number];
   privateRegex?: string;
   protectedRegex?: string;
   publicRegex?: string;
 };
 
+const optionProperties: Properties = {
+  defaultAccessibility: { enum: accessibility },
+  privateRegex: { type: 'string' },
+  protectedRegex: { type: 'string' },
+  publicRegex: { type: 'string' },
+};
+
 const memberAccessibilityPlugin: Plugin<Options> = {
   name: 'member-accessibility',
+
   run({ sourceFile, text, options }) {
     const result = ts.transform(sourceFile, [memberAccessibilityTransformerFactory(options)]);
     const newSourceFile = result.transformed[0];
@@ -19,6 +31,29 @@ const memberAccessibilityPlugin: Plugin<Options> = {
     }
     const printer = ts.createPrinter();
     return printer.printFile(newSourceFile);
+  },
+
+  validate(options: unknown): options is Options {
+    const valid = validateOptions(options, optionProperties);
+
+    if (valid) {
+      // Validate regex property syntax.
+      // This can't be covered by JSON schema.
+      const validOptions = options as Options;
+      accessibility.forEach((accessibility) => {
+        const key = `${accessibility}Regex` as const;
+        const value = validOptions[key];
+        if (value) {
+          try {
+            RegExp(value);
+          } catch (e) {
+            throw new PluginOptionsError(`${key}: ${e.message}`);
+          }
+        }
+      });
+    }
+
+    return true;
   },
 };
 
