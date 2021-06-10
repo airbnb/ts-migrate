@@ -14,9 +14,9 @@ function B(b) {}
 
     expect(result).toBe(`\
 /** @param a {?} */
-function A(a: any) { }
+function A(a: any) {}
 /** @param b {*} */
-function B(b: any) { }
+function B(b: any) {}
 `);
   });
 
@@ -32,9 +32,9 @@ function B(b) {}
 
     expect(result).toBe(`\
 /** @arg a {Number} */
-function A(a: number) { }
+function A(a: number) {}
 /** @argument b {Number} */
-function B(b: number) { }
+function B(b: number) {}
 `);
   });
 
@@ -56,15 +56,15 @@ function E(e) {}
 
     expect(result).toBe(`\
 /** @param a {Number} */
-function A(a: number) { }
+function A(a: number) {}
 /** @param b {String} */
-function B(b: string) { }
+function B(b: string) {}
 /** @param c {Boolean} */
-function C(c: boolean) { }
+function C(c: boolean) {}
 /** @param d {Object} */
-function D(d: object) { }
+function D(d: object) {}
 /** @param e {date} */
-function E(e: Date) { }
+function E(e: Date) {}
 `);
   });
 
@@ -84,13 +84,13 @@ function D(d) {}
 
     expect(result).toBe(`\
 /** @param a {Number<string>} */
-function A(a: number) { }
+function A(a: number) {}
 /** @param b {String<string>} */
-function B(b: string) { }
+function B(b: string) {}
 /** @param c {Boolean<string>} */
-function C(c: boolean) { }
+function C(c: boolean) {}
 /** @param d {Object<object>} */
-function D(d: object) { }
+function D(d: object) {}
 `);
   });
 
@@ -104,7 +104,7 @@ function A(a) {}
 
     expect(result).toBe(`\
 /** @param a {?Number} */
-function A(a: number | null) { }
+function A(a: number | null) {}
 `);
   });
 
@@ -118,7 +118,7 @@ function A(a) {}
 
     expect(result).toBe(`\
 /** @param a {!Number} */
-function A(a: number) { }
+function A(a: number) {}
 `);
   });
 
@@ -138,13 +138,13 @@ function D(d = 1) {}
 
     expect(result).toBe(`\
 /** @param a {Number=} */
-function A(a?: number) { }
+function A(a?: number) {}
 /** @param [b] {Number} */
-function B(b?: number) { }
+function B(b?: number) {}
 /** @param [c] {Object} */
-function C({ c }: object) { }
+function C({ c }: object) {}
 /** @param [d] {Number} */
-function D(d: number = 1) { }
+function D(d: number = 1) {}
 `);
   });
 
@@ -164,13 +164,13 @@ function D(d) {}
 
     expect(result).toBe(`\
 /** @param a {Array} */
-function A(a: Array<any>) { }
+function A(a: Array<any>) {}
 /** @param b {Array<String>} */
-function B(b: Array<string>) { }
+function B(b: Array<string>) {}
 /** @param c {Array.<String>} */
-function C(c: Array<string>) { }
+function C(c: Array<string>) {}
 /** @param d {String[]} */
-function D(d: string[]) { }
+function D(d: string[]) {}
 `);
   });
 
@@ -186,9 +186,9 @@ function B(b) {}
 
     expect(result).toBe(`\
 /** @param a {Object<number, any>} */
-function A(a: { [n: number]: any; }) { }
+function A(a: { [n: number]: any; }) {}
 /** @param b {Object<string, any>} */
-function B(b: { [s: string]: any; }) { }
+function B(b: { [s: string]: any; }) {}
 `);
   });
 
@@ -208,13 +208,13 @@ function D(d) {}
 
     expect(result).toBe(`\
 /** @param a {function(number)} */
-function A(a: (arg0: number) => any) { }
+function A(a: (arg0: number) => any) {}
 /** @param b {function(): number} */
-function B(b: () => number) { }
+function B(b: () => number) {}
 /** @param c {function(this: number)} */
-function C(c: (this: number) => any) { }
+function C(c: (this: number) => any) {}
 /** @param d {function(...number)} */
-function D(d: (...rest: number[]) => any) { }
+function D(d: (...rest: number[]) => any) {}
 `);
   });
 
@@ -257,7 +257,7 @@ function Destructured({ a, b }) {}
 function Project(employee: {
     name: string;
     department?: string;
-}) { }
+}) {}
 /**
  * @param {Object} employee
  * @param employee.name
@@ -266,7 +266,7 @@ function Project(employee: {
 function NoTypes(employee: {
     name: any;
     department: any;
-}) { }
+}) {}
 /**
  * @param {Object} employee
  * @param {Object} employee.name
@@ -276,7 +276,7 @@ function DeepNesting(employee: {
     name: {
         first: string;
     };
-}) { }
+}) {}
 /**
  * @param {Object} param
  * @param {String} param.a
@@ -285,7 +285,7 @@ function DeepNesting(employee: {
 function Destructured({ a, b }: {
     a: string;
     b: number;
-}) { }
+}) {}
 `);
   });
 
@@ -299,7 +299,7 @@ function A(a) {}
 
     expect(result).toBe(`\
 /** @param a {Undeclared} */
-function A(a: Undeclared) { }
+function A(a: Undeclared) {}
 `);
   });
 
@@ -319,7 +319,7 @@ function A(a, b, c) {}
  * @param a {number}
  * @param b {string}
  */
-function A(a: number, b: string, c) { }
+function A(a: number, b: string, c) {}
 `);
   });
 
@@ -349,7 +349,7 @@ function A() {}
 
     expect(result).toBe(`\
 /** @return {number} */
-function A(): number { }
+function A(): number {}
 `);
   });
 
@@ -383,8 +383,8 @@ class C {
 
     expect(result).toBe(`\
 class C {
-    /** @param a {number} */
-    A(a: number) { }
+  /** @param a {number} */
+  A(a: number) {}
 }
 `);
   });
@@ -413,20 +413,20 @@ class C {
 
     expect(result).toBe(`\
 class C {
-    /** @private */
-    private A() { }
-    /** @protected */
-    protected B() { }
-    /** @public */
-    public C() { }
-    /**
-     * @private
-     * @protected
-     * @public
-     */
-    private D() { }
-    /** @public */
-    private E() { }
+  /** @private */
+  private A() {}
+  /** @protected */
+  protected B() {}
+  /** @public */
+  public C() {}
+  /**
+   * @private
+   * @protected
+   * @public
+   */
+  private D() {}
+  /** @public */
+  private E() {}
 }
 `);
   });
@@ -453,16 +453,16 @@ const O = {
 
     expect(result).toBe(`\
 const O = {
-    /** @param a {number} */
-    A(a: number) { },
-    /** @return {string} */
-    B(): string { },
-    /** @private */
-    C() { },
-    /** @param a {number} */
-    D: (a: number) => { },
-    /** @return {string} */
-    E: (): string => { }
+  /** @param a {number} */
+  A(a: number) {},
+  /** @return {string} */
+  B(): string {},
+  /** @private */
+  C() {},
+  /** @param a {number} */
+  D: (a: number) => {},
+  /** @return {string} */
+  E: (): string => {}
 };
 `);
   });
@@ -483,11 +483,11 @@ window.c = function(c) {};
 
     expect(result).toBe(`\
 /** @param a {number} */
-const A = function (a: number) { };
+const A = function(a: number) {};
 /** @return {string} */
-const B = function (): string { };
+const B = function(): string {};
 /** @param c {number} */
-window.c = function (c: number) { };
+window.c = function(c: number) {};
 `);
   });
 
@@ -534,9 +534,9 @@ function() {
     const result = jsDocPlugin.run(mockPluginParams({ text, fileName: 'file.tsx' }));
 
     expect(result).toBe(`\
-function () {
+function() {
     /** @param a {number} */
-    function A(a: number) { }
+    function A(a: number) {}
 }
 `);
   });

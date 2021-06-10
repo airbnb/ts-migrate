@@ -7,6 +7,7 @@ import {
   anyAliasProperty,
   createValidate,
 } from '../utils/validateOptions';
+import UpdateTracker from './utils/update';
 
 type TypeMap = Record<string, TypeOptions>;
 
@@ -66,14 +67,10 @@ const optionProperties: Properties = {
 const jsDocPlugin: Plugin<Options> = {
   name: 'jsdoc',
 
-  run({ sourceFile, text, options }) {
-    const result = ts.transform(sourceFile, [jsDocTransformerFactory(options)]);
-    const newSourceFile = result.transformed[0];
-    if (newSourceFile === sourceFile) {
-      return text;
-    }
-    const printer = ts.createPrinter();
-    return printer.printFile(newSourceFile);
+  run({ sourceFile, options }) {
+    const updates = new UpdateTracker(sourceFile);
+    ts.transform(sourceFile, [jsDocTransformerFactory(updates, options)]);
+    return updates.apply();
   },
 
   validate: createValidate(optionProperties),
@@ -81,31 +78,28 @@ const jsDocPlugin: Plugin<Options> = {
 
 export default jsDocPlugin;
 
-const jsDocTransformerFactory = ({
-  annotateReturns,
-  anyAlias,
-  typeMap: optionsTypeMap,
-}: Options) => (context: ts.TransformationContext) => {
+const jsDocTransformerFactory = (
+  updates: UpdateTracker,
+  { annotateReturns, anyAlias, typeMap: optionsTypeMap }: Options,
+) => (context: ts.TransformationContext) => {
   const { factory } = context;
   const anyType = anyAlias
     ? factory.createTypeReferenceNode(anyAlias, undefined)
     : factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
   const typeMap: TypeMap = { ...defaultTypeMap, ...optionsTypeMap };
+  return (file: ts.SourceFile) => {
+    visit(file);
+    return file;
+  };
 
-  return (file: ts.SourceFile) => ts.visitNode(file, visit);
-
-  function visit(origNode: ts.Node): ts.Node {
-    const node = ts.visitEachChild(origNode, visit, context);
-    if (ts.isFunctionLike(node)) {
-      return visitFunctionLike(node, ts.isClassDeclaration(origNode.parent));
+  function visit(origNode: ts.Node): void {
+    origNode.forEachChild(visit);
+    if (ts.isFunctionLike(origNode)) {
+      visitFunctionLike(origNode, ts.isClassDeclaration(origNode.parent));
     }
-    return node;
   }
 
-  function visitFunctionLike(
-    node: ts.SignatureDeclaration,
-    insideClass: boolean,
-  ): ts.SignatureDeclaration {
+  function visitFunctionLike(node: ts.SignatureDeclaration, insideClass: boolean): void {
     const modifiers =
       ts.isMethodDeclaration(node) && insideClass
         ? modifiersFromJSDoc(node, factory)
@@ -117,90 +111,27 @@ const jsDocTransformerFactory = ({
       parameters === node.parameters &&
       returnType === node.type
     ) {
-      return node;
+      return;
     }
 
-    const newModifiers = factory.createNodeArray(modifiers);
-    const newParameters = factory.createNodeArray(parameters);
-    const newType = returnType;
+    const newModifiers = modifiers ? factory.createNodeArray(modifiers) : undefined;
+    if (newModifiers) {
+      if (node.modifiers) {
+        updates.replaceNodes(node.modifiers, newModifiers);
+      } else {
+        const pos = node.name!.getStart();
+        updates.insertNodes(pos, newModifiers);
+      }
+    }
 
-    switch (node.kind) {
-      case ts.SyntaxKind.FunctionDeclaration:
-        return factory.updateFunctionDeclaration(
-          node,
-          node.decorators,
-          newModifiers,
-          node.asteriskToken,
-          node.name,
-          node.typeParameters,
-          newParameters,
-          newType,
-          node.body,
-        );
-      case ts.SyntaxKind.MethodDeclaration:
-        return factory.updateMethodDeclaration(
-          node,
-          node.decorators,
-          newModifiers,
-          node.asteriskToken,
-          node.name,
-          node.questionToken,
-          node.typeParameters,
-          newParameters,
-          newType,
-          node.body,
-        );
-      case ts.SyntaxKind.Constructor:
-        return factory.updateConstructorDeclaration(
-          node,
-          node.decorators,
-          newModifiers,
-          newParameters,
-          node.body,
-        );
-      case ts.SyntaxKind.GetAccessor:
-        return factory.updateGetAccessorDeclaration(
-          node,
-          node.decorators,
-          newModifiers,
-          node.name,
-          newParameters,
-          newType,
-          node.body,
-        );
-      case ts.SyntaxKind.SetAccessor:
-        return factory.updateSetAccessorDeclaration(
-          node,
-          node.decorators,
-          newModifiers,
-          node.name,
-          newParameters,
-          node.body,
-        );
-      case ts.SyntaxKind.FunctionExpression:
-        return factory.updateFunctionExpression(
-          node,
-          newModifiers,
-          node.asteriskToken,
-          node.name,
-          node.typeParameters,
-          newParameters,
-          newType,
-          node.body,
-        );
-      case ts.SyntaxKind.ArrowFunction:
-        return factory.updateArrowFunction(
-          node,
-          newModifiers,
-          node.typeParameters,
-          newParameters,
-          newType,
-          node.equalsGreaterThanToken,
-          node.body,
-        );
-      default:
-        // Should be impossible.
-        return node;
+    const newParameters = factory.createNodeArray(parameters);
+    const addParens =
+      ts.isArrowFunction(node) && node.getFirstToken()?.kind !== ts.SyntaxKind.OpenParenToken;
+    updates.replaceNodes(node.parameters, newParameters, addParens);
+
+    const newType = returnType;
+    if (newType) {
+      updates.addReturnAnnotation(node, newType);
     }
   }
 
