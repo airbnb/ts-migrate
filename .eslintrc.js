@@ -79,6 +79,8 @@ module.exports = {
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-var-requires": "off",
-        "@typescript-eslint/no-use-before-define": "off"
+        "@typescript-eslint/no-use-before-define": "off",
+        "no-useless-constructor": "off",
+        "@typescript-eslint/no-useless-constructor": "error"
     }
 }

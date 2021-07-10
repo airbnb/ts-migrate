@@ -4,7 +4,22 @@ import addConversionsPlugin from '../../src/plugins/add-conversions';
 describe('add-conversions plugin', () => {
   const text = `\
 const a = {};
+const b = {};
+
 a.b = 1;
+a.b = b.c;
+
+if (a.b) {
+  b.c = 1;
+}
+
+class C extends a.b {
+}
+
+enum E {
+  A = a.b
+}
+
 console.log(a.c);
 `;
 
@@ -13,7 +28,22 @@ console.log(a.c);
 
     expect(result).toBe(`\
 const a = {};
+const b = {};
+
 (a as any).b = 1;
+(a as any).b = (b as any).c;
+
+if ((a as any).b) {
+  (b as any).c = 1;
+}
+
+class C  extends (a as any).b {
+}
+
+enum E {
+  A = (a as any).b
+}
+
 console.log((a as any).c);
 `);
   });
@@ -25,7 +55,22 @@ console.log((a as any).c);
 
     expect(result).toBe(`\
 const a = {};
+const b = {};
+
 (a as $TSFixMe).b = 1;
+(a as $TSFixMe).b = (b as $TSFixMe).c;
+
+if ((a as $TSFixMe).b) {
+  (b as $TSFixMe).c = 1;
+}
+
+class C  extends (a as $TSFixMe).b {
+}
+
+enum E {
+  A = (a as $TSFixMe).b
+}
+
 console.log((a as $TSFixMe).c);
 `);
   });
