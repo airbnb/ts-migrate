@@ -1,6 +1,6 @@
 {
   "name": "ts-migrate-server",
-  "version": "0.1.18",
+  "version": "0.1.20",
   "description": "A package that contains the main migration runner and spawns a TSServer process",
   "main": "build/src/index.js",
   "directories": {
