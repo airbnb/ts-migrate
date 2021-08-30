@@ -90,4 +90,27 @@ function f(u: unknown) {
 }
 `);
   });
+
+  it('replaces only the necessary code in class property arrow functions (issue #134)', async () => {
+    const text = `\
+class PublishEvent {
+  constructor(opts = {}) {
+    this._eventName = opts.eventName;
+  }
+
+  addEventListener = () => document.addEventListener(this._eventName, this.publish);
+}
+`;
+    const result = addConversionsPlugin.run(await realPluginParams({ text }));
+
+    expect(result).toBe(`\
+class PublishEvent {
+  constructor(opts = {}) {
+    (this as any)._eventName = (opts as any).eventName;
+  }
+
+  addEventListener = () => document.addEventListener((this as any)._eventName, (this as any).publish);
+}
+`);
+  });
 });

@@ -168,6 +168,7 @@ function shouldReplace(node: ts.Node): boolean {
     case ts.SyntaxKind.ClassDeclaration:
     case ts.SyntaxKind.EnumMember:
     case ts.SyntaxKind.HeritageClause:
+    case ts.SyntaxKind.PropertyDeclaration:
     case ts.SyntaxKind.SourceFile: // In case we missed any other case.
       return true;
     default:
