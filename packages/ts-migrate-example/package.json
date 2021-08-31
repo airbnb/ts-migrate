@@ -1,6 +1,6 @@
 {
   "name": "ts-migrate-example",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "private": "true",
   "description": "Basic example of usage of the ts-migrate-server with writing a custom plugin",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "jscodeshift": "^0.12.0",
-    "ts-migrate-plugins": "^0.1.21",
+    "ts-migrate-plugins": "^0.1.22",
     "ts-migrate-server": "^0.1.20",
     "ts-node": "^8.3.0",
     "typescript": "4.2.4"
