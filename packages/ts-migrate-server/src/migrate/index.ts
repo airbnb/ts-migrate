@@ -1,4 +1,4 @@
-import { createProject } from '@ts-morph/bootstrap';
+import { createProject, Project } from '@ts-morph/bootstrap';
 import ts from 'typescript';
 import path from 'path';
 import log from 'updatable-log';
@@ -50,6 +50,9 @@ export default async function migrate({
   log.info('Start...');
   const pluginsTimer = new PerfTimer();
   const updatedSourceFiles = new Set<string>();
+  const originalSourceFilesToMigrate = new Set<string>(
+    getSourceFilesToMigrate(project).map((file) => file.fileName),
+  );
 
   for (let i = 0; i < config.plugins.length; i += 1) {
     const { plugin, options: pluginOptions } = config.plugins[i];
@@ -58,9 +61,12 @@ export default async function migrate({
     const pluginTimer = new PerfTimer();
     log.info(`${pluginLogPrefix} Plugin ${i + 1} of ${config.plugins.length}. Start...`);
 
-    const sourceFiles = project
-      .getSourceFiles()
-      .filter(({ fileName }) => !/(\.d\.ts|\.json)$|node_modules/.test(fileName));
+    let sourceFiles = getSourceFilesToMigrate(project);
+    if (sources !== undefined) {
+      sourceFiles = sourceFiles.filter(({ fileName }) =>
+        originalSourceFilesToMigrate.has(fileName),
+      );
+    }
 
     // eslint-disable-next-line no-restricted-syntax
     for (const sourceFile of sourceFiles) {
@@ -112,6 +118,12 @@ export default async function migrate({
   log.info(`Wrote ${updatedSourceFiles.size} updated file(s) in ${writeTimer.elapsedStr()}.`);
 
   return exitCode;
+}
+
+function getSourceFilesToMigrate(project: Project) {
+  return project
+    .getSourceFiles()
+    .filter(({ fileName }) => !/(\.d\.ts|\.json)$|node_modules/.test(fileName));
 }
 
 export { MigrateConfig };
