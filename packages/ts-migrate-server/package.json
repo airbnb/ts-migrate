@@ -61,8 +61,10 @@
   "dependencies": {
     "@ts-morph/bootstrap": "^0.9.1",
     "pretty-ms": "^7.0.1",
-    "typescript": "4.2.4",
     "updatable-log": "^0.2.0"
   },
-  "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3"
+  "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3",
+  "peerDependencies": {
+    "typescript": ">4.0"
+  }
 }
