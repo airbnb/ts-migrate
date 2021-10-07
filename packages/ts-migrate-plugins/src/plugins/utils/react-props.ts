@@ -51,9 +51,8 @@ export default function getTypeFromPropTypesObjectLiteral(
     }
   }
 
-  let node: ts.TypeLiteralNode | ts.IntersectionTypeNode = ts.factory.createTypeLiteralNode(
-    members,
-  );
+  let node: ts.TypeLiteralNode | ts.IntersectionTypeNode =
+    ts.factory.createTypeLiteralNode(members);
   if (intersectionTypes.length > 0) {
     node = ts.factory.createIntersectionTypeNode([node, ...intersectionTypes]);
   }

@@ -34,7 +34,7 @@ export function mockPluginParams<TOptions = unknown>(params: {
   });
 
   return {
-    options: (options as unknown) as TOptions,
+    options: options as unknown as TOptions,
     fileName,
     rootDir: __dirname,
     text,
@@ -86,7 +86,7 @@ export async function realPluginParams<TOptions = unknown>(params: {
   const getLanguageService = () => project.getLanguageService();
 
   return {
-    options: (options as unknown) as TOptions,
+    options: options as unknown as TOptions,
     fileName,
     rootDir: __dirname,
     text,

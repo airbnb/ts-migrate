@@ -34,123 +34,121 @@ const addConversionsPlugin: Plugin<Options> = {
 
 export default addConversionsPlugin;
 
-const addConversionsTransformerFactory = (
-  updates: UpdateTracker,
-  diags: ts.DiagnosticWithLocation[],
-  { anyAlias }: Options,
-) => (context: ts.TransformationContext) => {
-  const { factory } = context;
-  const anyType = anyAlias
-    ? factory.createTypeReferenceNode(anyAlias)
-    : factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+const addConversionsTransformerFactory =
+  (updates: UpdateTracker, diags: ts.DiagnosticWithLocation[], { anyAlias }: Options) =>
+  (context: ts.TransformationContext) => {
+    const { factory } = context;
+    const anyType = anyAlias
+      ? factory.createTypeReferenceNode(anyAlias)
+      : factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
 
-  let nodesToConvert: Set<ts.Node>;
+    let nodesToConvert: Set<ts.Node>;
 
-  return (file: ts.SourceFile) => {
-    nodesToConvert = new Set(
-      diags
-        .map((diag) => {
-          const token = getTokenAtPosition(file, diag.start);
-          switch (diag.code) {
-            case 2339:
-              if (!ts.isPropertyAccessExpression(token.parent)) {
+    return (file: ts.SourceFile) => {
+      nodesToConvert = new Set(
+        diags
+          .map((diag) => {
+            const token = getTokenAtPosition(file, diag.start);
+            switch (diag.code) {
+              case 2339:
+                if (!ts.isPropertyAccessExpression(token.parent)) {
+                  return null;
+                }
+                return token.parent.expression;
+
+              case 2571:
+                return token;
+
+              default:
+                // Should be impossible.
                 return null;
-              }
-              return token.parent.expression;
+            }
+          })
+          .filter((node): node is ts.Expression => node !== null),
+      );
+      visit(file);
+      return file;
+    };
 
-            case 2571:
-              return token;
+    function visit(origNode: ts.Node): ts.Node | undefined {
+      const needsConversion = nodesToConvert.has(origNode);
+      let node = ts.visitEachChild(origNode, visit, context);
+      if (node === origNode && !needsConversion) {
+        return origNode;
+      }
 
-            default:
-              // Should be impossible.
-              return null;
-          }
-        })
-        .filter((node): node is ts.Expression => node !== null),
-    );
-    visit(file);
-    return file;
+      if (needsConversion) {
+        node = factory.createAsExpression(node as ts.Expression, anyType);
+      }
+
+      if (shouldReplace(node)) {
+        replaceNode(origNode, node);
+        return origNode;
+      }
+
+      return node;
+    }
+
+    // Nodes that have one expression child called "expression".
+    type ExpressionChild =
+      | ts.DoStatement
+      | ts.IfStatement
+      | ts.SwitchStatement
+      | ts.WithStatement
+      | ts.WhileStatement;
+
+    /**
+     * For nodes that contain both expression and statement children, only
+     * replace the direct expression children. The statements have already
+     * been replaced at a lower level and replacing them again can produce
+     * duplicate statements or invalid syntax.
+     */
+    function replaceNode(origNode: ts.Node, newNode: ts.Node): void {
+      switch (origNode.kind) {
+        case ts.SyntaxKind.DoStatement:
+        case ts.SyntaxKind.IfStatement:
+        case ts.SyntaxKind.SwitchStatement:
+        case ts.SyntaxKind.WithStatement:
+        case ts.SyntaxKind.WhileStatement:
+          updates.replaceNode(
+            (origNode as ExpressionChild).expression,
+            (newNode as ExpressionChild).expression,
+          );
+          break;
+
+        case ts.SyntaxKind.ForStatement:
+          updates.replaceNode(
+            (origNode as ts.ForStatement).initializer,
+            (newNode as ts.ForStatement).initializer,
+          );
+          updates.replaceNode(
+            (origNode as ts.ForStatement).condition,
+            (newNode as ts.ForStatement).condition,
+          );
+          updates.replaceNode(
+            (origNode as ts.ForStatement).incrementor,
+            (newNode as ts.ForStatement).incrementor,
+          );
+          break;
+
+        case ts.SyntaxKind.ForInStatement:
+        case ts.SyntaxKind.ForOfStatement:
+          updates.replaceNode(
+            (origNode as ts.ForInOrOfStatement).expression,
+            (newNode as ts.ForInOrOfStatement).expression,
+          );
+          updates.replaceNode(
+            (origNode as ts.ForInOrOfStatement).initializer,
+            (newNode as ts.ForInOrOfStatement).initializer,
+          );
+          break;
+
+        default:
+          updates.replaceNode(origNode, newNode);
+          break;
+      }
+    }
   };
-
-  function visit(origNode: ts.Node): ts.Node | undefined {
-    const needsConversion = nodesToConvert.has(origNode);
-    let node = ts.visitEachChild(origNode, visit, context);
-    if (node === origNode && !needsConversion) {
-      return origNode;
-    }
-
-    if (needsConversion) {
-      node = factory.createAsExpression(node as ts.Expression, anyType);
-    }
-
-    if (shouldReplace(node)) {
-      replaceNode(origNode, node);
-      return origNode;
-    }
-
-    return node;
-  }
-
-  // Nodes that have one expression child called "expression".
-  type ExpressionChild =
-    | ts.DoStatement
-    | ts.IfStatement
-    | ts.SwitchStatement
-    | ts.WithStatement
-    | ts.WhileStatement;
-
-  /**
-   * For nodes that contain both expression and statement children, only
-   * replace the direct expression children. The statements have already
-   * been replaced at a lower level and replacing them again can produce
-   * duplicate statements or invalid syntax.
-   */
-  function replaceNode(origNode: ts.Node, newNode: ts.Node): void {
-    switch (origNode.kind) {
-      case ts.SyntaxKind.DoStatement:
-      case ts.SyntaxKind.IfStatement:
-      case ts.SyntaxKind.SwitchStatement:
-      case ts.SyntaxKind.WithStatement:
-      case ts.SyntaxKind.WhileStatement:
-        updates.replaceNode(
-          (origNode as ExpressionChild).expression,
-          (newNode as ExpressionChild).expression,
-        );
-        break;
-
-      case ts.SyntaxKind.ForStatement:
-        updates.replaceNode(
-          (origNode as ts.ForStatement).initializer,
-          (newNode as ts.ForStatement).initializer,
-        );
-        updates.replaceNode(
-          (origNode as ts.ForStatement).condition,
-          (newNode as ts.ForStatement).condition,
-        );
-        updates.replaceNode(
-          (origNode as ts.ForStatement).incrementor,
-          (newNode as ts.ForStatement).incrementor,
-        );
-        break;
-
-      case ts.SyntaxKind.ForInStatement:
-      case ts.SyntaxKind.ForOfStatement:
-        updates.replaceNode(
-          (origNode as ts.ForInOrOfStatement).expression,
-          (newNode as ts.ForInOrOfStatement).expression,
-        );
-        updates.replaceNode(
-          (origNode as ts.ForInOrOfStatement).initializer,
-          (newNode as ts.ForInOrOfStatement).initializer,
-        );
-        break;
-
-      default:
-        updates.replaceNode(origNode, newNode);
-        break;
-    }
-  }
-};
 
 /**
  * Determines whether a node is eligible to be replaced.
