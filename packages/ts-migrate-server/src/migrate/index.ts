@@ -20,7 +20,6 @@ export default async function migrate({
   sources,
 }: MigrateParams): Promise<number> {
   let exitCode = 0;
-
   log.info(`TypeScript version: ${ts.version}`);
 
   const serverInitTimer = new PerfTimer();
@@ -29,7 +28,6 @@ export default async function migrate({
   if (sources !== undefined) {
     sources = Array.isArray(sources) ? sources : [sources];
     sources = sources.map((source) => path.join(rootDir, source));
-
     log.info(`Ignoring sources from tsconfig.json, using the ones provided manually instead.`);
   }
 

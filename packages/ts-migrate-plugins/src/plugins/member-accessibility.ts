@@ -46,7 +46,7 @@ const memberAccessibilityPlugin: Plugin<Options> = {
         if (value) {
           try {
             RegExp(value);
-          } catch (e) {
+          } catch (e: any) {
             throw new PluginOptionsError(`${key}: ${e.message}`);
           }
         }
