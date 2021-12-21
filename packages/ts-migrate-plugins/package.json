@@ -61,7 +61,7 @@
   "dependencies": {
     "eslint": "^7.14.0",
     "jscodeshift": "^0.13.0",
-    "json-schema": "^0.3.0",
+    "json-schema": "^0.4.0",
     "ts-migrate-server": "^0.1.27"
   },
   "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3",
