@@ -96,7 +96,10 @@ yargs
         .positional('folder', { type: 'string' })
         .choices('defaultAccessibility', ['private', 'protected', 'public'] as const)
         .string('plugin')
-        .choices('plugin', availablePlugins.map((p) => p.name))
+        .choices(
+          'plugin',
+          availablePlugins.map((p) => p.name),
+        )
         .describe('plugin', 'Run a specific plugin')
         .string('privateRegex')
         .string('protectedRegex')
@@ -109,7 +112,10 @@ yargs
           '$0 migrate /frontend/foo -s "bar/**/*" -s "node_modules/**/*.d.ts"',
           'Migrate all the files in /frontend/foo/bar, accounting for ambient types from node_modules.',
         )
-        .example('$0 migrate /frontend/foo --plugin jsdoc', 'Migrate JSDoc comments for all the files in /frontend/foo')
+        .example(
+          '$0 migrate /frontend/foo --plugin jsdoc',
+          'Migrate JSDoc comments for all the files in /frontend/foo',
+        )
         .require(['folder']),
     async (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
