@@ -35,6 +35,7 @@ export default async function migrate({
   const project = await createProject({
     tsConfigFilePath,
     skipAddingFilesFromTsConfig: sources !== undefined,
+    skipFileDependencyResolution: true,
   });
 
   // If we passed in our own sources, let's add them to the project.
@@ -59,12 +60,9 @@ export default async function migrate({
     const pluginTimer = new PerfTimer();
     log.info(`${pluginLogPrefix} Plugin ${i + 1} of ${config.plugins.length}. Start...`);
 
-    let sourceFiles = getSourceFilesToMigrate(project);
-    if (sources !== undefined) {
-      sourceFiles = sourceFiles.filter(({ fileName }) =>
-        originalSourceFilesToMigrate.has(fileName),
-      );
-    }
+    const sourceFiles = getSourceFilesToMigrate(project).filter(({ fileName }) =>
+      originalSourceFilesToMigrate.has(fileName),
+    );
 
     // eslint-disable-next-line no-restricted-syntax
     for (const sourceFile of sourceFiles) {
