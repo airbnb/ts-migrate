@@ -117,6 +117,44 @@ export default Foo;
 comsole.log('Hello');`);
   });
 
+  it('use message limit option to avoid error message truncation', async () => {
+    const text = "comsole.log('Hello');";
+    const result = await tsIgnorePlugin.run(
+      mockPluginParams({
+        text,
+        semanticDiagnostics: [
+          mockDiagnostic(text, 'comsole', {
+            messageText:
+              'This message is long, but should not be translated because of the messageLimit option value',
+          }),
+        ],
+        options: { messageLimit: 100 },
+      }),
+    );
+    expect(result)
+      .toBe(`// @ts-expect-error ts-migrate(123) FIXME: This message is long, but should not be translated because of the messageLimit option value
+comsole.log('Hello');`);
+  });
+
+  it('use message limit option to truncate a error message', async () => {
+    const text = "comsole.log('Hello');";
+    const result = await tsIgnorePlugin.run(
+      mockPluginParams({
+        text,
+        semanticDiagnostics: [
+          mockDiagnostic(text, 'comsole', {
+            messageText:
+              'This message is too long, and should be translated because of the messageLimit option value',
+          }),
+        ],
+        options: { messageLimit: 75 },
+      }),
+    );
+    expect(result)
+      .toBe(`// @ts-expect-error ts-migrate(123) FIXME: This message is too long, and should be translated because of the messageLi... Remove this comment to see the full error message
+comsole.log('Hello');`);
+  });
+
   it('does not add ignore comment for webpackChunkName', async () => {
     const text = `const getComponent = normalizeLoader(() =>
   import(

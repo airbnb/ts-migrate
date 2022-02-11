@@ -5,10 +5,14 @@ import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 import { createValidate, Properties } from '../utils/validateOptions';
 
-type Options = { useTsIgnore?: boolean };
+type Options = {
+  useTsIgnore?: boolean;
+  messageLimit?: number;
+};
 
 const optionProperties: Properties = {
   useTsIgnore: { type: 'boolean' },
+  messageLimit: { type: 'number' },
 };
 
 const tsIgnorePlugin: Plugin<Options> = {
@@ -50,12 +54,10 @@ function getTextWithIgnores(
       .filter(Boolean);
     const message = messageLines[messageLines.length - 1];
     const errorExpression = options.useTsIgnore ? 'ts-ignore' : `ts-expect-error`;
+    const messageLimit = options.messageLimit ?? TS_IGNORE_MESSAGE_LIMIT;
     const tsIgnoreCommentText = `@${errorExpression} ts-migrate(${code}) FIXME: ${
-      message.length > TS_IGNORE_MESSAGE_LIMIT
-        ? `${message.slice(
-            0,
-            TS_IGNORE_MESSAGE_LIMIT,
-          )}... Remove this comment to see the full error message`
+      message.length > messageLimit
+        ? `${message.slice(0, messageLimit)}... Remove this comment to see the full error message`
         : message
     }`;
     if (!isIgnored[diagnosticLine]) {
