@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import getTokenAtPosition from '../../../src/plugins/utils/token-pos';
 
 describe('getTokenAtPos', () => {

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import updateSourceText, { SourceTextUpdate } from '../../utils/updateSourceText';
 
 /**

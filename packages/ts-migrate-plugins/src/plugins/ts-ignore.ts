@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
@@ -16,9 +16,9 @@ const tsIgnorePlugin: Plugin<Options> = {
 
   run({ getLanguageService, fileName, sourceFile, options }) {
     const diagnostics = getLanguageService()
-      .getSemanticDiagnostics(fileName)
+      .compilerObject.getSemanticDiagnostics(fileName)
       .filter(isDiagnosticWithLinePosition);
-    return getTextWithIgnores(sourceFile, diagnostics, options);
+    return getTextWithIgnores(sourceFile.compilerNode, diagnostics, options);
   },
 
   validate: createValidate(optionProperties),

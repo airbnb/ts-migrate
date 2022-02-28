@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import { getReactComponentHeritageType, isReactClassComponent } from './utils/react';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
@@ -14,8 +14,10 @@ const reactClassLifecycleMethodsPlugin: Plugin<Options> = {
   name: 'react-class-lifecycle-methods',
 
   run({ fileName, sourceFile, text, options }) {
+    const tsSourceFile = sourceFile.compilerNode;
+
     return /\.tsx$/.test(fileName)
-      ? annotateReactComponentLifecycleMethods(sourceFile, text, options.force)
+      ? annotateReactComponentLifecycleMethods(tsSourceFile, text, options.force)
       : undefined;
   },
 

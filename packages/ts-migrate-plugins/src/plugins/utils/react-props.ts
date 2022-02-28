@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define, no-restricted-syntax */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { getNumComponentsInSourceFile } from './react';
 import { collectIdentifiers } from './identifiers';
 import { PropTypesIdentifierMap } from '../react-props';

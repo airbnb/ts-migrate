@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import { updateSourceText, SourceTextUpdate } from 'ts-migrate-plugins';
 
@@ -12,7 +12,9 @@ const examplePluginTs: Plugin<Options> = {
     const printer = ts.createPrinter();
 
     // get all function declarations from the source file
-    const functionDeclarations = sourceFile.statements.filter(ts.isFunctionDeclaration);
+    const functionDeclarations = sourceFile.compilerNode.statements.filter(
+      ts.isFunctionDeclaration,
+    );
 
     functionDeclarations.forEach((functionDeclaration) => {
       const hasTwoParams = functionDeclaration.parameters.length === 2;
@@ -54,7 +56,11 @@ const examplePluginTs: Plugin<Options> = {
         const { end } = functionDeclaration;
 
         // generate a new source text for the function declaration
-        const text = printer.printNode(ts.EmitHint.Unspecified, newFunctionDeclaration, sourceFile);
+        const text = printer.printNode(
+          ts.EmitHint.Unspecified,
+          newFunctionDeclaration,
+          sourceFile.compilerNode,
+        );
 
         updates.push({ kind: 'replace', index: start, length: end - start, text });
       }

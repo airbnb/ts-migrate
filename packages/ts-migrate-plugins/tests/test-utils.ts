@@ -1,5 +1,4 @@
-import { createProject } from '@ts-morph/bootstrap';
-import ts from 'typescript';
+import { ts, Project, SourceFile } from 'ts-morph';
 import { PluginParams } from 'ts-migrate-server';
 
 type WithoutFile<T> = Omit<T, 'file'>;
@@ -21,14 +20,10 @@ export function mockPluginParams<TOptions = unknown>(params: {
     options = {},
   } = params;
 
-  const sourceFile = ts.createSourceFile(
-    fileName,
-    text,
-    ts.ScriptTarget.Latest,
-    /* setParentNodes */ true,
-  );
+  const project = new Project({ useInMemoryFileSystem: true });
+  const sourceFile = project.createSourceFile(fileName, text);
 
-  const withFile = <T>(diagnostic: T): T & { file: ts.SourceFile } => ({
+  const withFile = <T>(diagnostic: T): T & { file: SourceFile } => ({
     ...diagnostic,
     file: sourceFile,
   });
@@ -41,9 +36,11 @@ export function mockPluginParams<TOptions = unknown>(params: {
     sourceFile,
     getLanguageService: () =>
       ({
-        getSemanticDiagnostics: () => semanticDiagnostics.map(withFile),
-        getSyntacticDiagnostics: () => syntacticDiagnostics.map(withFile),
-        getSuggestionDiagnostics: () => suggestionDiagnostics.map(withFile),
+        compilerObject: {
+          getSemanticDiagnostics: () => semanticDiagnostics.map(withFile),
+          getSyntacticDiagnostics: () => syntacticDiagnostics.map(withFile),
+          getSuggestionDiagnostics: () => suggestionDiagnostics.map(withFile),
+        },
       } as any),
   };
 }
@@ -75,7 +72,7 @@ export async function realPluginParams<TOptions = unknown>(params: {
 }): Promise<PluginParams<TOptions>> {
   const { fileName = 'file.ts', text = '', options = {} } = params;
 
-  const project = await createProject({
+  const project = new Project({
     compilerOptions: {
       strict: true,
     },

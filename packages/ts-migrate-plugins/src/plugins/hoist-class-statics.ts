@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 import {
@@ -16,7 +16,7 @@ const hoistClassStaticsPlugin: Plugin<Options> = {
   name: 'hoist-class-statics',
 
   run({ sourceFile, text, options }) {
-    return hoistStaticClassProperties(sourceFile, text, options);
+    return hoistStaticClassProperties(sourceFile.compilerNode, text, options);
   },
 
   validate: validateAnyAliasOptions,

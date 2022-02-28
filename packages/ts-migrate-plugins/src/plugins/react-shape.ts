@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax, no-use-before-define, @typescript-eslint/no-use-before-define */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import path from 'path';
 import { Plugin } from 'ts-migrate-server';
 import getTypeFromPropTypesObjectLiteral from './utils/react-props';
@@ -22,8 +22,10 @@ const reactShapePlugin: Plugin<Options> = {
   name: 'react-shape',
 
   run({ fileName, sourceFile, options, text }) {
+    const tsSourceFile = sourceFile.compilerNode;
+
     const baseName = path.basename(fileName);
-    const importDeclarations = sourceFile.statements.filter(ts.isImportDeclaration);
+    const importDeclarations = tsSourceFile.statements.filter(ts.isImportDeclaration);
     const hasPropTypesImport = importDeclarations.find((x) =>
       /prop-types|react-validators/.test(x.moduleSpecifier.getText()),
     );
@@ -41,7 +43,7 @@ const reactShapePlugin: Plugin<Options> = {
           text: `${printer.printNode(
             ts.EmitHint.Unspecified,
             getPropTypesImportNode(),
-            sourceFile,
+            tsSourceFile,
           )}\n`,
         });
         shouldAddPropTypesImport = false;
@@ -63,13 +65,17 @@ const reactShapePlugin: Plugin<Options> = {
         undefined,
         false,
         ts.factory.createNamedExports([
-          ts.factory.createExportSpecifier(undefined, ts.factory.createIdentifier(shapeName)),
+          ts.factory.createExportSpecifier(
+            false,
+            undefined,
+            ts.factory.createIdentifier(shapeName),
+          ),
         ]),
       );
       updates.push({
         kind: 'insert',
         index: node.end,
-        text: `\n${printer.printNode(ts.EmitHint.Unspecified, newExport, sourceFile)}`,
+        text: `\n${printer.printNode(ts.EmitHint.Unspecified, newExport, tsSourceFile)}`,
       });
     };
 
@@ -77,11 +83,11 @@ const reactShapePlugin: Plugin<Options> = {
     const printer = ts.createPrinter();
     // in current codebase we have some amout of cases, when shapes have an interface/type
     // with the same name and the same export for both of them
-    const typesAndInterfaces = sourceFile.statements.filter(
+    const typesAndInterfaces = tsSourceFile.statements.filter(
       (node) => ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node),
     ) as (ts.InterfaceDeclaration | ts.TypeAliasDeclaration)[];
 
-    for (const node of sourceFile.statements) {
+    for (const node of tsSourceFile.statements) {
       // const shapeName = PropTypes.shape({...})
       if (ts.isVariableStatement(node)) {
         const variableDeclaration = node.declarationList.declarations[0];
@@ -109,8 +115,8 @@ const reactShapePlugin: Plugin<Options> = {
                 index: node.pos,
                 text: `\n\n${printer.printNode(
                   ts.EmitHint.Unspecified,
-                  getTypeForTheShape(shapeNode, shapeName, sourceFile, options),
-                  sourceFile,
+                  getTypeForTheShape(shapeNode, shapeName, tsSourceFile, options),
+                  tsSourceFile,
                 )}`,
               });
             }
@@ -126,7 +132,7 @@ const reactShapePlugin: Plugin<Options> = {
             const text = printer.printNode(
               ts.EmitHint.Unspecified,
               updatedVariableDeclaration,
-              sourceFile,
+              tsSourceFile,
             );
             updates.push({ kind: 'replace', index, length, text });
 
@@ -149,8 +155,8 @@ const reactShapePlugin: Plugin<Options> = {
               index: node.pos,
               text: `\n\n${printer.printNode(
                 ts.EmitHint.Unspecified,
-                getTypeForTheShape(shapeNode, shapeName, sourceFile, options, true),
-                sourceFile,
+                getTypeForTheShape(shapeNode, shapeName, tsSourceFile, options, true),
+                tsSourceFile,
               )}`,
             });
 
@@ -177,8 +183,8 @@ const reactShapePlugin: Plugin<Options> = {
           index: importDeclarations[importDeclarations.length - 1].end,
           text: `\n\n${printer.printNode(
             ts.EmitHint.Unspecified,
-            getTypeForTheShape(shapeNode, shapeName, sourceFile, options),
-            sourceFile,
+            getTypeForTheShape(shapeNode, shapeName, tsSourceFile, options),
+            tsSourceFile,
           )}`,
         });
 
@@ -202,7 +208,7 @@ const reactShapePlugin: Plugin<Options> = {
                 ts.NodeFlags.Const,
               ),
             ),
-            sourceFile,
+            tsSourceFile,
           )}`,
         });
 
@@ -214,7 +220,7 @@ const reactShapePlugin: Plugin<Options> = {
             undefined,
             ts.factory.createIdentifier(shapeName),
           ),
-          sourceFile,
+          tsSourceFile,
         )}`;
         updates.push({
           kind: 'insert',

@@ -11,6 +11,7 @@
     "jscodeshift": "^0.12.0",
     "ts-migrate-plugins": "^0.1.27",
     "ts-migrate-server": "^0.1.27",
+    "ts-morph": "^13.0.3",
     "ts-node": "^8.3.0"
   },
   "peerDependencies": {

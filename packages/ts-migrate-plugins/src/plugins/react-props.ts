@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax, no-use-before-define, @typescript-eslint/no-use-before-define */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import {
   isReactClassComponent,
@@ -43,12 +43,14 @@ const reactPropsPlugin: Plugin<Options> = {
   run({ fileName, sourceFile, options }) {
     if (!fileName.endsWith('.tsx')) return undefined;
 
+    const tsSourceFile = sourceFile.compilerNode;
+
     const updates: SourceTextUpdate[] = [];
-    const getPropsTypeName = createPropsTypeNameGetter(sourceFile);
+    const getPropsTypeName = createPropsTypeNameGetter(tsSourceFile);
 
     const propTypeIdentifiers: PropTypesIdentifierMap = {};
 
-    for (const node of sourceFile.statements) {
+    for (const node of tsSourceFile.statements) {
       // Scan for prop type imports and build a map
       // Assumes import statements are higher up in the file than react components
       if (ts.isImportDeclaration(node) && /prop-types/.test(node.moduleSpecifier.getText())) {
@@ -68,16 +70,16 @@ const reactPropsPlugin: Plugin<Options> = {
         const componentName = getComponentName(node);
         const propsTypeName = getPropsTypeName(componentName);
         updates.push(
-          ...updatePropTypes(node, propsTypeName, sourceFile, propTypeIdentifiers, options),
+          ...updatePropTypes(node, propsTypeName, tsSourceFile, propTypeIdentifiers, options),
         );
       }
     }
 
-    const updatedSourceText = updateSourceText(sourceFile.text, updates);
+    const updatedSourceText = updateSourceText(tsSourceFile.text, updates);
     const updatedSourceFile = ts.createSourceFile(
       fileName,
       updatedSourceText,
-      sourceFile.languageVersion,
+      tsSourceFile.languageVersion,
     );
     const importUpdates = !options.shouldKeepPropTypes
       ? updateImports(

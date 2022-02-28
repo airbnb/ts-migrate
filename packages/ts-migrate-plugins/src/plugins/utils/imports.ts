@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define, no-restricted-syntax */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { SourceTextUpdate } from '../../utils/updateSourceText';
 import { getTextPreservingWhitespace } from './text';
 
@@ -155,6 +155,7 @@ export function updateImports(
             : []),
           ...namedToAdd.map((cur) =>
             ts.factory.createImportSpecifier(
+              false,
               undefined,
               ts.factory.createIdentifier(cur.namedImport),
             ),
@@ -185,6 +186,7 @@ export function updateImports(
           importDeclaration.modifiers,
           importClause,
           importDeclaration.moduleSpecifier,
+          undefined,
         );
         const text = getTextPreservingWhitespace(importDeclaration, upImpDec, sourceFile);
         updates.push({
@@ -226,6 +228,7 @@ export function updateImports(
           ? ts.factory.createNamedImports(
               namedToAdd.map((cur) =>
                 ts.factory.createImportSpecifier(
+                  false,
                   undefined,
                   ts.factory.createIdentifier(cur.namedImport),
                 ),

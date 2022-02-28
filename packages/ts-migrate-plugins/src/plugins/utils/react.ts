@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 
 function isReactClassComponentName(name: string): boolean {
   return name === 'Component' || name === 'PureComponent';

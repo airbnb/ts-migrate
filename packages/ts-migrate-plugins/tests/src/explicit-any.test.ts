@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { mockPluginParams, mockDiagnostic, realPluginParams } from '../test-utils';
 import explicitAnyPlugin from '../../src/plugins/explicit-any';
 

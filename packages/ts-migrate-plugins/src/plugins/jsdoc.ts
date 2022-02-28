@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import {
   AnyAliasOptions,
@@ -68,8 +68,8 @@ const jsDocPlugin: Plugin<Options> = {
   name: 'jsdoc',
 
   run({ sourceFile, options }) {
-    const updates = new UpdateTracker(sourceFile);
-    ts.transform(sourceFile, [jsDocTransformerFactory(updates, options)]);
+    const updates = new UpdateTracker(sourceFile.compilerNode);
+    ts.transform(sourceFile.compilerNode, [jsDocTransformerFactory(updates, options)]);
     return updates.apply();
   },
 

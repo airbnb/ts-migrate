@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 
 export function getTextPreservingWhitespace(
   prevNode: ts.Node,

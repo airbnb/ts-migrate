@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
 import { createValidate, Properties } from '../utils/validateOptions';
@@ -23,10 +23,12 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
   name: 'react-default-props',
 
   run({ sourceFile, text, options }) {
-    const importDeclarations = sourceFile.statements.filter(ts.isImportDeclaration);
-    const expressionStatements = sourceFile.statements.filter(ts.isExpressionStatement);
-    const classDeclarations = sourceFile.statements.filter(ts.isClassDeclaration);
-    const interfaceDeclarations = sourceFile.statements.filter(ts.isInterfaceDeclaration);
+    const tsSourceFile = sourceFile.compilerNode;
+
+    const importDeclarations = tsSourceFile.statements.filter(ts.isImportDeclaration);
+    const expressionStatements = tsSourceFile.statements.filter(ts.isExpressionStatement);
+    const classDeclarations = tsSourceFile.statements.filter(ts.isClassDeclaration);
+    const interfaceDeclarations = tsSourceFile.statements.filter(ts.isInterfaceDeclaration);
 
     // sfcs default props assignments
     const sfcsDefaultPropsAssignments = expressionStatements.filter(
@@ -48,10 +50,10 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
       return undefined;
     }
 
-    const functionDeclarations = sourceFile.statements.filter(ts.isFunctionDeclaration);
-    const variableStatements = sourceFile.statements.filter(ts.isVariableStatement);
+    const functionDeclarations = tsSourceFile.statements.filter(ts.isFunctionDeclaration);
+    const variableStatements = tsSourceFile.statements.filter(ts.isVariableStatement);
     // will use Props type from here
-    const typeAliasDeclarations = sourceFile.statements.filter(ts.isTypeAliasDeclaration);
+    const typeAliasDeclarations = tsSourceFile.statements.filter(ts.isTypeAliasDeclaration);
 
     const updates: SourceTextUpdate[] = [];
     const printer = ts.createPrinter();
@@ -69,7 +71,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
           text: `${printer.printNode(
             ts.EmitHint.Unspecified,
             getWithDefaultPropsImport(),
-            sourceFile,
+            tsSourceFile,
           )}\n`,
         });
         // it probably could be done in the better way :)
@@ -151,7 +153,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
 
       const index = propsTypeAliasDeclaration.pos;
       const length = propsTypeAliasDeclaration.end - index;
-      const text = printer.printNode(ts.EmitHint.Unspecified, updatedPropTypeAlias, sourceFile);
+      const text = printer.printNode(ts.EmitHint.Unspecified, updatedPropTypeAlias, tsSourceFile);
       updates.push({ kind: 'replace', index, length, text: `\n\n${text}` });
 
       // create type Props = WithDefaultProps<OwnProps, typeof defaultProps> & types;
@@ -190,7 +192,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
       updates.push({
         kind: 'insert',
         index: newTypeInsertPos,
-        text: `\n\n${printer.printNode(ts.EmitHint.Unspecified, newPropsTypeAlias, sourceFile)}`,
+        text: `\n\n${printer.printNode(ts.EmitHint.Unspecified, newPropsTypeAlias, tsSourceFile)}`,
       });
 
       // we should rename component prop type in that case
@@ -206,7 +208,7 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
         const text = printer.printNode(
           ts.EmitHint.Unspecified,
           updatedComponentTypeReference,
-          sourceFile,
+          tsSourceFile,
         );
         updates.push({ kind: 'replace', index, length, text: `${text}` });
       }
@@ -365,6 +367,7 @@ function getWithDefaultPropsImport() {
       undefined,
       ts.factory.createNamedImports([
         ts.factory.createImportSpecifier(
+          false,
           undefined,
           ts.factory.createIdentifier('WithDefaultProps'),
         ),

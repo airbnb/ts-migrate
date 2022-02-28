@@ -1,6 +1,6 @@
 import jscodeshift, { Identifier, TSTypeAnnotation } from 'jscodeshift';
 import { Collection } from 'jscodeshift/src/Collection';
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import { AnyAliasOptions, validateAnyAliasOptions } from '../utils/validateOptions';
@@ -11,7 +11,8 @@ const explicitAnyPlugin: Plugin<Options> = {
   name: 'explicit-any',
 
   run({ options, fileName, text, getLanguageService }) {
-    const semanticDiagnostics = getLanguageService().getSemanticDiagnostics(fileName);
+    const semanticDiagnostics =
+      getLanguageService().compilerObject.getSemanticDiagnostics(fileName);
     const diagnostics = semanticDiagnostics
       .filter(isDiagnosticWithLinePosition)
       .filter((d) => d.category === ts.DiagnosticCategory.Error);

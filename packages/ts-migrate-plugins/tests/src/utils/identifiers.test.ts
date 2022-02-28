@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { findKnownImports, findKnownVariables } from '../../../src/plugins/utils/identifiers';
 
 const fileName = 'file.tsx';

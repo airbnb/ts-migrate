@@ -2,6 +2,7 @@ import path from 'path';
 import { migrate, MigrateConfig } from 'ts-migrate-server';
 
 import examplePluginTs from './example-plugin-ts';
+import examplePluginTsMorph from './example-plugin-ts-morph';
 import examplePluginText from './example-plugin-text';
 import examplePluginJscodeshift from './example-plugin-jscodeshift';
 
@@ -12,7 +13,8 @@ async function runMigration() {
   const config = new MigrateConfig()
     .addPlugin(examplePluginJscodeshift, {})
     .addPlugin(examplePluginTs, { shouldReplaceText: true })
-    .addPlugin(examplePluginText, {});
+    .addPlugin(examplePluginText, {})
+    .addPlugin(examplePluginTsMorph, {});
 
   const exitCode = await migrate({ rootDir: inputDir, config });
 

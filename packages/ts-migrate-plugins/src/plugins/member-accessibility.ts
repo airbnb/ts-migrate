@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin, PluginOptionsError } from 'ts-migrate-server';
 
 import { Properties, validateOptions } from '../utils/validateOptions';
@@ -24,9 +24,11 @@ const memberAccessibilityPlugin: Plugin<Options> = {
   name: 'member-accessibility',
 
   run({ sourceFile, text, options }) {
-    const result = ts.transform(sourceFile, [memberAccessibilityTransformerFactory(options)]);
+    const result = ts.transform(sourceFile.compilerNode, [
+      memberAccessibilityTransformerFactory(options),
+    ]);
     const newSourceFile = result.transformed[0];
-    if (newSourceFile === sourceFile) {
+    if (newSourceFile === sourceFile.compilerNode) {
       return text;
     }
     const printer = ts.createPrinter();

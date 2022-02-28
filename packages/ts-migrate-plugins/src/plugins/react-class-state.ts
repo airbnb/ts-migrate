@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import {
   isReactClassComponent,
@@ -17,16 +17,18 @@ const reactClassStatePlugin: Plugin<Options> = {
   async run({ fileName, sourceFile, options }) {
     if (!fileName.endsWith('.tsx')) return undefined;
 
+    const tsSourceFile = sourceFile.compilerNode;
+
     const updates: SourceTextUpdate[] = [];
     const printer = ts.createPrinter();
 
-    const reactClassDeclarations = sourceFile.statements
+    const reactClassDeclarations = tsSourceFile.statements
       .filter(ts.isClassDeclaration)
       .filter(isReactClassComponent);
     if (reactClassDeclarations.length === 0) return undefined;
 
-    const numComponentsInFile = getNumComponentsInSourceFile(sourceFile);
-    const usedIdentifiers = collectIdentifiers(sourceFile);
+    const numComponentsInFile = getNumComponentsInSourceFile(tsSourceFile);
+    const usedIdentifiers = collectIdentifiers(tsSourceFile);
 
     reactClassDeclarations.forEach((classDeclaration) => {
       const componentName = (classDeclaration.name && classDeclaration.name.text) || 'Component';
@@ -74,7 +76,7 @@ const reactClassStatePlugin: Plugin<Options> = {
         updates.push({
           kind: 'insert',
           index: classDeclaration.pos,
-          text: `\n\n${printer.printNode(ts.EmitHint.Unspecified, newStateType, sourceFile)}`,
+          text: `\n\n${printer.printNode(ts.EmitHint.Unspecified, newStateType, tsSourceFile)}`,
         });
 
         updates.push({
@@ -87,13 +89,13 @@ const reactClassStatePlugin: Plugin<Options> = {
               propsType || ts.factory.createTypeLiteralNode([]),
               ts.factory.createTypeReferenceNode(stateTypeName, undefined),
             ]),
-            sourceFile,
+            tsSourceFile,
           )}`,
         });
       }
     });
 
-    return updateSourceText(sourceFile.text, updates);
+    return updateSourceText(tsSourceFile.text, updates);
   },
 
   validate: validateAnyAliasOptions,

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 
 export type KnownDefinitionMap = { [key: string]: { pos: number; end: number } };
 

@@ -12,7 +12,7 @@ const declareMissingClassPropertiesPlugin: Plugin<Options> = {
 
   async run({ text, fileName, getLanguageService, options }) {
     const diagnostics = getLanguageService()
-      .getSemanticDiagnostics(fileName)
+      .compilerObject.getSemanticDiagnostics(fileName)
       .filter(isDiagnosticWithLinePosition)
       .filter((diagnostic) => diagnostic.code === 2339 || diagnostic.code === 2551);
 

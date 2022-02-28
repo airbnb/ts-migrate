@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import getTokenAtPosition from './utils/token-pos';
@@ -20,12 +20,14 @@ const addConversionsPlugin: Plugin<Options> = {
   run({ fileName, sourceFile, options, getLanguageService }) {
     // Filter out diagnostics we care about.
     const diags = getLanguageService()
-      .getSemanticDiagnostics(fileName)
+      .compilerObject.getSemanticDiagnostics(fileName)
       .filter(isDiagnosticWithLinePosition)
       .filter((diag) => supportedDiagnostics.has(diag.code));
 
-    const updates = new UpdateTracker(sourceFile);
-    ts.transform(sourceFile, [addConversionsTransformerFactory(updates, diags, options)]);
+    const updates = new UpdateTracker(sourceFile.compilerNode);
+    ts.transform(sourceFile.compilerNode, [
+      addConversionsTransformerFactory(updates, diags, options),
+    ]);
     return updates.apply();
   },
 
