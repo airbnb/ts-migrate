@@ -1,4 +1,5 @@
 import ts from 'typescript';
+import { LanguageService, SourceFile } from 'ts-morph';
 
 export type Nullable<T> = T | null | undefined;
 export interface PluginParams<TPluginOptions> {
@@ -8,6 +9,8 @@ export interface PluginParams<TPluginOptions> {
   text: string;
   sourceFile: ts.SourceFile;
   getLanguageService: () => ts.LanguageService;
+  tsMorphSourceFile: SourceFile;
+  getTsMorphLanguageService: () => LanguageService;
 }
 
 export type PluginResult = string | void;
