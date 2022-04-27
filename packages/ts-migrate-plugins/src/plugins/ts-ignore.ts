@@ -8,11 +8,13 @@ import { createValidate, Properties } from '../utils/validateOptions';
 type Options = {
   useTsIgnore?: boolean;
   messageLimit?: number;
+  messagePrefix?: string;
 };
 
 const optionProperties: Properties = {
   useTsIgnore: { type: 'boolean' },
   messageLimit: { type: 'number' },
+  messagePrefix: { type: 'string' },
 };
 
 const tsIgnorePlugin: Plugin<Options> = {
@@ -55,7 +57,8 @@ function getTextWithIgnores(
     const message = messageLines[messageLines.length - 1];
     const errorExpression = options.useTsIgnore ? 'ts-ignore' : `ts-expect-error`;
     const messageLimit = options.messageLimit ?? TS_IGNORE_MESSAGE_LIMIT;
-    const tsIgnoreCommentText = `@${errorExpression} ts-migrate(${code}) FIXME: ${
+    const messagePrefixInComment = options.messagePrefix ? ` ${options.messagePrefix}` : '';
+    const tsIgnoreCommentText = `@${errorExpression}${messagePrefixInComment} ts-migrate(${code}) FIXME: ${
       message.length > messageLimit
         ? `${message.slice(0, messageLimit)}... Remove this comment to see the full error message`
         : message
