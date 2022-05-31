@@ -26,7 +26,7 @@ const eslintFixPlugin: Plugin = {
       }
       return newText;
     } catch (e) {
-      console.error('Error occurred in eslint-fix plugin :(');
+      console.error('Error occurred in eslint-fix plugin: ', e.message);
       return text;
     }
   },
