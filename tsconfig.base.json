@@ -29,5 +29,6 @@
   ],
   "types": [
     "node",
+    "jest"
   ]
 }
