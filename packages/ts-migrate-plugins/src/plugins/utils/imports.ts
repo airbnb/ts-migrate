@@ -155,6 +155,7 @@ export function updateImports(
             : []),
           ...namedToAdd.map((cur) =>
             ts.factory.createImportSpecifier(
+              false,
               undefined,
               ts.factory.createIdentifier(cur.namedImport),
             ),
@@ -185,6 +186,7 @@ export function updateImports(
           importDeclaration.modifiers,
           importClause,
           importDeclaration.moduleSpecifier,
+          importDeclaration.assertClause,
         );
         const text = getTextPreservingWhitespace(importDeclaration, upImpDec, sourceFile);
         updates.push({
@@ -226,6 +228,7 @@ export function updateImports(
           ? ts.factory.createNamedImports(
               namedToAdd.map((cur) =>
                 ts.factory.createImportSpecifier(
+                  false,
                   undefined,
                   ts.factory.createIdentifier(cur.namedImport),
                 ),

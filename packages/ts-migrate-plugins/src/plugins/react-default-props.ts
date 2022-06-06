@@ -365,6 +365,7 @@ function getWithDefaultPropsImport() {
       undefined,
       ts.factory.createNamedImports([
         ts.factory.createImportSpecifier(
+          false,
           undefined,
           ts.factory.createIdentifier('WithDefaultProps'),
         ),
