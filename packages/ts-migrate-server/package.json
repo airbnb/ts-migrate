@@ -59,7 +59,7 @@
   "homepage": "https://github.com/airbnb/ts-migrate#readme",
   "license": "MIT",
   "dependencies": {
-    "@ts-morph/bootstrap": "^0.9.1",
+    "@ts-morph/bootstrap": "^0.15.0",
     "pretty-ms": "^7.0.1",
     "updatable-log": "^0.2.0"
   },
