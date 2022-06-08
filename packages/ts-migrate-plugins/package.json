@@ -1,6 +1,6 @@
 {
   "name": "ts-migrate-plugins",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "description": "Set of codemods, which are doing transformation of js/jsx to ts/tsx",
   "main": "build/src/index.js",
   "directories": {
@@ -62,7 +62,7 @@
     "eslint": "^7.14.0",
     "jscodeshift": "^0.13.0",
     "json-schema": "^0.4.0",
-    "ts-migrate-server": "^0.1.27"
+    "ts-migrate-server": "^0.1.29"
   },
   "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3",
   "devDependencies": {
