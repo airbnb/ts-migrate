@@ -63,7 +63,11 @@ const reactShapePlugin: Plugin<Options> = {
         undefined,
         false,
         ts.factory.createNamedExports([
-          ts.factory.createExportSpecifier(undefined, ts.factory.createIdentifier(shapeName)),
+          ts.factory.createExportSpecifier(
+            false,
+            undefined,
+            ts.factory.createIdentifier(shapeName),
+          ),
         ]),
       );
       updates.push({
