@@ -10,8 +10,7 @@ describe('ts-ignore plugin', () => {
         semanticDiagnostics: [mockDiagnostic(text, 'comsole')],
       }),
     );
-    expect(result).toBe(`// @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-comsole.log('Hello');`);
+    expect(result).toMatchSnapshot();
   });
 
   it('adds ignore comment with ts-ignore', async () => {
@@ -23,8 +22,7 @@ comsole.log('Hello');`);
         options: { useTsIgnore: true },
       }),
     );
-    expect(result).toBe(`// @ts-ignore ts-migrate(123) FIXME: diagnostic message
-comsole.log('Hello');`);
+    expect(result).toMatchSnapshot();
   });
 
   it('adds ignore comment in jsx', async () => {
@@ -49,19 +47,7 @@ export default Foo;
       }),
     );
 
-    expect(result).toBe(`import React from 'react';
-
-function Foo() {
-  return (
-    <div>
-      {/* @ts-expect-error ts-migrate(123) FIXME: diagnostic message */}
-      <DoesNotExist />
-    </div>
-  );
-}
-
-export default Foo;
-`);
+    expect(result).toMatchSnapshot();
   });
   it('adds ignore comment in jsx with Fragment', async () => {
     const text = `import React from 'react';
@@ -85,19 +71,7 @@ export default Foo;
       }),
     );
 
-    expect(result).toBe(`import React from 'react';
-
-function Foo() {
-  return (
-    <>
-      {/* @ts-expect-error ts-migrate(123) FIXME: diagnostic message */}
-      <DoesNotExist />
-    </>
-  );
-}
-
-export default Foo;
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('truncates error message if too long', async () => {
@@ -112,9 +86,7 @@ export default Foo;
         ],
       }),
     );
-    expect(result)
-      .toBe(`// @ts-expect-error ts-migrate(123) FIXME: This message is too long to print and should be tr... Remove this comment to see the full error message
-comsole.log('Hello');`);
+    expect(result).toMatchSnapshot();
   });
 
   it('use message limit option to avoid error message truncation', async () => {
@@ -131,9 +103,7 @@ comsole.log('Hello');`);
         options: { messageLimit: 100 },
       }),
     );
-    expect(result)
-      .toBe(`// @ts-expect-error ts-migrate(123) FIXME: This message is long, but should not be translated because of the messageLimit option value
-comsole.log('Hello');`);
+    expect(result).toMatchSnapshot();
   });
 
   it('use message limit option to truncate a error message', async () => {
@@ -150,9 +120,7 @@ comsole.log('Hello');`);
         options: { messageLimit: 75 },
       }),
     );
-    expect(result)
-      .toBe(`// @ts-expect-error ts-migrate(123) FIXME: This message is too long, and should be translated because of the messageLi... Remove this comment to see the full error message
-comsole.log('Hello');`);
+    expect(result).toMatchSnapshot();
   });
 
   it('does not add ignore comment for webpackChunkName', async () => {
@@ -171,13 +139,7 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`const getComponent = normalizeLoader(() =>
-  import(
-    /* webpackChunkName: "Component_async" */
-    './this_module_does_not_exist'
-  ),
-);
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('handles error within ternary when true', async () => {
@@ -195,13 +157,7 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`function foo() {
-  return something
-    ? // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-      doesNotExist
-    : other;
-}
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('handles error within ternary when false', async () => {
@@ -219,13 +175,7 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`function foo() {
-  return something
-    ? other
-    : // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-      doesNotExist;
-}
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('handles error within ternary jsx expression', async () => {
@@ -244,13 +194,7 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`function Foo() {
-  return someBoolean
-    ? // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-      <ComponentA />
-    : <ComponentB />;
-}
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('handles error within ternary property access', async () => {
@@ -269,13 +213,7 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`function Foo() {
-  return someBoolean
-    ? // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-      this.props.doesNotExist
-    : <SomeComponent />;
-}
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('handles neighboring eslint disable comment', async () => {
@@ -292,12 +230,7 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`function foo() {
-  // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-  // eslint-disable-next-line
-  return doesNotExist;
-}
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('handles multiline ternary', async () => {
@@ -320,17 +253,7 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`function Foo() {
-  return someBoolean ? (
-    <ComponentA
-      // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-      doesNotExist="fail"
-    />
-  ) : (
-    <ComponentB />
-  );
-}
-`);
+    expect(result).toMatchSnapshot();
   });
 
   it('handles single line ternary', async () => {
@@ -347,10 +270,6 @@ comsole.log('Hello');`);
       }),
     );
 
-    expect(result).toBe(`function Foo() {
-  // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
-  return someBoolean ? <ComponentA /> : <ComponentB />;
-}
-`);
+    expect(result).toMatchSnapshot();
   });
 });
