@@ -42,6 +42,11 @@ exports[`ts-ignore plugin adds ignore comment with ts-ignore 1`] = `
 comsole.log('Hello');"
 `;
 
+exports[`ts-ignore plugin custom comment 1`] = `
+"// @ts-expect-error custom message prefix ts-migrate(123) FIXME: diagnostic message
+comsole.log('Hello');"
+`;
+
 exports[`ts-ignore plugin does not add ignore comment for webpackChunkName 1`] = `
 "const getComponent = normalizeLoader(() =>
   import(

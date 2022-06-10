@@ -13,6 +13,20 @@ describe('ts-ignore plugin', () => {
     expect(result).toMatchSnapshot();
   });
 
+  it('custom comment', async () => {
+    const text = "comsole.log('Hello');";
+    const result = await tsIgnorePlugin.run(
+      mockPluginParams({
+        text,
+        semanticDiagnostics: [mockDiagnostic(text, 'comsole')],
+        options: {
+          messagePrefix: 'custom message prefix',
+        },
+      }),
+    );
+    expect(result).toMatchSnapshot();
+  });
+
   it('adds ignore comment with ts-ignore', async () => {
     const text = "comsole.log('Hello');";
     const result = await tsIgnorePlugin.run(
