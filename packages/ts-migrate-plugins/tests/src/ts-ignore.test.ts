@@ -114,7 +114,7 @@ export default Foo;
         semanticDiagnostics: [
           mockDiagnostic(text, 'comsole', {
             messageText:
-              'This message is too long, and should be translated because of the messageLimit option value',
+              'This message is too long, and should be truncated because of the messageLimit option value',
           }),
         ],
         options: { messageLimit: 75 },
