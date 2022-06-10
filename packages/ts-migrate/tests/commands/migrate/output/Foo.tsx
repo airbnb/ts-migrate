@@ -6,7 +6,7 @@ type Props = {};
 function Foo(props: Props) {
   return (
     <div>
-      {/* @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'DoesNotExist'. */}
+      {/* @ts-expect-error TS(2304) FIXME: Cannot find name 'DoesNotExist'. */}
       <DoesNotExist />
     </div>
   );
