@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ts-ignore plugin adds ignore comment 1`] = `
-"// @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+"// @ts-expect-error TS(123) FIXME: diagnostic message
 comsole.log('Hello');"
 `;
 
@@ -11,7 +11,7 @@ exports[`ts-ignore plugin adds ignore comment in jsx 1`] = `
 function Foo() {
   return (
     <div>
-      {/* @ts-expect-error ts-migrate(123) FIXME: diagnostic message */}
+      {/* @ts-expect-error TS(123) FIXME: diagnostic message */}
       <DoesNotExist />
     </div>
   );
@@ -27,7 +27,7 @@ exports[`ts-ignore plugin adds ignore comment in jsx with Fragment 1`] = `
 function Foo() {
   return (
     <>
-      {/* @ts-expect-error ts-migrate(123) FIXME: diagnostic message */}
+      {/* @ts-expect-error TS(123) FIXME: diagnostic message */}
       <DoesNotExist />
     </>
   );
@@ -38,12 +38,12 @@ export default Foo;
 `;
 
 exports[`ts-ignore plugin adds ignore comment with ts-ignore 1`] = `
-"// @ts-ignore ts-migrate(123) FIXME: diagnostic message
+"// @ts-ignore TS(123) FIXME: diagnostic message
 comsole.log('Hello');"
 `;
 
 exports[`ts-ignore plugin custom comment 1`] = `
-"// @ts-expect-error ts-migrate(123) custom message prefix: diagnostic message
+"// @ts-expect-error TS(123) custom message prefix: diagnostic message
 comsole.log('Hello');"
 `;
 
@@ -60,7 +60,7 @@ exports[`ts-ignore plugin does not add ignore comment for webpackChunkName 1`] =
 exports[`ts-ignore plugin handles error within ternary jsx expression 1`] = `
 "function Foo() {
   return someBoolean
-    ? // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+    ? // @ts-expect-error TS(123) FIXME: diagnostic message
       <ComponentA />
     : <ComponentB />;
 }
@@ -70,7 +70,7 @@ exports[`ts-ignore plugin handles error within ternary jsx expression 1`] = `
 exports[`ts-ignore plugin handles error within ternary property access 1`] = `
 "function Foo() {
   return someBoolean
-    ? // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+    ? // @ts-expect-error TS(123) FIXME: diagnostic message
       this.props.doesNotExist
     : <SomeComponent />;
 }
@@ -81,7 +81,7 @@ exports[`ts-ignore plugin handles error within ternary when false 1`] = `
 "function foo() {
   return something
     ? other
-    : // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+    : // @ts-expect-error TS(123) FIXME: diagnostic message
       doesNotExist;
 }
 "
@@ -90,7 +90,7 @@ exports[`ts-ignore plugin handles error within ternary when false 1`] = `
 exports[`ts-ignore plugin handles error within ternary when true 1`] = `
 "function foo() {
   return something
-    ? // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+    ? // @ts-expect-error TS(123) FIXME: diagnostic message
       doesNotExist
     : other;
 }
@@ -101,7 +101,7 @@ exports[`ts-ignore plugin handles multiline ternary 1`] = `
 "function Foo() {
   return someBoolean ? (
     <ComponentA
-      // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+      // @ts-expect-error TS(123) FIXME: diagnostic message
       doesNotExist=\\"fail\\"
     />
   ) : (
@@ -113,7 +113,7 @@ exports[`ts-ignore plugin handles multiline ternary 1`] = `
 
 exports[`ts-ignore plugin handles neighboring eslint disable comment 1`] = `
 "function foo() {
-  // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+  // @ts-expect-error TS(123) FIXME: diagnostic message
   // eslint-disable-next-line
   return doesNotExist;
 }
@@ -122,23 +122,23 @@ exports[`ts-ignore plugin handles neighboring eslint disable comment 1`] = `
 
 exports[`ts-ignore plugin handles single line ternary 1`] = `
 "function Foo() {
-  // @ts-expect-error ts-migrate(123) FIXME: diagnostic message
+  // @ts-expect-error TS(123) FIXME: diagnostic message
   return someBoolean ? <ComponentA /> : <ComponentB />;
 }
 "
 `;
 
 exports[`ts-ignore plugin truncates error message if too long 1`] = `
-"// @ts-expect-error ts-migrate(123) FIXME: This message is too long to print and should be tr... Remove this comment to see the full error message
+"// @ts-expect-error TS(123) FIXME: This message is too long to print and should be tr... Remove this comment to see the full error message
 comsole.log('Hello');"
 `;
 
 exports[`ts-ignore plugin use message limit option to avoid error message truncation 1`] = `
-"// @ts-expect-error ts-migrate(123) FIXME: This message is long, but should not be translated because of the messageLimit option value
+"// @ts-expect-error TS(123) FIXME: This message is long, but should not be translated because of the messageLimit option value
 comsole.log('Hello');"
 `;
 
 exports[`ts-ignore plugin use message limit option to truncate a error message 1`] = `
-"// @ts-expect-error ts-migrate(123) FIXME: This message is too long, and should be truncated because of the messageLim... Remove this comment to see the full error message
+"// @ts-expect-error TS(123) FIXME: This message is too long, and should be truncated because of the messageLim... Remove this comment to see the full error message
 comsole.log('Hello');"
 `;
