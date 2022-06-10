@@ -58,7 +58,7 @@ function getTextWithIgnores(
     const errorExpression = options.useTsIgnore ? 'ts-ignore' : `ts-expect-error`;
     const messageLimit = options.messageLimit ?? TS_IGNORE_MESSAGE_LIMIT;
     const messagePrefixInComment = options.messagePrefix ? ` ${options.messagePrefix}` : '';
-    const tsIgnoreCommentText = `@${errorExpression}${messagePrefixInComment} ts-migrate(${code}) FIXME: ${
+    const tsIgnoreCommentText = `@${errorExpression} ts-migrate(${code})${messagePrefixInComment}: ${
       message.length > messageLimit
         ? `${message.slice(0, messageLimit)}... Remove this comment to see the full error message`
         : message

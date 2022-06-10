@@ -8,6 +8,7 @@ describe('ts-ignore plugin', () => {
       mockPluginParams({
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'comsole')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
     expect(result).toMatchSnapshot();
@@ -33,7 +34,7 @@ describe('ts-ignore plugin', () => {
       mockPluginParams({
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'comsole')],
-        options: { useTsIgnore: true },
+        options: { useTsIgnore: true, messagePrefix: 'FIXME' },
       }),
     );
     expect(result).toMatchSnapshot();
@@ -58,6 +59,7 @@ export default Foo;
         fileName: 'Foo.tsx',
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'DoesNotExist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -82,6 +84,7 @@ export default Foo;
         fileName: 'Foo.tsx',
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'DoesNotExist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -98,6 +101,7 @@ export default Foo;
             messageText: 'This message is too long to print and should be truncated',
           }),
         ],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
     expect(result).toMatchSnapshot();
@@ -114,7 +118,7 @@ export default Foo;
               'This message is long, but should not be translated because of the messageLimit option value',
           }),
         ],
-        options: { messageLimit: 100 },
+        options: { messageLimit: 100, messagePrefix: 'FIXME' },
       }),
     );
     expect(result).toMatchSnapshot();
@@ -131,7 +135,7 @@ export default Foo;
               'This message is too long, and should be truncated because of the messageLimit option value',
           }),
         ],
-        options: { messageLimit: 75 },
+        options: { messageLimit: 75, messagePrefix: 'FIXME' },
       }),
     );
     expect(result).toMatchSnapshot();
@@ -150,6 +154,7 @@ export default Foo;
       mockPluginParams({
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'this_module_does_not_exist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -168,6 +173,7 @@ export default Foo;
       mockPluginParams({
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'doesNotExist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -186,6 +192,7 @@ export default Foo;
       mockPluginParams({
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'doesNotExist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -205,6 +212,7 @@ export default Foo;
         fileName: 'Foo.tsx',
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'ComponentA')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -224,6 +232,7 @@ export default Foo;
         fileName: 'Foo.tsx',
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'doesNotExist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -241,6 +250,7 @@ export default Foo;
       mockPluginParams({
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'doesNotExist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -264,6 +274,7 @@ export default Foo;
         fileName: 'Foo.tsx',
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'doesNotExist')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 
@@ -281,6 +292,7 @@ export default Foo;
         fileName: 'Foo.tsx',
         text,
         semanticDiagnostics: [mockDiagnostic(text, 'ComponentA')],
+        options: { messagePrefix: 'FIXME' },
       }),
     );
 

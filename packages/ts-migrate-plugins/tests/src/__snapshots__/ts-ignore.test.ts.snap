@@ -43,7 +43,7 @@ comsole.log('Hello');"
 `;
 
 exports[`ts-ignore plugin custom comment 1`] = `
-"// @ts-expect-error custom message prefix ts-migrate(123) FIXME: diagnostic message
+"// @ts-expect-error ts-migrate(123) custom message prefix: diagnostic message
 comsole.log('Hello');"
 `;
 

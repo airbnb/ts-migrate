@@ -192,7 +192,7 @@ yargs
       cmd
         .option('p', {
           alias: 'messagePrefix',
-          default: '',
+          default: 'FIXME',
           type: 'string',
           describe:
             'A message to add to the ts-expect-error or ts-ignore comments that are inserted.',
