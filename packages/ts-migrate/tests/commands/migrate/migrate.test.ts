@@ -26,7 +26,7 @@ describe('migrate command', () => {
     copyDir(inputDir, rootDir);
     const config = new MigrateConfig()
       .addPlugin(explicitAnyPlugin, { anyAlias: '$TSFixMe' })
-      .addPlugin(tsIgnorePlugin, {})
+      .addPlugin(tsIgnorePlugin, { messagePrefix: 'FIXME' })
       .addPlugin(eslintFixPlugin, {});
 
     const exitCode = await migrate({ rootDir, config });

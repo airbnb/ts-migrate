@@ -188,7 +188,17 @@ yargs
   .command(
     'reignore <folder>',
     'Re-run ts-ignore on a project',
-    (cmd) => cmd.positional('folder', { type: 'string' }).require(['folder']),
+    (cmd) =>
+      cmd
+        .option('p', {
+          alias: 'messagePrefix',
+          default: 'FIXME',
+          type: 'string',
+          describe:
+            'A message to add to the ts-expect-error or ts-ignore comments that are inserted.',
+        })
+        .positional('folder', { type: 'string' })
+        .require(['folder']),
     async (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
 
@@ -218,7 +228,9 @@ yargs
 
       const config = new MigrateConfig()
         .addPlugin(withChangeTracking(stripTSIgnorePlugin), {})
-        .addPlugin(withChangeTracking(tsIgnorePlugin), {})
+        .addPlugin(withChangeTracking(tsIgnorePlugin), {
+          messagePrefix: args.messagePrefix,
+        })
         .addPlugin(eslintFixChangedPlugin, {});
 
       const exitCode = await migrate({ rootDir, config });
