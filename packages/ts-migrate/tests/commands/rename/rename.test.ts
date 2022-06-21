@@ -24,7 +24,7 @@ describe('rename command', () => {
     copyDir(inputDir, rootDir);
 
     const renamedFiles = rename({ rootDir });
-    const renamedFilesRelativeToOutputDir = renamedFiles
+    const renamedFilesRelativeToRootDir = renamedFiles
       ?.map(({ oldFile, newFile }) => {
         const filePathRelativeToRootDir = (filePath: string) => path.relative(rootDir, filePath);
         return {
@@ -46,7 +46,7 @@ describe('rename command', () => {
 
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);
-    expect(renamedFilesRelativeToOutputDir).toEqual([
+    expect(renamedFilesRelativeToRootDir).toEqual([
       { oldFile: 'dir-a/file-2.js', newFile: 'dir-a/file-2.ts' },
       { oldFile: 'dir-a/file-3.jsx', newFile: 'dir-a/file-3.tsx' },
       { oldFile: 'dir-a/file-4.js', newFile: 'dir-a/file-4.tsx' },
