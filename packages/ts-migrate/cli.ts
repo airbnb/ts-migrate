@@ -84,8 +84,10 @@ yargs
     (args) => {
       const rootDir = path.resolve(process.cwd(), args.folder);
       const { sources } = args;
-      const exitCode = rename({ rootDir, sources });
-      process.exit(exitCode);
+      const renamedFiles = rename({ rootDir, sources });
+      if (renamedFiles === null) {
+        process.exit(-1);
+      }
     },
   )
   .command(

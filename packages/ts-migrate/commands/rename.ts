@@ -11,11 +11,14 @@ interface RenameParams {
   sources?: string | string[];
 }
 
-export default function rename({ rootDir, sources }: RenameParams): number {
+export default function rename({
+  rootDir,
+  sources,
+}: RenameParams): Array<{ oldFile: string; newFile: string }> | null {
   const configFile = path.resolve(rootDir, 'tsconfig.json');
   if (!fs.existsSync(configFile)) {
     log.error('Could not find tsconfig.json at', configFile);
-    return -1;
+    return null;
   }
 
   let jsFiles: string[];
@@ -23,12 +26,12 @@ export default function rename({ rootDir, sources }: RenameParams): number {
     jsFiles = findJSFiles(rootDir, configFile, sources);
   } catch (err) {
     log.error(err);
-    return -1;
+    return null;
   }
 
   if (jsFiles.length === 0) {
     log.info('No JS/JSX files to rename.');
-    return 0;
+    return [];
   }
 
   const toRename = jsFiles
@@ -55,7 +58,7 @@ export default function rename({ rootDir, sources }: RenameParams): number {
   updateProjectJson(rootDir);
 
   log.info('Done.');
-  return 0;
+  return toRename;
 }
 
 function findJSFiles(rootDir: string, configFile: string, sources?: string | string[]) {
