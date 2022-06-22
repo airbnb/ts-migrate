@@ -23,10 +23,36 @@ describe('rename command', () => {
     const outputDir = path.resolve(__dirname, 'output');
     copyDir(inputDir, rootDir);
 
-    const exitCode = rename({ rootDir });
+    const renamedFiles = rename({ rootDir });
+    const renamedFilesRelativeToRootDir = renamedFiles
+      ?.map(({ oldFile, newFile }) => {
+        const filePathRelativeToRootDir = (filePath: string) => path.relative(rootDir, filePath);
+        return {
+          oldFile: filePathRelativeToRootDir(oldFile),
+          newFile: filePathRelativeToRootDir(newFile),
+        };
+      })
+      .sort((a, b) => {
+        const getSortKey = ({ oldFile, newFile }: typeof a) => oldFile + newFile;
+        const sortKeyA = getSortKey(a);
+        const sortKeyB = getSortKey(b);
+
+        if (sortKeyA === sortKeyB) {
+          return 0;
+        }
+
+        return sortKeyA < sortKeyB ? -1 : 1;
+      });
 
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);
-    expect(exitCode).toBe(0);
+    expect(renamedFilesRelativeToRootDir).toEqual([
+      { oldFile: 'dir-a/file-2.js', newFile: 'dir-a/file-2.ts' },
+      { oldFile: 'dir-a/file-3.jsx', newFile: 'dir-a/file-3.tsx' },
+      { oldFile: 'dir-a/file-4.js', newFile: 'dir-a/file-4.tsx' },
+      { oldFile: 'dir-a/file-5.js', newFile: 'dir-a/file-5.tsx' },
+      { oldFile: 'dir-a/file-6.js', newFile: 'dir-a/file-6.tsx' },
+      { oldFile: 'file-1.js', newFile: 'file-1.ts' },
+    ]);
   });
 });
