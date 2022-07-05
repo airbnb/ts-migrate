@@ -45,6 +45,68 @@ describe('migrate command', () => {
     expect(exitCode).toBe(0);
   });
 
+  describe('sources', () => {
+    it('Migrates project by using `sources`', async () => {
+      const inputDir = path.resolve(__dirname, 'input');
+      const outputDir = path.resolve(__dirname, 'output');
+      const configDir = path.resolve(__dirname, 'config');
+
+      copyDir(inputDir, rootDir);
+      copyDir(configDir, rootDir);
+
+      const config = new MigrateConfig().addPlugin(
+        {
+          name: 'test-plugin',
+          run({ text }) {
+            const newText = text.replace('test string', 'updated string');
+            return newText;
+          },
+        },
+        {},
+      );
+
+      const exitCode = await migrate({
+        rootDir,
+        config,
+        sources: 'index.ts',
+      });
+      fs.unlinkSync(path.resolve(rootDir, 'tsconfig.json'));
+      const [rootData, outputData] = getDirData(rootDir, outputDir);
+      expect(rootData).toEqual(outputData);
+      expect(exitCode).toBe(0);
+    });
+
+    it('Migrates project by using `sources` with an absolute path', async () => {
+      const inputDir = path.resolve(__dirname, 'input');
+      const outputDir = path.resolve(__dirname, 'output');
+      const configDir = path.resolve(__dirname, 'config');
+
+      copyDir(inputDir, rootDir);
+      copyDir(configDir, rootDir);
+
+      const config = new MigrateConfig().addPlugin(
+        {
+          name: 'test-plugin',
+          run({ text }) {
+            const newText = text.replace('test string', 'updated string');
+            return newText;
+          },
+        },
+        {},
+      );
+
+      const exitCode = await migrate({
+        rootDir,
+        config,
+        sources: path.resolve(rootDir, 'index.ts'),
+      });
+      fs.unlinkSync(path.resolve(rootDir, 'tsconfig.json'));
+      const [rootData, outputData] = getDirData(rootDir, outputDir);
+      expect(rootData).toEqual(outputData);
+      expect(exitCode).toBe(0);
+    });
+  });
+
   it('Migrates project with two plugins', async () => {
     const inputDir = path.resolve(__dirname, 'input');
     const outputDir = path.resolve(__dirname, 'output_two');
