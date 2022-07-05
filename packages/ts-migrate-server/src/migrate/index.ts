@@ -27,7 +27,7 @@ export default async function migrate({
   // Normalize sources to be an array of full paths.
   if (sources !== undefined) {
     sources = Array.isArray(sources) ? sources : [sources];
-    sources = sources.map((source) => path.join(rootDir, source));
+    sources = sources.map((source) => path.resolve(rootDir, source));
     log.info(`Ignoring sources from tsconfig.json, using the ones provided manually instead.`);
   }
 
