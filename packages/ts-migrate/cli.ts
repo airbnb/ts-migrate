@@ -182,7 +182,7 @@ yargs
           .addPlugin(eslintFixPlugin, {});
       }
 
-      const exitCode = await migrate({ rootDir, config, sources });
+      const { exitCode } = await migrate({ rootDir, config, sources });
 
       process.exit(exitCode);
     },
@@ -235,7 +235,7 @@ yargs
         })
         .addPlugin(eslintFixChangedPlugin, {});
 
-      const exitCode = await migrate({ rootDir, config });
+      const { exitCode } = await migrate({ rootDir, config });
 
       process.exit(exitCode);
     },

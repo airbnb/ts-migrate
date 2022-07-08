@@ -18,7 +18,7 @@ export default async function migrate({
   tsConfigDir = rootDir,
   config,
   sources,
-}: MigrateParams): Promise<number> {
+}: MigrateParams): Promise<{ exitCode: number; updatedSourceFiles: Set<string> }> {
   let exitCode = 0;
   log.info(`TypeScript version: ${ts.version}`);
 
@@ -113,7 +113,7 @@ export default async function migrate({
 
   log.info(`Wrote ${updatedSourceFiles.size} updated file(s) in ${writeTimer.elapsedStr()}.`);
 
-  return exitCode;
+  return { updatedSourceFiles, exitCode };
 }
 
 function getSourceFilesToMigrate(project: Project) {

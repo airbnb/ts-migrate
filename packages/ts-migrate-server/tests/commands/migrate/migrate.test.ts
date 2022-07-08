@@ -38,7 +38,7 @@ describe('migrate command', () => {
       {},
     );
 
-    const exitCode = await migrate({ rootDir, config });
+    const { exitCode } = await migrate({ rootDir, config });
     fs.unlinkSync(path.resolve(rootDir, 'tsconfig.json'));
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);
@@ -65,7 +65,7 @@ describe('migrate command', () => {
         {},
       );
 
-      const exitCode = await migrate({
+      const { exitCode } = await migrate({
         rootDir,
         config,
         sources: 'index.ts',
@@ -95,7 +95,7 @@ describe('migrate command', () => {
         {},
       );
 
-      const exitCode = await migrate({
+      const { exitCode, updatedSourceFiles } = await migrate({
         rootDir,
         config,
         sources: path.resolve(rootDir, 'index.ts'),
@@ -104,6 +104,11 @@ describe('migrate command', () => {
       const [rootData, outputData] = getDirData(rootDir, outputDir);
       expect(rootData).toEqual(outputData);
       expect(exitCode).toBe(0);
+
+      const pathsRelativeToOutputDir = Array.from(updatedSourceFiles).map((filePath) =>
+        path.relative(rootDir, filePath),
+      );
+      expect(pathsRelativeToOutputDir).toEqual(['index.ts']);
     });
   });
 
@@ -137,7 +142,7 @@ describe('migrate command', () => {
         {},
       );
 
-    const exitCode = await migrate({ rootDir, config });
+    const { exitCode } = await migrate({ rootDir, config });
     fs.unlinkSync(path.resolve(rootDir, 'tsconfig.json'));
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);
