@@ -11,7 +11,10 @@ describe('ts-ignore plugin', () => {
         options: { messagePrefix: 'FIXME' },
       }),
     );
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "// @ts-expect-error TS(123) FIXME: diagnostic message
+      comsole.log('Hello');"
+    `);
   });
 
   it('custom comment', async () => {
@@ -25,7 +28,10 @@ describe('ts-ignore plugin', () => {
         },
       }),
     );
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "// @ts-expect-error TS(123) custom message prefix: diagnostic message
+      comsole.log('Hello');"
+    `);
   });
 
   it('adds ignore comment with ts-ignore', async () => {
@@ -37,7 +43,10 @@ describe('ts-ignore plugin', () => {
         options: { useTsIgnore: true, messagePrefix: 'FIXME' },
       }),
     );
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "// @ts-ignore TS(123) FIXME: diagnostic message
+      comsole.log('Hello');"
+    `);
   });
 
   it('adds ignore comment in jsx', async () => {
@@ -63,7 +72,21 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "import React from 'react';
+
+      function Foo() {
+        return (
+          <div>
+            {/* @ts-expect-error TS(123) FIXME: diagnostic message */}
+            <DoesNotExist />
+          </div>
+        );
+      }
+
+      export default Foo;
+      "
+    `);
   });
   it('adds ignore comment in jsx with Fragment', async () => {
     const text = `import React from 'react';
@@ -88,7 +111,21 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "import React from 'react';
+
+      function Foo() {
+        return (
+          <>
+            {/* @ts-expect-error TS(123) FIXME: diagnostic message */}
+            <DoesNotExist />
+          </>
+        );
+      }
+
+      export default Foo;
+      "
+    `);
   });
 
   it('truncates error message if too long', async () => {
@@ -104,7 +141,10 @@ export default Foo;
         options: { messagePrefix: 'FIXME' },
       }),
     );
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "// @ts-expect-error TS(123) FIXME: This message is too long to print and should be tr... Remove this comment to see the full error message
+      comsole.log('Hello');"
+    `);
   });
 
   it('use message limit option to avoid error message truncation', async () => {
@@ -121,7 +161,10 @@ export default Foo;
         options: { messageLimit: 100, messagePrefix: 'FIXME' },
       }),
     );
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "// @ts-expect-error TS(123) FIXME: This message is long, but should not be translated because of the messageLimit option value
+      comsole.log('Hello');"
+    `);
   });
 
   it('use message limit option to truncate a error message', async () => {
@@ -138,7 +181,10 @@ export default Foo;
         options: { messageLimit: 75, messagePrefix: 'FIXME' },
       }),
     );
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "// @ts-expect-error TS(123) FIXME: This message is too long, and should be truncated because of the messageLim... Remove this comment to see the full error message
+      comsole.log('Hello');"
+    `);
   });
 
   it('does not add ignore comment for webpackChunkName', async () => {
@@ -158,7 +204,15 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "const getComponent = normalizeLoader(() =>
+        import(
+          /* webpackChunkName: \\"Component_async\\" */
+          './this_module_does_not_exist'
+        ),
+      );
+      "
+    `);
   });
 
   it('handles error within ternary when true', async () => {
@@ -177,7 +231,15 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "function foo() {
+        return something
+          ? // @ts-expect-error TS(123) FIXME: diagnostic message
+            doesNotExist
+          : other;
+      }
+      "
+    `);
   });
 
   it('handles error within ternary when false', async () => {
@@ -196,7 +258,15 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "function foo() {
+        return something
+          ? other
+          : // @ts-expect-error TS(123) FIXME: diagnostic message
+            doesNotExist;
+      }
+      "
+    `);
   });
 
   it('handles error within ternary jsx expression', async () => {
@@ -216,7 +286,15 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "function Foo() {
+        return someBoolean
+          ? // @ts-expect-error TS(123) FIXME: diagnostic message
+            <ComponentA />
+          : <ComponentB />;
+      }
+      "
+    `);
   });
 
   it('handles error within ternary property access', async () => {
@@ -236,7 +314,15 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "function Foo() {
+        return someBoolean
+          ? // @ts-expect-error TS(123) FIXME: diagnostic message
+            this.props.doesNotExist
+          : <SomeComponent />;
+      }
+      "
+    `);
   });
 
   it('handles neighboring eslint disable comment', async () => {
@@ -254,7 +340,14 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "function foo() {
+        // @ts-expect-error TS(123) FIXME: diagnostic message
+        // eslint-disable-next-line
+        return doesNotExist;
+      }
+      "
+    `);
   });
 
   it('handles multiline ternary', async () => {
@@ -278,7 +371,19 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "function Foo() {
+        return someBoolean ? (
+          <ComponentA
+            // @ts-expect-error TS(123) FIXME: diagnostic message
+            doesNotExist=\\"fail\\"
+          />
+        ) : (
+          <ComponentB />
+        );
+      }
+      "
+    `);
   });
 
   it('handles single line ternary', async () => {
@@ -296,6 +401,12 @@ export default Foo;
       }),
     );
 
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      "function Foo() {
+        // @ts-expect-error TS(123) FIXME: diagnostic message
+        return someBoolean ? <ComponentA /> : <ComponentB />;
+      }
+      "
+    `);
   });
 });
