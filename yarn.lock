@@ -2178,20 +2178,20 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@ts-morph/bootstrap@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@ts-morph/bootstrap/-/bootstrap-0.15.0.tgz#f40b8b7db7dd6099e7c5f270ca019c57c4b4c83d"
-  integrity sha512-w2W1t8cKNu64Y2neNnv9km2fMuvn4gyI6Vrg/WlJdGYUvm5sta4zG+eNn/ybX2nQxzkTTqb/9xz24Q9LGhOgyA==
+"@ts-morph/bootstrap@^0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@ts-morph/bootstrap/-/bootstrap-0.16.0.tgz#c97034175a8fc2b7d3f575526d819877f7ed2d83"
+  integrity sha512-FYW3bK5EBeAgpHu0qZ57gHbLjzgzC81y5EJmrebzIhXSYg6OgZu5lFHpF5NJ7CwM7ZMhxX1PG+DRA8e+skopKw==
   dependencies:
-    "@ts-morph/common" "~0.15.0"
+    "@ts-morph/common" "~0.16.0"
 
-"@ts-morph/common@~0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@ts-morph/common/-/common-0.15.0.tgz#aece752746fc0d779d2acfaece95fb2c23327ba5"
-  integrity sha512-QefRbadcwfBnd3HWrltpjRJprHgeKfQsnbyGbRF8pEjMqISAljJwq4wfRETxxojsmN4GWuJv3PWG+W7kBIHMMw==
+"@ts-morph/common@~0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@ts-morph/common/-/common-0.16.0.tgz#57e27d4b3fd65a4cd72cb36679ed08acb40fa3ba"
+  integrity sha512-SgJpzkTgZKLKqQniCjLaE3c2L2sdL7UShvmTmPBejAKd2OKV/yfMpQ2IWpAuA+VY5wy7PkSUaEObIqEK6afFuw==
   dependencies:
     fast-glob "^3.2.11"
-    minimatch "^5.0.1"
+    minimatch "^5.1.0"
     mkdirp "^1.0.4"
     path-browserify "^1.0.1"
 
@@ -6708,7 +6708,7 @@ minimatch@^3.0.2, minimatch@^3.0.4, minimatch@^3.1.1, minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@^5.0.1:
+minimatch@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.0.tgz#1717b464f4971b144f6aabe8f2d0b8e4511e09c7"
   integrity sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==
