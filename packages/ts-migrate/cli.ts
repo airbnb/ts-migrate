@@ -124,6 +124,12 @@ yargs
       const { sources } = args;
       let config: MigrateConfig;
 
+      const airbnbAnyAlias = '$TSFixMe';
+      const airbnbAnyFunctionAlias = '$TSFixMeFunction';
+      // by default, we're not going to use any aliases in ts-migrate
+      const anyAlias = args.aliases === 'tsfixme' ? airbnbAnyAlias : undefined;
+      const anyFunctionAlias = args.aliases === 'tsfixme' ? airbnbAnyFunctionAlias : undefined;
+
       if (args.plugin) {
         const plugin = availablePlugins.find((cur) => cur.name === args.plugin);
         if (!plugin) {
@@ -136,14 +142,12 @@ yargs
           const typeMap = typeof args.typeMap === 'string' ? JSON.parse(args.typeMap) : undefined;
           config = new MigrateConfig().addPlugin(jsDocPlugin, { anyAlias, typeMap });
         } else {
-          config = new MigrateConfig().addPlugin(plugin, {});
+          config = new MigrateConfig().addPlugin(plugin, {
+            anyAlias,
+            anyFunctionAlias,
+          });
         }
       } else {
-        const airbnbAnyAlias = '$TSFixMe';
-        const airbnbAnyFunctionAlias = '$TSFixMeFunction';
-        // by default, we're not going to use any aliases in ts-migrate
-        const anyAlias = args.aliases === 'tsfixme' ? airbnbAnyAlias : undefined;
-        const anyFunctionAlias = args.aliases === 'tsfixme' ? airbnbAnyFunctionAlias : undefined;
         const useDefaultPropsHelper = args.useDefaultPropsHelper === 'true';
 
         const { defaultAccessibility, privateRegex, protectedRegex, publicRegex } = args;
