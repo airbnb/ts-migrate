@@ -81,7 +81,7 @@ const addConversionsTransformerFactory =
         node = factory.createAsExpression(node as ts.Expression, anyType);
       }
 
-      if (shouldReplace(node)) {
+      if (shouldReplace(origNode, node)) {
         replaceNode(origNode, node);
         return origNode;
       }
@@ -157,7 +157,11 @@ const addConversionsTransformerFactory =
  * There is still some risk of losing whitespace if the expression is contained within
  * an if statement condition or other construct that can contain blocks.
  */
-function shouldReplace(node: ts.Node): boolean {
+function shouldReplace(origNode: ts.Node, node: ts.Node): boolean {
+  if (node.kind == ts.SyntaxKind.ExpressionStatement && ancestorIsExpressionStatement(origNode)) {
+    return false;
+  }
+
   if (isStatement(node)) {
     return true;
   }
@@ -171,6 +175,15 @@ function shouldReplace(node: ts.Node): boolean {
       return true;
     default:
       return false;
+  }
+}
+
+function ancestorIsExpressionStatement(origNode: ts.Node): boolean {
+  if (origNode.parent == undefined)
+  {
+    return false;
+  } else {
+    return origNode.parent.kind == ts.SyntaxKind.ExpressionStatement || ancestorIsExpressionStatement(origNode.parent)
   }
 }
 

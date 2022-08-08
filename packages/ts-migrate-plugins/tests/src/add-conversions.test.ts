@@ -113,4 +113,11 @@ class PublishEvent {
 }
 `);
   });
+
+  it('handles anonymous functions that require as any without duplicating lines (issue #144)', async () => {
+    const text = `var window = { onResetData: function () { this.clearNextPush = function () { this.setState({ history: [] }); }; } };`;
+    const result = addConversionsPlugin.run(await realPluginParams({ text }));
+
+    expect(result).toBe(`var window = { onResetData: function () { (this as any).clearNextPush = function () { (this as any).setState({ history: [] }); }; } };`);
+  });
 });
