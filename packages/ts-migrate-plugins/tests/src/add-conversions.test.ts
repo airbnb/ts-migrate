@@ -114,12 +114,21 @@ class PublishEvent {
 `);
   });
 
-  it('handles anonymous functions that require as any without duplicating lines (issue #144)', async () => {
+  it('Nested Expression Statements (issue #144) Part 1: Expression Statement -> Expression Statement', async () => {
     const text = `var window = { onResetData: function () { this.clearNextPush = function () { this.setState({ history: [] }); }; } };`;
     const result = addConversionsPlugin.run(await realPluginParams({ text }));
 
     expect(result).toBe(
       `var window = { onResetData: function () { (this as any).clearNextPush = function () { (this as any).setState({ history: [] }); }; } };`,
+    );
+  });
+
+  it('Nested Expression Statements (issue #144) Part 2: Expression Statement -> If Statement -> Expression Statement', async () => {
+    const text = `const window = { onResetData() { this.clearNextPush = function () {\n    if (this.setState) {\n    this.setState({ history: [] });\n} }; } };`;
+    const result = addConversionsPlugin.run(await realPluginParams({ text }));
+
+    expect(result).toBe(
+      `const window = { onResetData() { (this as any).clearNextPush = function () {\n    if ((this as any).setState) {\n        (this as any).setState({ history: [] });\n    }\n}; } };`,
     );
   });
 });

@@ -158,7 +158,7 @@ const addConversionsTransformerFactory =
  * an if statement condition or other construct that can contain blocks.
  */
 function shouldReplace(origNode: ts.Node, node: ts.Node): boolean {
-  if (node.kind === ts.SyntaxKind.ExpressionStatement && ancestorIsExpressionStatement(origNode)) {
+  if (ancestorIsExpressionStatement(origNode)) {
     return false;
   }
 
