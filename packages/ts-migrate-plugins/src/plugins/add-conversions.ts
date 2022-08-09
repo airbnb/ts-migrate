@@ -158,7 +158,7 @@ const addConversionsTransformerFactory =
  * an if statement condition or other construct that can contain blocks.
  */
 function shouldReplace(origNode: ts.Node, node: ts.Node): boolean {
-  if (node.kind == ts.SyntaxKind.ExpressionStatement && ancestorIsExpressionStatement(origNode)) {
+  if (node.kind === ts.SyntaxKind.ExpressionStatement && ancestorIsExpressionStatement(origNode)) {
     return false;
   }
 
@@ -179,12 +179,13 @@ function shouldReplace(origNode: ts.Node, node: ts.Node): boolean {
 }
 
 function ancestorIsExpressionStatement(origNode: ts.Node): boolean {
-  if (origNode.parent == undefined)
-  {
+  if (origNode.parent === undefined) {
     return false;
-  } else {
-    return origNode.parent.kind == ts.SyntaxKind.ExpressionStatement || ancestorIsExpressionStatement(origNode.parent)
   }
+  return (
+    origNode.parent.kind === ts.SyntaxKind.ExpressionStatement ||
+    ancestorIsExpressionStatement(origNode.parent)
+  );
 }
 
 function isStatement(node: ts.Node): node is ts.Statement {
