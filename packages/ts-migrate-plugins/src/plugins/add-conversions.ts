@@ -43,7 +43,7 @@ const addConversionsTransformerFactory =
       : factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
 
     let nodesToConvert: Set<ts.Node>;
-
+    const ancestorReplaceMap = new Map<ts.Node, boolean>();
     return (file: ts.SourceFile) => {
       nodesToConvert = new Set(
         diags
@@ -71,6 +71,14 @@ const addConversionsTransformerFactory =
     };
 
     function visit(origNode: ts.Node): ts.Node | undefined {
+      const ancestorShouldBeReplaced = ancestorReplaceMap.get(origNode.parent);
+      ancestorReplaceMap.set(
+        origNode,
+        ancestorShouldBeReplaced === undefined
+          ? origNode.kind === ts.SyntaxKind.ExpressionStatement
+          : origNode.kind === ts.SyntaxKind.ExpressionStatement || ancestorShouldBeReplaced,
+      );
+
       const needsConversion = nodesToConvert.has(origNode);
       let node = ts.visitEachChild(origNode, visit, context);
       if (node === origNode && !needsConversion) {
@@ -81,7 +89,7 @@ const addConversionsTransformerFactory =
         node = factory.createAsExpression(node as ts.Expression, anyType);
       }
 
-      if (shouldReplace(node)) {
+      if (shouldReplace(node) && !ancestorShouldBeReplaced) {
         replaceNode(origNode, node);
         return origNode;
       }
