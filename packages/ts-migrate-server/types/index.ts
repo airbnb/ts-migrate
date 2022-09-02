@@ -12,9 +12,17 @@ export interface PluginParams<TPluginOptions> {
 
 export type PluginResult = string | void;
 
+export interface LintConfig {
+  useTabs: boolean;
+  tabWidth: number;
+}
+
 export interface Plugin<TPluginOptions = unknown> {
   name: string;
-  run(params: PluginParams<TPluginOptions>): Promise<PluginResult> | PluginResult;
+  run(
+    params: PluginParams<TPluginOptions>,
+    lintConfig?: LintConfig,
+  ): Promise<PluginResult> | PluginResult;
 
   /**
    * Returns true if options is a valid options object for this plugin.
