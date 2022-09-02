@@ -29,7 +29,7 @@ describe('migrate command', () => {
       .addPlugin(tsIgnorePlugin, { messagePrefix: 'FIXME' })
       .addPlugin(eslintFixPlugin, {});
 
-    const exitCode = await migrate({ rootDir, config });
+    const { exitCode } = await migrate({ rootDir, config });
     const [rootData, outputData] = getDirData(rootDir, outputDir);
     expect(rootData).toEqual(outputData);
     expect(exitCode).toBe(0);
