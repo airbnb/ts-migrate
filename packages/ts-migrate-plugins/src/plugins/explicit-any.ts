@@ -7,15 +7,20 @@ import { AnyAliasOptions, validateAnyAliasOptions } from '../utils/validateOptio
 
 type Options = AnyAliasOptions;
 
+export interface LintConfig {
+  useTabs: boolean;
+  tabWidth: number;
+}
+
 const explicitAnyPlugin: Plugin<Options> = {
   name: 'explicit-any',
 
-  run({ options, fileName, text, getLanguageService }) {
+  run({ options, fileName, text, getLanguageService }, lintConfig?: LintConfig) {
     const semanticDiagnostics = getLanguageService().getSemanticDiagnostics(fileName);
     const diagnostics = semanticDiagnostics
       .filter(isDiagnosticWithLinePosition)
       .filter((d) => d.category === ts.DiagnosticCategory.Error);
-    return withExplicitAny(text, diagnostics, options.anyAlias);
+    return withExplicitAny(text, diagnostics, options.anyAlias, lintConfig);
   },
 
   validate: validateAnyAliasOptions,
@@ -29,8 +34,9 @@ function withExplicitAny(
   text: string,
   diagnostics: ts.DiagnosticWithLocation[],
   anyAlias?: string,
+  lintConfig?: any,
 ): string {
-  const root = j(text);
+  const root = j(text, lintConfig);
 
   const anyType = anyAlias != null ? j.tsTypeReference(j.identifier(anyAlias)) : j.tsAnyKeyword();
   const typeAnnotation = j.tsTypeAnnotation(anyType);
@@ -69,7 +75,7 @@ function withExplicitAny(
     diagnostics.filter((diagnostic) => diagnostic.code === 2525),
     typeAnnotation,
   );
-  return root.toSource();
+  return root.toSource(lintConfig);
 }
 
 // TS2683: "'this' implicitly has type 'any' because it does not have a type annotation."

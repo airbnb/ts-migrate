@@ -4,13 +4,14 @@ import path from 'path';
 import log from 'updatable-log';
 import MigrateConfig from './MigrateConfig';
 import PerfTimer from '../utils/PerfTimer';
-import { PluginParams } from '../../types';
+import { PluginParams, LintConfig } from '../../types';
 
 interface MigrateParams {
   rootDir: string;
   tsConfigDir?: string;
   config: MigrateConfig;
   sources?: string | string[];
+  lintConfig?: LintConfig;
 }
 
 export default async function migrate({
@@ -18,6 +19,7 @@ export default async function migrate({
   tsConfigDir = rootDir,
   config,
   sources,
+  lintConfig,
 }: MigrateParams): Promise<{ exitCode: number; updatedSourceFiles: Set<string> }> {
   let exitCode = 0;
   log.info(`TypeScript version: ${ts.version}`);
@@ -83,7 +85,7 @@ export default async function migrate({
       };
       try {
         // eslint-disable-next-line no-await-in-loop
-        const newText = await plugin.run(params);
+        const newText = await plugin.run(params, lintConfig);
         if (typeof newText === 'string' && newText !== sourceFile.text) {
           project.updateSourceFile(fileName, newText);
           updatedSourceFiles.add(sourceFile.fileName);

@@ -1,6 +1,6 @@
 {
   "name": "ts-migrate-server",
-  "version": "0.1.29",
+  "version": "0.1.31",
   "description": "A package that contains the main migration runner and spawns a TSServer process",
   "main": "build/src/index.js",
   "directories": {
@@ -59,7 +59,7 @@
   "homepage": "https://github.com/airbnb/ts-migrate#readme",
   "license": "MIT",
   "dependencies": {
-    "@ts-morph/bootstrap": "^0.15.0",
+    "@ts-morph/bootstrap": "^0.16.0",
     "pretty-ms": "^7.0.1",
     "updatable-log": "^0.2.0"
   },
