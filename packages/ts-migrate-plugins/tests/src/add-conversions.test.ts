@@ -151,7 +151,6 @@ import customUtils from "custom-utils";
 
 it("tests", () => {
     (thing as any).fn("arg");
-
     const thing = {
         value: "$1"
     };
