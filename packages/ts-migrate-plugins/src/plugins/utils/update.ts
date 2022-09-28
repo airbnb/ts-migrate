@@ -69,7 +69,7 @@ class UpdateTracker {
       );
       const text = oldNode
         .getFullText(this.sourceFile)
-        .replace(/^(\s*)[^]*?(\s*)$/, `$1${printedNextNode}$2`);
+        .replace(/^(\s*)[^]*?(\s*)$/, (_match, p1, p2) => `${p1}${printedNextNode}${p2}`);
       this.updates.push({
         kind: 'replace',
         index: oldNode.pos,

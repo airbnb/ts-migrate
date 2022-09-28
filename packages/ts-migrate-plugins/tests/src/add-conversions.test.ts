@@ -131,4 +131,30 @@ class PublishEvent {
       `const window = { onResetData() { (this as any).clearNextPush = function () {\n    if ((this as any).setState) {\n        (this as any).setState({ history: [] });\n    }\n}; } };`,
     );
   });
+
+  it('handles dollar amounts', async () => {
+    const text = `\
+import customUtils from "custom-utils";
+
+it("tests", () => {
+  thing.fn("arg");
+
+  const thing = {
+    value: "$1"
+  };
+});
+`;
+    const result = addConversionsPlugin.run(await realPluginParams({ text }));
+
+    expect(result).toBe(`\
+import customUtils from "custom-utils";
+
+it("tests", () => {
+    (thing as any).fn("arg");
+    const thing = {
+        value: "$1"
+    };
+});
+`);
+  });
 });
