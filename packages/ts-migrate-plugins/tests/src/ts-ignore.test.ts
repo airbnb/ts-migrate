@@ -409,4 +409,26 @@ export default Foo;
       "
     `);
   });
+
+  it('add comment to closing tag in tsx file', async () => {
+    const text = `<div>
+  <span>text</span>
+</div>
+`;
+    const result = await tsIgnorePlugin.run(
+      mockPluginParams({
+        fileName: 'Foo.tsx',
+        text,
+        semanticDiagnostics: [mockDiagnostic(text, '/div')],
+        options: { messagePrefix: 'FIXME' },
+      }),
+    );
+    expect(result).toMatchInlineSnapshot(`
+"<div>
+  <span>text</span>
+{/* @ts-expect-error TS(123) FIXME: diagnostic message */}
+</div>
+"
+`);
+  });
 });

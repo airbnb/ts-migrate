@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
-import ts from 'typescript';
+import ts, { isJsxFragment } from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
@@ -166,7 +166,8 @@ function inJsxText(sourceFile: ts.SourceFile, pos: number) {
       const isJsxTextChild = node.children.some(
         (child) => ts.isJsxText(child) && child.pos <= pos && pos < child.end,
       );
-      if (isJsxTextChild) {
+      const isClosingElement = !isJsxFragment(node) && node.closingElement.pos === pos;
+      if (isJsxTextChild || isClosingElement) {
         return true;
       }
     }
