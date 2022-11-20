@@ -164,7 +164,8 @@ function inJsxText(sourceFile: ts.SourceFile, pos: number) {
   const visitor = (node: ts.Node): boolean | undefined => {
     if (node.pos <= pos && pos < node.end && (ts.isJsxElement(node) || ts.isJsxFragment(node))) {
       const isJsxTextChild = node.children.some(
-        (child) => ts.isJsxText(child) && child.pos <= pos && pos < child.end,
+        (child) =>
+          ts.isJsxExpression(child) || (ts.isJsxText(child) && child.pos <= pos && pos < child.end),
       );
       const isClosingElement = !isJsxFragment(node) && node.closingElement.pos === pos;
       if (isJsxTextChild || isClosingElement) {

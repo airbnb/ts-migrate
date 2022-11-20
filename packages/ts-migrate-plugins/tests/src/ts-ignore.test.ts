@@ -424,11 +424,47 @@ export default Foo;
       }),
     );
     expect(result).toMatchInlineSnapshot(`
-"<div>
-  <span>text</span>
-{/* @ts-expect-error TS(123) FIXME: diagnostic message */}
-</div>
-"
-`);
+      "<div>
+        <span>text</span>
+      {/* @ts-expect-error TS(123) FIXME: diagnostic message */}
+      </div>
+      "
+    `);
+  });
+
+  it('handles short circuit evaluation in tsx', async () => {
+    const text = `function Foo() {
+      return (<div>
+        {someBoolean &&
+          <ComponentA
+            doesNotExist="fail"
+          />
+        }
+        </div>);
+    }
+    `;
+
+    const result = await tsIgnorePlugin.run(
+      mockPluginParams({
+        fileName: 'Foo.tsx',
+        text,
+        semanticDiagnostics: [mockDiagnostic(text, 'doesNotExist')],
+        options: { messagePrefix: 'FIXME' },
+      }),
+    );
+
+    expect(result).toMatchInlineSnapshot(`
+      "function Foo() {
+            return (<div>
+              {someBoolean &&
+                <ComponentA
+                  {/* @ts-expect-error TS(123) FIXME: diagnostic message */}
+                  doesNotExist=\\"fail\\"
+                />
+              }
+              </div>);
+          }
+          "
+    `);
   });
 });
