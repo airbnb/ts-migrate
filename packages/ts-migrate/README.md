@@ -23,6 +23,7 @@ Migrate an entire project like this:
 ```sh
 npx -p ts-migrate -c "ts-migrate-full <folder>"
 ```
+The `ts-migrate-full` command will perform a `git add` and `git commit` after each major step (_[details here]( https://github.com/airbnb/ts-migrate/blob/master/packages/ts-migrate/bin/ts-migrate-full.sh )_).
 
 Please note that it may take a long time to do a full migration.
 You can also migrate individual parts of a project by specifying a subset of sources:
