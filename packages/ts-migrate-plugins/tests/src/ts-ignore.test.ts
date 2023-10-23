@@ -431,4 +431,52 @@ export default Foo;
 "
 `);
   });
+
+  it('add comment to prop in tsx file without indent', async () => {
+    const text = `
+<div>
+<span style={{display: 'foo'}}></span>
+</div>
+`;
+    const result = await tsIgnorePlugin.run(
+      mockPluginParams({
+        fileName: 'Foo.tsx',
+        text,
+        semanticDiagnostics: [mockDiagnostic(text, 'style')],
+        options: { messagePrefix: 'FIXME' },
+      }),
+    );
+    expect(result).toMatchInlineSnapshot(`
+"
+<div>
+{/* @ts-expect-error TS(123) FIXME: diagnostic message */}
+<span style={{display: 'foo'}}></span>
+</div>
+"
+`);
+  });
+
+  it('add comment to prop in tsx file with indent', async () => {
+    const text = `
+<div>
+    <span style={{display: 'foo'}}></span>
+</div>
+`;
+    const result = await tsIgnorePlugin.run(
+      mockPluginParams({
+        fileName: 'Foo.tsx',
+        text,
+        semanticDiagnostics: [mockDiagnostic(text, 'style')],
+        options: { messagePrefix: 'FIXME' },
+      }),
+    );
+    expect(result).toMatchInlineSnapshot(`
+"
+<div>
+    {/* @ts-expect-error TS(123) FIXME: diagnostic message */}
+    <span style={{display: 'foo'}}></span>
+</div>
+"
+`);
+  });
 });
