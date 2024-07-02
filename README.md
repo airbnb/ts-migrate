@@ -3,7 +3,7 @@
 *ts-migrate* is a tool for helping migrate code to TypeScript.
 It takes a JavaScript, or a partial TypeScript, project in and gives a compiling TypeScript project out.
 
-*ts-migrate* is intended to accelerate the TypeScript migration process. The resulting code will pass the build, but a followup is required to improve type safety. There will be lots of `// @ts-expect-error`, and `any` that will need to be fixed over time. In general, it is a lot nicer than starting from scratch.
+*ts-migrate* is intended to accelerate the TypeScript migration process. The resulting code will pass the build, but a follow-up is required to improve type safety. There will be lots of `// @ts-expect-error`, and `any` that will need to be fixed over time. In general, it is a lot nicer than starting from scratch.
 
 *ts-migrate* is designed as a set of plugins so that it can be pretty customizable for different use-cases. Potentially, more plugins can be added for addressing things like improvements of type quality or libraries-related things (like prop-types in React).
 
