@@ -10,8 +10,8 @@ type Options = AnyAliasOptions;
 const supportedDiagnostics = new Set([
   // TS2339: Property '{0}' does not exist on type '{1}'.
   2339,
-  // TS2571: Object is of type 'unknown'.
-  2571,
+  // TS18046: Object is of type 'unknown'.
+  18046,
 ]);
 
 const addConversionsPlugin: Plugin<Options> = {
@@ -56,7 +56,7 @@ const addConversionsTransformerFactory =
                 }
                 return token.parent.expression;
 
-              case 2571:
+              case 18046:
                 return token;
 
               default:

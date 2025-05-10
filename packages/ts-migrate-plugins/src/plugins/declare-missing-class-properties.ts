@@ -25,8 +25,10 @@ const declareMissingClassPropertiesPlugin: Plugin<Options> = {
         .find(j.Identifier)
         .filter(
           (path) =>
+            /* eslint-disable @typescript-eslint/no-explicit-any */
             (path.node as any).start === diagnostic.start &&
             (path.node as any).end === diagnostic.start + diagnostic.length &&
+            /* eslint-enable @typescript-eslint/no-explicit-any */
             path.parentPath.node.type === 'MemberExpression' &&
             path.parentPath.node.object.type === 'ThisExpression',
         )

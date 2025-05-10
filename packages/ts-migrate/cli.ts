@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable no-await-in-loop, no-restricted-syntax */
 import path from 'path';
 import log from 'updatable-log';
 import yargs from 'yargs';
@@ -43,7 +42,7 @@ const availablePlugins = [
   tsIgnorePlugin,
 ];
 
-// eslint-disable-next-line no-unused-expressions
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs
   .scriptName('npm run ts-migrate --')
   .version(false)

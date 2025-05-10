@@ -33,4 +33,9 @@
         "**/package.json": "json",
         "**/*.json": "jsonc"
     },
+    "jestrunner.configPath": {
+        "**/packages/ts-migrate/**/*": "./packages/ts-migrate/jest-config.json",
+        "**/packages/ts-migrate-plugins/**/*": "./packages/ts-migrate-plugins/jest-config.json",
+        "**/packages/ts-migrate-server/**/*": "./packages/ts-migrate-server/jest-config.json",
+    },
 }

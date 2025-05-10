@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import ts from 'typescript';
 
 function isReactClassComponentName(name: string): boolean {

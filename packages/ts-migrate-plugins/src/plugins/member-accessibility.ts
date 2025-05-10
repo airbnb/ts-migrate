@@ -7,7 +7,7 @@ import { Properties, validateOptions } from '../utils/validateOptions';
 const accessibility = ['private' as const, 'protected' as const, 'public' as const];
 
 type Options = {
-  defaultAccessibility?: typeof accessibility[number];
+  defaultAccessibility?: (typeof accessibility)[number];
   privateRegex?: string;
   protectedRegex?: string;
   publicRegex?: string;
@@ -46,6 +46,7 @@ const memberAccessibilityPlugin: Plugin<Options> = {
         if (value) {
           try {
             RegExp(value);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } catch (e: any) {
             throw new PluginOptionsError(`${key}: ${e.message}`);
           }
@@ -63,7 +64,8 @@ const accessibilityMask =
   ts.ModifierFlags.Private | ts.ModifierFlags.Protected | ts.ModifierFlags.Public;
 
 const memberAccessibilityTransformerFactory =
-  (options: Options) => (context: ts.TransformationContext) => {
+  (options: Options): ts.TransformerFactory<ts.SourceFile> =>
+  (context: ts.TransformationContext) => {
     const { factory } = context;
     let defaultAccessibility: ts.ModifierFlags;
     switch (options.defaultAccessibility) {
@@ -88,7 +90,10 @@ const memberAccessibilityTransformerFactory =
       // Nothing to do. Don't bother traversing the AST.
       return (file: ts.SourceFile) => file;
     }
-    return (file: ts.SourceFile) => ts.visitNode(file, visit);
+    return ((file: ts.SourceFile) => {
+      ts.visitNode(file, visit);
+      return file;
+    }) satisfies ts.Transformer<ts.SourceFile>;
 
     function visit(origNode: ts.Node): ts.Node {
       const node = ts.visitEachChild(origNode, visit, context);
@@ -122,7 +127,6 @@ const memberAccessibilityTransformerFactory =
             const propertyNode = node as ts.PropertyDeclaration;
             return factory.updatePropertyDeclaration(
               propertyNode,
-              propertyNode.decorators,
               modifiers,
               propertyNode.name,
               propertyNode.questionToken,
@@ -134,7 +138,6 @@ const memberAccessibilityTransformerFactory =
             const methodNode = node as ts.MethodDeclaration;
             return factory.updateMethodDeclaration(
               methodNode,
-              methodNode.decorators,
               modifiers,
               methodNode.asteriskToken,
               methodNode.name,
@@ -149,7 +152,6 @@ const memberAccessibilityTransformerFactory =
             const accessorNode = node as ts.GetAccessorDeclaration;
             return factory.updateGetAccessorDeclaration(
               accessorNode,
-              accessorNode.decorators,
               modifiers,
               accessorNode.name,
               accessorNode.parameters,
@@ -161,7 +163,6 @@ const memberAccessibilityTransformerFactory =
             const accessorNode = node as ts.SetAccessorDeclaration;
             return factory.updateSetAccessorDeclaration(
               accessorNode,
-              accessorNode.decorators,
               modifiers,
               accessorNode.name,
               accessorNode.parameters,

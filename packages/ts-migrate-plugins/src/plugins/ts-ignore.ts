@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import ts, { isJsxFragment } from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import { isDiagnosticWithLinePosition } from '../utils/type-guards';

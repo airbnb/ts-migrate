@@ -3,7 +3,6 @@ import { Plugin } from 'ts-migrate-server';
 
 const cli = new ESLint({
   fix: true,
-  useEslintrc: true,
   // Set ignore to false so we can lint in `tmp` for testing
   ignore: false,
 });

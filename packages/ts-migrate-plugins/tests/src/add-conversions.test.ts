@@ -82,7 +82,7 @@ function f(u: unknown) {
 }
 `;
 
-    const result = addConversionsPlugin.run(await realPluginParams({ text }));
+    const result = await addConversionsPlugin.run(await realPluginParams({ text }));
 
     expect(result).toBe(`\
 function f(u: unknown) {

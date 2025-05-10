@@ -4,8 +4,8 @@ import { createDir, copyDir, deleteDir, getDirData } from '../../test-utils';
 import migrate, { MigrateConfig } from '../../../src/migrate';
 
 jest.mock('updatable-log', () => {
-  // eslint-disable-next-line global-require
-  const { mockUpdatableLog } = require('../../test-utils');
+  // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
+  const { mockUpdatableLog } = require('../../test-utils') as typeof import('../../test-utils');
   return mockUpdatableLog();
 });
 

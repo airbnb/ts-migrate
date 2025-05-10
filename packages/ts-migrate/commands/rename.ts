@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import fs from 'fs';
 import path from 'path';
 import log from 'updatable-log';

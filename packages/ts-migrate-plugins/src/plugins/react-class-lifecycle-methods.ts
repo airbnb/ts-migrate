@@ -47,7 +47,6 @@ const reactLifecycleMethodAnnotations: { [method: string]: AnnotationKind[] } = 
 function updateParameterType(parameter: ts.ParameterDeclaration, type: ts.TypeNode | undefined) {
   return ts.factory.updateParameterDeclaration(
     parameter,
-    parameter.decorators,
     parameter.modifiers,
     parameter.dotDotDotToken,
     parameter.name,

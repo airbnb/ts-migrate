@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import updateSourceText, { SourceTextUpdate } from '../utils/updateSourceText';
@@ -128,7 +127,6 @@ function hoistStaticClassProperties(
         ) {
           properties.push(
             ts.factory.createPropertyDeclaration(
-              undefined,
               [ts.factory.createModifier(ts.SyntaxKind.StaticKeyword)],
               statement.expression.left.name.text,
               undefined,
@@ -145,7 +143,6 @@ function hoistStaticClassProperties(
           // otherwise add a static type annotation for this expression
           properties.push(
             ts.factory.createPropertyDeclaration(
-              undefined,
               [ts.factory.createModifier(ts.SyntaxKind.StaticKeyword)],
               statement.expression.left.name.text,
               undefined,
@@ -163,7 +160,6 @@ function hoistStaticClassProperties(
       if (classDeclaration.members.length === 0) {
         const updatedClassDeclaration = ts.factory.updateClassDeclaration(
           classDeclaration,
-          classDeclaration.decorators,
           classDeclaration.modifiers,
           classDeclaration.name,
           classDeclaration.typeParameters,

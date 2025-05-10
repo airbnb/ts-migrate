@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-syntax, no-use-before-define, @typescript-eslint/no-use-before-define */
+/* eslint-disable no-restricted-syntax */
 import ts from 'typescript';
 import { Plugin } from 'ts-migrate-server';
 import {
@@ -202,12 +202,13 @@ function updatePropTypes(
             text: ` ${printer.printNode(
               ts.EmitHint.Unspecified,
               ts.factory.updateExpressionWithTypeArguments(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 forwardRefComponent as any,
                 forwardRefComponent.expression,
                 [
                   ts.factory.createTypeReferenceNode(options.anyAlias || 'any', undefined),
                   ts.factory.createTypeReferenceNode(propsTypeName, undefined),
-                ].filter(isNotNull) as any,
+                ].filter(isNotNull),
               ),
               sourceFile,
             )}`,
@@ -217,7 +218,6 @@ function updatePropTypes(
             ts.EmitHint.Unspecified,
             ts.factory.updateParameterDeclaration(
               propsParam,
-              propsParam.decorators,
               propsParam.modifiers,
               propsParam.dotDotDotToken,
               propsParam.name,
@@ -276,7 +276,7 @@ function updatePropTypes(
               heritageType.expression,
               [ts.factory.createTypeReferenceNode(propsTypeName, undefined), stateType].filter(
                 isNotNull,
-              ) as any,
+              ),
             ),
             sourceFile,
           )}`,
@@ -316,7 +316,6 @@ function updateObjectLiteral(
     propTypeIdentifiers,
   });
   let propsTypeAlias = ts.factory.createTypeAliasDeclaration(
-    undefined,
     undefined,
     propsTypeName,
     undefined,

@@ -29,7 +29,7 @@
   },
   "scripts": {
     "test": "jest --config jest-config.json",
-    "lint": "eslint . --ext=.js,.jsx,.ts,.tsx --ignore-path ../../.eslintignore",
+    "lint": "eslint . --ext=.js,.jsx,.ts,.tsx",
     "build": "tsc -p tsconfig.json",
     "prepublish": "yarn build",
     "clean": "rm -rf build"
@@ -59,12 +59,12 @@
   "homepage": "https://github.com/airbnb/ts-migrate#readme",
   "license": "MIT",
   "dependencies": {
-    "@ts-morph/bootstrap": "^0.16.0",
+    "@ts-morph/bootstrap": "^0.26.1",
     "pretty-ms": "^7.0.1",
     "updatable-log": "^0.2.0"
   },
   "gitHead": "7acf6067f15c9bb367cda9c47fcfb4203dcc54f3",
   "peerDependencies": {
-    "typescript": ">4.0"
+    "typescript": ">5.0"
   }
 }

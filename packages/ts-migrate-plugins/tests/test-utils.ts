@@ -44,7 +44,8 @@ export function mockPluginParams<TOptions = unknown>(params: {
         getSemanticDiagnostics: () => semanticDiagnostics.map(withFile),
         getSyntacticDiagnostics: () => syntacticDiagnostics.map(withFile),
         getSuggestionDiagnostics: () => suggestionDiagnostics.map(withFile),
-      } as any),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }) as any,
   };
 }
 

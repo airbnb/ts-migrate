@@ -1,12 +1,12 @@
 import path from 'path';
-// eslint-disable-next-line import/no-extraneous-dependencies
+
 import { tsIgnorePlugin, eslintFixPlugin, explicitAnyPlugin } from 'ts-migrate-plugins';
 import { migrate, MigrateConfig } from 'ts-migrate-server';
 import { createDir, copyDir, deleteDir, getDirData } from '../../test-utils';
 
 jest.mock('updatable-log', () => {
-  // eslint-disable-next-line global-require
-  const { mockUpdatableLog } = require('../../test-utils');
+  // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
+  const { mockUpdatableLog } = require('../../test-utils') as typeof import('../../test-utils');
   return mockUpdatableLog();
 });
 

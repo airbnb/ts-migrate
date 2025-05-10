@@ -142,7 +142,6 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
       const updatedPropTypesName = doesPropsTypeHaveExport ? propsTypeName : updatedProptypesName;
       const updatedPropTypeAlias = ts.factory.updateTypeAliasDeclaration(
         propsTypeAliasDeclaration,
-        propsTypeAliasDeclaration.decorators,
         propsTypeAliasDeclaration.modifiers,
         ts.factory.createIdentifier(updatedPropTypesName),
         propsTypeAliasDeclaration.typeParameters,
@@ -170,7 +169,6 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
         : propsTypeName;
 
       const newPropsTypeAlias = ts.factory.createTypeAliasDeclaration(
-        undefined,
         undefined,
         ts.factory.createIdentifier(componentPropsTypeName),
         undefined,
@@ -358,7 +356,6 @@ const reactDefaultPropsPlugin: Plugin<Options> = {
 // It would have to be manually added, otherwise CI will complain about it
 function getWithDefaultPropsImport() {
   return ts.factory.createImportDeclaration(
-    undefined,
     undefined,
     ts.factory.createImportClause(
       false,
