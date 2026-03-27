@@ -50,6 +50,16 @@ else
   tsc_path=$custom_tsc_path;
 fi
 
+if [ ! -f "$tsc_path" ] && ! command -v "$tsc_path" &> /dev/null; then
+  echo "Error: TypeScript compiler not found at '$tsc_path'."
+  echo ""
+  echo "Please install TypeScript:"
+  echo "  npm install --save-dev typescript"
+  echo "or globally:"
+  echo "  npm install -g typescript"
+  exit 1
+fi
+
 function maybe_commit() {
   cd $frontend_folder
   if [[ `git status --porcelain` ]]
